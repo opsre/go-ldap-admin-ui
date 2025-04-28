@@ -2,9 +2,7 @@
   <div class="dashboard-container">
     <div class="dashboard-editor-container">
       <!-- <github-corner class="github-corner" /> -->
-
       <panel-group @handleSetLineChartData="handleSetLineChartData" />
-
       <!-- <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
         <line-chart :chart-data="lineChartData" />
       </el-row> -->
@@ -36,6 +34,8 @@ import LineChart from './components/LineChart'
 import RadarChart from '@/components/Echarts/RadarChart'
 import PieChart from '@/components/Echarts/PieChart'
 import BarChart from '@/components/Echarts/BarChart'
+import { mapGetters } from 'vuex'
+import { Message } from 'element-ui'
 
 const lineChartData = {
   newVisitis: {
@@ -67,12 +67,25 @@ export default {
     PieChart,
     BarChart
   },
+  computed: {
+    ...mapGetters(['roles'])
+  },
   data() {
     return {
       lineChartData: lineChartData.newVisitis
     }
   },
-  methods: {
+  //普通用户登录后跳转到个人中心
+ beforeRouteEnter(to, from, next) {
+    next(vm => {
+      const roles = vm.$store.getters.roles;
+      if (roles.length > 0 && roles.includes('普通用户')) {
+        vm.$router.push('/profile/index');
+      }
+    });
+  },
+
+   methods: {
     handleSetLineChartData(type) {
       this.lineChartData = lineChartData[type]
     }
@@ -106,4 +119,3 @@ export default {
     }
   }
 </style>
-
