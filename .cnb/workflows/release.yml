@@ -1,0 +1,22 @@
+$:
+  tag_push:
+    - runner:
+        cpus: 8
+      services:
+        - docker
+        - git-clone-yyds
+      stages:
+        - name: 📦 构建制品
+          image: docker.cnb.cool/znb/images/debian:all
+          script: |
+            sed -i 's@http://localhost:8888/@/@g' .env.production
+            npm install --registry=http://registry.npmmirror.com
+            yarn build:prod
+            zip -q -r dist.zip dist
+            openssl md5 dist.zip > dist.zip.md5
+        - name: 🐋 推送制品
+          image: cnbcool/attachments:latest
+          settings:
+            attachments:
+              - dist.zip
+              - dist.zip.md5
