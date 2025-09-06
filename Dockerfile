@@ -1,17 +1,18 @@
-FROM node:14.18 AS builder
+# 此 Dockerfile 仅用于构建可复制的 dist 内容，并不包含运行环境
+# 第一阶段构建不区分平台，可通过指定 --platform=linux/amd64 来声明环境
+FROM --platform=linux/amd64 docker.cnb.cool/znb/images/node:18 AS builder
 
-RUN mkdir /app
-ADD . /app/
 WORKDIR /app
+
+ADD . .
+
 RUN  sed -i 's@http://localhost:8888/@/@g' .env.production \
      && git config --global url."https://".insteadOf git:// \
      && npm install --registry=http://registry.npmmirror.com \
      && yarn build:prod
 
-FROM openresty/openresty:1.21.4.1-0-centos7
-RUN mkdir /app
-WORKDIR /app
-COPY --from=builder /app/default.conf /etc/nginx/conf.d/default.conf
-COPY --from=builder /app/dist .
+FROM docker.cnb.cool/znb/images/alpine
 
-CMD nginx -g "daemon off;"
+WORKDIR /app
+
+COPY --from=builder /app/dist/ dist/

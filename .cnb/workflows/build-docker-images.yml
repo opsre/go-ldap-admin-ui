@@ -1,0 +1,21 @@
+main:
+  push:
+    - runner:
+        cpus: 16
+      services:
+        - docker
+        - git-clone-yyds
+      stages:
+        - name: 🐋 推送镜像
+          script: |
+            docker run -d --name buildkitd \
+              --security-opt seccomp=unconfined \
+              --security-opt apparmor=unconfined \
+              --security-opt systempaths=unconfined \
+              moby/buildkit:rootless
+            docker buildx create --use \
+              --name mybuilder \
+              --driver remote docker-container://buildkitd
+            docker buildx build \
+              -t ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE} \
+              --platform=linux/arm64,linux/amd64 . --push
