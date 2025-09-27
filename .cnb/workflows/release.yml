@@ -9,7 +9,7 @@ $:
         - name: 构建缓存镜像
           type: docker:cache
           options:
-            dockerfile: cache.dockerfile
+            dockerfile: .cache.dockerfile
             by:
               - package.json
               - package-lock.json
