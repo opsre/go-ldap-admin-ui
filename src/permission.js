@@ -9,7 +9,7 @@ import getPageTitle from '@/utils/get-page-title'
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
 const whiteList = ['/login', '/auth-redirect'] // no redirect whitelist 没有重定向白名单
-//路由守卫
+// 路由守卫
 router.beforeEach(async(to, from, next) => {
   // start progress bar
   NProgress.start()
@@ -34,11 +34,21 @@ router.beforeEach(async(to, from, next) => {
         try {
           // get user info
           // note: roles must be a object array! such as: ['admin'] or ,['developer','editor']
-          const { ID, roles } = await store.dispatch('user/getInfo')
-          const userinfo = { id: ID, roles: roles }
-          // generate accessible routes map based on roles
+          const userInfo = await store.dispatch('user/getInfo')
+          const { ID, roles } = userInfo
+          const userinfoForRoutes = { id: ID, roles: roles }
 
-          const accessRoutes = await store.dispatch('permission/generateRoutes', userinfo)
+          // 检查是否为管理员（角色ID为1）
+          const isAdmin = userInfo.roles && userInfo.roles.some(role => role.ID === 1)
+
+          // 如果是普通用户且要访问的不是个人主页，则重定向到个人主页
+          if (!isAdmin && to.path !== '/profile/index') {
+            next('/profile/index')
+            return
+          }
+
+          // generate accessible routes map based on roles
+          const accessRoutes = await store.dispatch('permission/generateRoutes', userinfoForRoutes)
 
           accessRoutes.push({ path: '*', redirect: '/404', hidden: true })
           // dynamically add accessible routes
@@ -61,12 +71,12 @@ router.beforeEach(async(to, from, next) => {
     /* has no token*/
 
     if (whiteList.indexOf(to.path) !== -1) {
-      //在免费登录白名单，直接去
+      // 在免费登录白名单，直接去
       next()
-    }else if(to.path === '/changePass'){
-      next({replace: true} )
+    } else if (to.path === '/changePass') {
+      next({ replace: true })
       // NProgress.done()
-    }else {
+    } else {
       // other pages that do not have permission to access are redirected to the login page.
       next(`/login?redirect=${to.path}`)
       NProgress.done()

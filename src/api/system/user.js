@@ -52,7 +52,6 @@ export function createUser(data) {
 
 // 更新用户（已完成）
 export function updateUserById(data) {
-
   return request({
     url: '/api/user/update',
     method: 'post',
@@ -63,6 +62,15 @@ export function updateUserById(data) {
 export function batchDeleteUserByIds(data) {
   return request({
     url: '/api/user/delete',
+    method: 'post',
+    data
+  })
+}
+
+// 重置用户密码（已完成）
+export function resetPassword(data) {
+  return request({
+    url: '/api/user/resetPassword',
     method: 'post',
     data
   })

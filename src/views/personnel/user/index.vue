@@ -3,19 +3,19 @@
     <el-card class="container-card" shadow="always">
       <el-form size="mini" :inline="true" :model="params" class="demo-form-inline">
         <el-form-item label="用户名">
-          <el-input style="width: 100px;" v-model.trim="params.username" clearable placeholder="用户名" @keyup.enter.native="search" @clear="search" />
+          <el-input v-model.trim="params.username" style="width: 100px;" clearable placeholder="用户名" @keyup.enter.native="search" @clear="search" />
         </el-form-item>
         <el-form-item label="昵称">
-          <el-input style="width: 100px;" v-model.trim="params.nickname" clearable placeholder="昵称" @keyup.enter.native="search" @clear="search" />
+          <el-input v-model.trim="params.nickname" style="width: 100px;" clearable placeholder="昵称" @keyup.enter.native="search" @clear="search" />
         </el-form-item>
         <el-form-item label="状态">
-          <el-select style="width: 100px;" v-model.trim="params.status" clearable placeholder="状态" @change="search" @clear="search">
+          <el-select v-model.trim="params.status" style="width: 100px;" clearable placeholder="状态" @change="search" @clear="search">
             <el-option label="正常" value="1" />
             <el-option label="禁用" value="2" />
           </el-select>
         </el-form-item>
-          <el-form-item label="同步状态">
-          <el-select style="width: 100px;" v-model.trim="params.syncState" clearable placeholder="同步状态" @change="search" @clear="search">
+        <el-form-item label="同步状态">
+          <el-select v-model.trim="params.syncState" style="width: 100px;" clearable placeholder="同步状态" @change="search" @clear="search">
             <el-option label="已同步" value="1" />
             <el-option label="未同步" value="2" />
           </el-select>
@@ -30,7 +30,7 @@
           <el-button :disabled="multipleSelection.length === 0" :loading="loading" icon="el-icon-delete" type="danger" @click="batchDelete">批量删除</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button  :disabled="multipleSelection.length === 0" :loading="loading" icon="el-icon-upload2" type="success" @click="batchSync">批量同步</el-button>
+          <el-button :disabled="multipleSelection.length === 0" :loading="loading" icon="el-icon-upload2" type="success" @click="batchSync">批量同步</el-button>
         </el-form-item>
         <br>
         <el-form-item>
@@ -73,10 +73,15 @@
         <el-table-column show-overflow-tooltip sortable prop="userDn" label="DN" />
         <el-table-column show-overflow-tooltip sortable prop="CreatedAt" label="创建时间" />
         <el-table-column show-overflow-tooltip sortable prop="UpdatedAt" label="更新时间" />
-        <el-table-column fixed="right" label="操作" align="center" width="150">
+        <el-table-column fixed="right" label="操作" align="center" width="190">
           <template slot-scope="scope">
             <el-tooltip content="编辑" effect="dark" placement="top">
               <el-button size="mini" icon="el-icon-edit" circle type="primary" @click="update(scope.row)" />
+            </el-tooltip>
+            <el-tooltip class="delete-popover" content="重置密码" effect="dark" placement="top">
+              <el-popconfirm title="确定重置该用户密码吗？" @onConfirm="resetUserPassword(scope.row.username)">
+                <el-button slot="reference" size="mini" icon="el-icon-key" circle type="warning" />
+              </el-popconfirm>
             </el-tooltip>
             <el-tooltip class="delete-popover" content="删除" effect="dark" placement="top">
               <el-popconfirm title="确定删除吗？" @onConfirm="singleDelete(scope.row.ID)">
@@ -129,7 +134,7 @@
             </el-col>
             <el-col :span="12">
               <!-- 修改用户时，不显示密码字段 -->
-              <el-form-item :label="dialogType === 'create' ? '新密码':'重置密码'" prop="password" v-if="dialogType === 'create'">
+              <el-form-item v-if="dialogType === 'create'" :label="dialogType === 'create' ? '新密码':'重置密码'" prop="password">
                 <el-input v-model.trim="dialogFormData.password" autocomplete="off" :type="passwordType" :placeholder="dialogType === 'create' ? '新密码':'重置密码'" />
                 <span class="show-pwd" @click="showPwd">
                   <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
@@ -205,6 +210,50 @@
         </div>
       </el-dialog>
 
+      <!-- 重置密码结果对话框 -->
+      <el-dialog
+        title="密码重置成功"
+        :visible.sync="resetPasswordDialogVisible"
+        width="400px"
+        :close-on-click-modal="false"
+        :close-on-press-escape="false"
+        @close="closeResetPasswordDialog"
+      >
+        <div style="text-align: center;">
+          <el-alert
+            title="请保存新密码"
+            type="warning"
+            :closable="false"
+            show-icon
+            style="margin-bottom: 20px;"
+          />
+          <p style="margin-bottom: 10px; font-weight: bold;">用户：{{ resetUsername }}</p>
+          <p style="margin-bottom: 20px; color: #606266;">新密码：</p>
+          <el-input
+            v-model="newPassword"
+            readonly
+            style="margin-bottom: 20px;"
+          >
+            <el-button
+              slot="append"
+              icon="el-icon-document-copy"
+              @click="copyPassword"
+            >
+              复制
+            </el-button>
+          </el-input>
+          <el-alert
+            title="请立即保存密码，关闭对话框后将无法再次查看"
+            type="info"
+            :closable="false"
+            show-icon
+          />
+        </div>
+        <div slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="closeResetPasswordDialog">我已保存</el-button>
+        </div>
+      </el-dialog>
+
     </el-card>
   </div>
 </template>
@@ -214,6 +263,7 @@ import JSEncrypt from 'jsencrypt'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import { getUsers, createUser, updateUserById, batchDeleteUserByIds, changeUserStatus, syncDingTalkUsersApi, syncWeComUsersApi, syncFeiShuUsersApi, syncOpenLdapUsersApi, syncSqlUsers } from '@/api/personnel/user'
+import { resetPassword } from '@/api/system/user'
 import { getRoles } from '@/api/system/role'
 import { getGroupTree } from '@/api/personnel/group'
 import { Message } from 'element-ui'
@@ -342,7 +392,12 @@ export default {
       changeUserStatusFormData: {
         id: '',
         status: ''
-      }
+      },
+
+      // 重置密码结果对话框
+      resetPasswordDialogVisible: false,
+      newPassword: '',
+      resetUsername: ''
     }
   },
   created() {
@@ -457,14 +512,14 @@ export default {
     },
 
     // 判断结果
-    judgeResult(res){
-      if (res.code==0){
-          Message({
-            showClose: true,
-            message: "操作成功",
-            type: 'success'
-          })
-        }
+    judgeResult(res) {
+      if (res.code === 0) {
+        Message({
+          showClose: true,
+          message: '操作成功',
+          type: 'success'
+        })
+      }
     },
 
     // 提交表单
@@ -542,11 +597,11 @@ export default {
           }
           try {
             if (this.dialogType === 'create') {
-              await createUser(this.dialogFormDataCopy).then(res =>{
+              await createUser(this.dialogFormDataCopy).then(res => {
                 this.judgeResult(res)
               })
             } else {
-              await updateUserById(this.dialogFormDataCopy).then(res =>{
+              await updateUserById(this.dialogFormDataCopy).then(res => {
                 this.judgeResult(res)
               })
             }
@@ -602,7 +657,7 @@ export default {
           userIds.push(x.ID)
         })
         try {
-          await batchDeleteUserByIds({ userIds: userIds }).then(res =>{
+          await batchDeleteUserByIds({ userIds: userIds }).then(res => {
             this.judgeResult(res)
           })
         } finally {
@@ -630,7 +685,7 @@ export default {
           userIds.push(x.ID)
         })
         try {
-          await syncSqlUsers({ userIds: userIds }).then(res =>{
+          await syncSqlUsers({ userIds: userIds }).then(res => {
             this.judgeResult(res)
           })
         } finally {
@@ -652,7 +707,6 @@ export default {
       this.changeUserStatusFormData.status = userInfo.status
       const { code } = await changeUserStatus(this.changeUserStatusFormData)
       if (code !== 0) {
-        userInfo.status = !userInfo.status
         return Message.error('更新用户状态失败')
       }
       Message.success('更新用户状态成功')
@@ -667,7 +721,7 @@ export default {
     async singleDelete(Id) {
       this.loading = true
       try {
-        await batchDeleteUserByIds({ userIds: [Id] }).then(res =>{
+        await batchDeleteUserByIds({ userIds: [Id] }).then(res => {
           this.judgeResult(res)
         })
       } finally {
@@ -679,7 +733,7 @@ export default {
     async singleSync(Id) {
       this.loading = true
       try {
-        await syncSqlUsers({ userIds: [Id] }).then(res =>{
+        await syncSqlUsers({ userIds: [Id] }).then(res => {
           this.judgeResult(res)
         })
       } finally {
@@ -748,6 +802,63 @@ export default {
         this.loading = false
         this.getTableData()
       })
+    },
+
+    // 重置用户密码
+    async resetUserPassword(username) {
+      this.loading = true
+      try {
+        const res = await resetPassword({ username: username })
+        if (res.code === 0) {
+          this.newPassword = res.data.newPassword
+          this.resetUsername = username
+          this.resetPasswordDialogVisible = true
+          Message({
+            showClose: true,
+            message: '密码重置成功',
+            type: 'success'
+          })
+        } else {
+          Message({
+            showClose: true,
+            message: res.msg || '密码重置失败',
+            type: 'error'
+          })
+        }
+      } finally {
+        this.loading = false
+      }
+      this.getTableData()
+    },
+
+    // 复制密码到剪贴板
+    copyPassword() {
+      const textArea = document.createElement('textarea')
+      textArea.value = this.newPassword
+      document.body.appendChild(textArea)
+      textArea.select()
+      try {
+        document.execCommand('copy')
+        Message({
+          showClose: true,
+          message: '密码已复制到剪贴板',
+          type: 'success'
+        })
+      } catch (err) {
+        Message({
+          showClose: true,
+          message: '复制失败，请手动复制',
+          type: 'error'
+        })
+      }
+      document.body.removeChild(textArea)
+    },
+
+    // 关闭重置密码对话框
+    closeResetPasswordDialog() {
+      this.resetPasswordDialogVisible = false
+      this.newPassword = ''
+      this.resetUsername = ''
     }
   }
 }
