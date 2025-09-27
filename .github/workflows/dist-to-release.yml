@@ -12,14 +12,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
       - name: Inject slug/short variables
-        uses: rlespinasse/github-slug-action@v4
+        uses: rlespinasse/github-slug-action@v5
 
       - name: build project ⚗️
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v5
         with:
           node-version: 14
+          cache: 'npm'
+          cache-dependency-path: "package-lock.json"
 
       - run: |
           sed -i 's@http://localhost:8888/@/@g' .env.production
@@ -32,7 +34,7 @@ jobs:
           openssl md5 dist.zip > dist.zip.md5
 
       - name: Upload release package
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: |
             dist.zip
