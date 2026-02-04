@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-//用户登录（已完成）
+// 用户登录（已完成）
 export function login(data) {
   return request({
     url: '/api/base/login',
@@ -14,10 +14,17 @@ export function refreshToken() {
     method: 'post'
   })
 }
-//用户退出接口（已完成）
+// 用户退出接口（已完成）
 export function logout() {
   return request({
     url: '/api/base/logout',
     method: 'post'
+  })
+}
+// 获取配置信息
+export function getConfig() {
+  return request({
+    url: '/api/base/config',
+    method: 'get'
   })
 }
