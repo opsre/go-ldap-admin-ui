@@ -33,16 +33,16 @@
           <el-button :disabled="multipleSelection.length === 0" :loading="loading" icon="el-icon-upload2" type="success" @click="batchSync">批量同步</el-button>
         </el-form-item>
         <br>
-        <el-form-item>
+        <el-form-item v-if="syncConfig.ldapEnableSync">
           <el-button :loading="loading" icon="el-icon-download" type="warning" @click="syncOpenLdapUsers">同步原ldap用户信息</el-button>
         </el-form-item>
-        <el-form-item>
+        <el-form-item v-if="syncConfig.dingTalkEnableSync">
           <el-button :loading="loading" icon="el-icon-download" type="warning" @click="syncDingTalkUsers">同步钉钉用户信息</el-button>
         </el-form-item>
-        <el-form-item>
+        <el-form-item v-if="syncConfig.feiShuEnableSync">
           <el-button :loading="loading" icon="el-icon-download" type="warning" @click="syncFeiShuUsers">同步飞书用户信息</el-button>
         </el-form-item>
-        <el-form-item>
+        <el-form-item v-if="syncConfig.weComEnableSync">
           <el-button :loading="loading" icon="el-icon-download" type="warning" @click="syncWeComUsers">同步企业微信用户信息</el-button>
         </el-form-item>
       </el-form>
@@ -266,6 +266,7 @@ import { getUsers, createUser, updateUserById, batchDeleteUserByIds, changeUserS
 import { resetPassword } from '@/api/system/user'
 import { getRoles } from '@/api/system/role'
 import { getGroupTree } from '@/api/personnel/group'
+import { getConfig } from '@/api/system/base'
 import { Message } from 'element-ui'
 
 export default {
@@ -397,14 +398,32 @@ export default {
       // 重置密码结果对话框
       resetPasswordDialogVisible: false,
       newPassword: '',
-      resetUsername: ''
+      resetUsername: '',
+
+      // 同步配置
+      syncConfig: {
+        ldapEnableSync: false,
+        dingTalkEnableSync: false,
+        feiShuEnableSync: false,
+        weComEnableSync: false
+      }
     }
   },
   created() {
     this.getTableData()
     this.getRoles()
+    this.getSyncConfig()
   },
   methods: {
+    // 获取同步配置
+    async getSyncConfig() {
+      try {
+        const { data } = await getConfig()
+        this.syncConfig = data
+      } catch (error) {
+        console.error('获取同步配置失败:', error)
+      }
+    },
     // 查询
     search() {
       this.params.pageNum = 1

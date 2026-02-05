@@ -3,13 +3,13 @@
     <el-card class="container-card" shadow="always">
       <el-form size="mini" :inline="true" :model="params" class="demo-form-inline">
         <el-form-item label="名称">
-          <el-input style="width: 100px;" v-model.trim="params.groupName" clearable placeholder="名称" @keyup.enter.native="search" @clear="search" />
+          <el-input v-model.trim="params.groupName" style="width: 100px;" clearable placeholder="名称" @keyup.enter.native="search" @clear="search" />
         </el-form-item>
         <el-form-item label="描述">
-          <el-input style="width: 100px;" v-model.trim="params.remark" clearable placeholder="描述" @keyup.enter.native="search" @clear="search" />
+          <el-input v-model.trim="params.remark" style="width: 100px;" clearable placeholder="描述" @keyup.enter.native="search" @clear="search" />
         </el-form-item>
-          <el-form-item label="同步状态">
-          <el-select style="width: 110px;" v-model.trim="params.syncState" clearable placeholder="同步状态" @change="search" @clear="search">
+        <el-form-item label="同步状态">
+          <el-select v-model.trim="params.syncState" style="width: 110px;" clearable placeholder="同步状态" @change="search" @clear="search">
             <el-option label="已同步" value="1" />
             <el-option label="未同步" value="2" />
           </el-select>
@@ -27,19 +27,19 @@
           <el-button :disabled="multipleSelection.length === 0" :loading="loading" icon="el-icon-delete" type="danger" @click="batchDelete">批量删除</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button  :disabled="multipleSelection.length === 0" :loading="loading" icon="el-icon-upload2" type="success" @click="batchSync">批量同步</el-button>
+          <el-button :disabled="multipleSelection.length === 0" :loading="loading" icon="el-icon-upload2" type="success" @click="batchSync">批量同步</el-button>
         </el-form-item>
         <br>
-        <el-form-item>
+        <el-form-item v-if="syncConfig.ldapEnableSync">
           <el-button :loading="loading" icon="el-icon-download" type="warning" @click="syncOpenLdapDepts">同步原ldap部门</el-button>
         </el-form-item>
-        <el-form-item>
+        <el-form-item v-if="syncConfig.dingTalkEnableSync">
           <el-button :loading="loading" icon="el-icon-download" type="warning" @click="syncDingTalkDepts">同步钉钉部门</el-button>
         </el-form-item>
-        <el-form-item>
+        <el-form-item v-if="syncConfig.feiShuEnableSync">
           <el-button :loading="loading" icon="el-icon-download" type="warning" @click="syncFeiShuDepts">同步飞书部门</el-button>
         </el-form-item>
-        <el-form-item>
+        <el-form-item v-if="syncConfig.weComEnableSync">
           <el-button :loading="loading" icon="el-icon-download" type="warning" @click="syncWeComDepts">同步企业微信部门</el-button>
         </el-form-item>
       </el-form>
@@ -65,7 +65,7 @@
                 <el-button slot="reference" size="mini" icon="el-icon-delete" circle type="danger" />
               </el-popconfirm>
             </el-tooltip>
-            <el-tooltip v-if="scope.row.syncState == 2" class="delete-popover" content="同步" effect="dark" placement="top">
+            <el-tooltip v-if="scope.row.syncState === 2" class="delete-popover" content="同步" effect="dark" placement="top">
               <el-popconfirm title="确定同步吗？" @onConfirm="singleSync(scope.row.ID)">
                 <el-button slot="reference" size="mini" icon="el-icon-upload2" circle type="success" />
               </el-popconfirm>
@@ -125,7 +125,8 @@
 <script>
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-import { getGroupTree,  groupAdd, groupUpdate, groupDel, syncDingTalkDeptsApi, syncWeComDeptsApi, syncFeiShuDeptsApi, syncOpenLdapDeptsApi, syncSqlGroups } from '@/api/personnel/group'
+import { getGroupTree, groupAdd, groupUpdate, groupDel, syncDingTalkDeptsApi, syncWeComDeptsApi, syncFeiShuDeptsApi, syncOpenLdapDeptsApi, syncSqlGroups } from '@/api/personnel/group'
+import { getConfig } from '@/api/system/base'
 import { Message } from 'element-ui'
 
 export default {
@@ -172,7 +173,7 @@ export default {
         ID: '',
         groupName: '',
         parentId: 0,
-        syncState:1,
+        syncState: 1,
         groupType: '',
         remark: ''
       },
@@ -223,18 +224,36 @@ export default {
       ui: {
         submitLoading: false
       },
-      statusTrans: ''
+      statusTrans: '',
+
+      // 同步配置
+      syncConfig: {
+        ldapEnableSync: false,
+        dingTalkEnableSync: false,
+        feiShuEnableSync: false,
+        weComEnableSync: false
+      }
     }
   },
   created() {
     this.getTableData()
+    this.getSyncConfig()
   },
   methods: {
+    // 获取同步配置
+    async getSyncConfig() {
+      try {
+        const { data } = await getConfig()
+        this.syncConfig = data
+      } catch (error) {
+        console.error('获取同步配置失败:', error)
+      }
+    },
     // // 查询
     search() {
       // 初始化表格数据
       this.infoTableData = JSON.parse(JSON.stringify(this.tableData))
-      this.infoTableData = this.deal(this.infoTableData, node => node.groupName.includes(this.params.groupName) || node.remark.includes(this.params.remark)  || node.syncState.toString().includes(this.params.syncState))
+      this.infoTableData = this.deal(this.infoTableData, node => node.groupName.includes(this.params.groupName) || node.remark.includes(this.params.remark) || node.syncState.toString().includes(this.params.syncState))
     },
     resetData() {
       this.infoTableData = JSON.parse(JSON.stringify(this.tableData))
@@ -297,14 +316,14 @@ export default {
     },
 
     // 判断结果
-    judgeResult(res){
-      if (res.code==0){
-          Message({
-            showClose: true,
-            message: "操作成功",
-            type: 'success'
-          })
-        }
+    judgeResult(res) {
+      if (res.code === 0) {
+        Message({
+          showClose: true,
+          message: '操作成功',
+          type: 'success'
+        })
+      }
     },
 
     // 提交表单
@@ -314,11 +333,11 @@ export default {
           this.submitLoading = true
           try {
             if (this.dialogType === 'create') {
-              await groupAdd(this.dialogFormData).then(res =>{
+              await groupAdd(this.dialogFormData).then(res => {
                 this.judgeResult(res)
               })
             } else {
-              await groupUpdate(this.dialogFormData).then(res =>{
+              await groupUpdate(this.dialogFormData).then(res => {
                 this.judgeResult(res)
               })
             }
@@ -420,7 +439,7 @@ export default {
     async singleDelete(Id) {
       this.loading = true
       try {
-        await groupDel({ groupIds: [Id] }).then(res =>{
+        await groupDel({ groupIds: [Id] }).then(res => {
           this.judgeResult(res)
         })
       } finally {
@@ -432,7 +451,7 @@ export default {
     async singleSync(Id) {
       this.loading = true
       try {
-        await syncSqlGroups({ groupIds: [Id] }).then(res =>{
+        await syncSqlGroups({ groupIds: [Id] }).then(res => {
           this.judgeResult(res)
         })
       } finally {
