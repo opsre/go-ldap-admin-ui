@@ -2,11 +2,13 @@
 <h1>Go Ldap Admin</h1>
 
 [![Auth](https://img.shields.io/badge/Auth-eryajf-ff69b4)](https://github.com/eryajf)
-[![GitHub Issues](https://img.shields.io/github/issues/eryajf/go-ldap-admin-ui.svg)](https://github.com/eryajf/go-ldap-admin-ui/issues)
-[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/eryajf/go-ldap-admin-ui)](https://github.com/eryajf/go-ldap-admin-ui/pulls)
-[![GitHub Pull Requests](https://img.shields.io/github/stars/eryajf/go-ldap-admin-ui)](https://github.com/eryajf/go-ldap-admin-ui/stargazers)
-[![HitCount](https://views.whatilearened.today/views/github/eryajf/go-ldap-admin-ui.svg)](https://github.com/eryajf/go-ldap-admin-ui)
-[![GitHub license](https://img.shields.io/github/license/eryajf/go-ldap-admin-ui)](https://github.com/eryajf/go-ldap-admin-ui/blob/main/LICENSE)
+[![Go Version](https://img.shields.io/github/go-mod/go-version/eryajf-world/go-ldap-admin)](https://github.com/eryajf/go-ldap-admin)
+[![Gin Version](https://img.shields.io/badge/Gin-1.6.3-brightgreen)](https://github.com/eryajf/go-ldap-admin)
+[![Gorm Version](https://img.shields.io/badge/Gorm-1.24.5-brightgreen)](https://github.com/eryajf/go-ldap-admin)
+[![GitHub Pull Requests](https://img.shields.io/github/stars/eryajf/go-ldap-admin)](https://github.com/eryajf/go-ldap-admin/stargazers)
+[![HitCount](https://views.whatilearened.today/views/github/eryajf/go-ldap-admin.svg)](https://github.com/eryajf/go-ldap-admin)
+[![GitHub license](https://img.shields.io/github/license/eryajf/go-ldap-admin)](https://github.com/eryajf/go-ldap-admin/blob/main/LICENSE)
+[![Commits](https://img.shields.io/github/commit-activity/m/eryajf/go-ldap-admin?color=ffff00)](https://github.com/eryajf/go-ldap-admin/commits/main)
 
 <p> 🌉 基于Go+Vue实现的openLDAP后台管理项目 🌉</p>
 
@@ -20,27 +22,32 @@
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-
 **目录**
 
+- [ℹ️ 项目简介](#-%E9%A1%B9%E7%9B%AE%E7%AE%80%E4%BB%8B)
 - [🏊 在线体验](#-%E5%9C%A8%E7%BA%BF%E4%BD%93%E9%AA%8C)
 - [👨‍💻 项目地址](#-%E9%A1%B9%E7%9B%AE%E5%9C%B0%E5%9D%80)
 - [🔗 文档快链](#-%E6%96%87%E6%A1%A3%E5%BF%AB%E9%93%BE)
 - [🥰 感谢](#-%E6%84%9F%E8%B0%A2)
 - [🤗 另外](#-%E5%8F%A6%E5%A4%96)
-- [⚡ 加群](#-%E5%8A%A0%E7%BE%A4)
 - [🤑 捐赠](#-%E6%8D%90%E8%B5%A0)
 - [📝 使用登记](#-%E4%BD%BF%E7%94%A8%E7%99%BB%E8%AE%B0)
+- [💎 优秀软件推荐](#-%E4%BC%98%E7%A7%80%E8%BD%AF%E4%BB%B6%E6%8E%A8%E8%8D%90)
 - [🤝 贡献者](#-%E8%B4%A1%E7%8C%AE%E8%80%85)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
+## ℹ️ 项目简介
+
+`go-ldap-admin`旨在为`OpenLDAP`服务端提供一个简单易用，清晰美观的现代化管理后台。
+
+> 在完成针对`OpenLDAP`的管理能力之下，支持对`钉钉`，`企业微信`，`飞书`的集成，用户可以选择手动或者自动同步组织架构以及员工信息到平台中，让`go-ldap-admin`项目成为打通企业 IM 与企业内网应用之间的桥梁。
 
 ## 🏊 在线体验
 
 提供在线体验地址如下：
 
-- 地址：[http://61.171.114.86:8888](http://61.171.114.86:8888)
+- 地址：[https://demo-go-ldap-admin.eryajf.net/](https://demo-go-ldap-admin.eryajf.net/)
 - 登陆信息：admin/123456
 
 > 在线环境可能不稳，如果遇到访问异常，或者数据错乱，请联系我进行修复。请勿填写个人敏感信息。
@@ -48,18 +55,19 @@
 
 **页面功能概览：**
 
-|    ![登录页](https://cdn.jsdelivr.net/gh/eryajf/tu/img/image_20220724_165411.png)    | ![首页](https://cdn.jsdelivr.net/gh/eryajf/tu/img/image_20220724_165545.png)     |
-| :----------------------------------------------------------------------------------: | -------------------------------------------------------------------------------- |
-|   ![用户管理](https://cdn.jsdelivr.net/gh/eryajf/tu/img/image_20220724_165623.png)   | ![分组管理](https://cdn.jsdelivr.net/gh/eryajf/tu/img/image_20220724_165701.png) |
-| ![字段关系管理](https://cdn.jsdelivr.net/gh/eryajf/tu/img/image_20220724_165853.png) | ![菜单管理](https://cdn.jsdelivr.net/gh/eryajf/tu/img/image_20220724_165954.png) |
-|   ![接口管理](https://cdn.jsdelivr.net/gh/eryajf/tu/img/image_20220724_170015.png)   | ![操作日志](https://cdn.jsdelivr.net/gh/eryajf/tu/img/image_20220724_170035.png) |
+|    ![登录页](https://cdn.jsdelivr.net/gh/eryajf/tu/img/image_20220724_165411.png)    | ![首页](https://cdn.jsdelivr.net/gh/eryajf/tu/img/image_20220724_165545.png)      |
+| :----------------------------------------------------------------------------------: | --------------------------------------------------------------------------------- |
+|   ![用户管理](https://cdn.jsdelivr.net/gh/eryajf/tu/img/image_20220724_165623.png)   | ![分组管理](https://cdn.jsdelivr.net/gh/eryajf/tu/img/image_20220724_165701.png)  |
+| ![字段关系管理](https://cdn.jsdelivr.net/gh/eryajf/tu/img/image_20220724_165853.png) | ![菜单管理](https://cdn.jsdelivr.net/gh/eryajf/tu/img/image_20220724_165954.png)  |
+|   ![接口管理](https://cdn.jsdelivr.net/gh/eryajf/tu/img/image_20220724_170015.png)   | ![操作日志](https://cdn.jsdelivr.net/gh/eryajf/tu/img/image_20220724_170035.png)  |
+|  ![swag](https://cdn.jsdelivr.net/gh/eryajf/tu@main/img/image_20240521_213841.png)   | ![swag](https://cdn.jsdelivr.net/gh/eryajf/tu@main/img/image_20240521_214025.png) |
 
 ## 👨‍💻 项目地址
 
-| 分类 |                     GitHub                     |                        Gitee                        |
-| :--: | :--------------------------------------------: | :-------------------------------------------------: |
-| 后端 |  https://github.com/eryajf/go-ldap-admin.git   |  https://gitee.com/eryajf-world/go-ldap-admin.git   |
-| 前端 | https://github.com/eryajf/go-ldap-admin-ui.git | https://gitee.com/eryajf-world/go-ldap-admin-ui.git |
+| 分类 |                     GitHub                     |   CNB |                     Gitee                        |
+| :--: | :--------------------------------------------: | :-------------------------------------------------:| :-------------------------------------------------: |
+| 后端 |  [go-ldap-admin](https://github.com/opsre/go-ldap-admin.git)   | [go-ldap-admin](https://cnb.cool/opsre/go-ldap-admin.git) | [go-ldap-admin](https://gitee.com/eryajf-world/go-ldap-admin.git)   |
+| 前端 | [go-ldap-admin-ui](https://github.com/opsre/go-ldap-admin-ui.git) | [go-ldap-admin-ui](https://cnb.cool/opsre/go-ldap-admin-ui.git) | [go-ldap-admin-ui](https://gitee.com/eryajf-world/go-ldap-admin-ui.git) |
 
 ## 🔗 文档快链
 
@@ -70,7 +78,12 @@
 - [快速开始](http://ldapdoc.eryajf.net/pages/706e78/)
 - [功能概览](http://ldapdoc.eryajf.net/pages/7a40de/)
 - [本地开发](http://ldapdoc.eryajf.net/pages/cb7497/)
-- [生产部署](http://ldapdoc.eryajf.net/pages/5769c4/)
+
+> **说明：**
+>
+> - 本项目的部署与使用需要你对 OpenLDAP 有一定的掌握，如果想要配置 IM 同步，可能还需要一定的 go 基础来调试(如有异常时)。
+> - 文档已足够详尽，所有文档已讲过的，将不再提供免费的服务。如果你在安装部署时遇到问题，可通过[付费服务](http://ldapdoc.eryajf.net/pages/7eab1c/)寻求支持。
+
 
 ## 🥰 感谢
 
@@ -78,16 +91,18 @@
 
 - 后端技术栈
   - [Gin-v1.6.3](https://github.com/gin-gonic/gin)
-  - [Gorm-v1.20.12](https://github.com/go-gorm/gorm)
+  - [Gorm-v1.24.5](https://github.com/go-gorm/gorm)
+  - [Sqlite-v1.7.0](https://github.com/glebarez/sqlite)
   - [Go-ldap-v3.4.2](https://github.com/go-ldap/ldap)
   - [Casbin-v2.22.0](https://github.com/casbin/casbin)
 - 前端技术栈
 
-  - [element-ui](https://github.com/ElemeFE/element)
   - [axios](https://github.com/axios/axios)
+  - [element-ui](https://github.com/ElemeFE/element)
 
 - 另外感谢
   - [go-web-mini](https://github.com/gnimli/go-web-mini)：项目基于该项目重构而成，感谢作者的付出。
+  - 感谢 [nangongchengfeng](https://github.com/nangongchengfeng) 提交的 [swagger](https://github.com/eryajf/go-ldap-admin/pull/345) 功能。
 
 ## 🤗 另外
 
@@ -102,6 +117,11 @@
 
 如果你所在公司使用了该项目，烦请在这里留下脚印，感谢支持 🥳 [点我](https://github.com/eryajf/go-ldap-admin/issues/18)
 
+## 💎 优秀软件推荐
+
+- [🦄 TenSunS：高效易用的 Consul Web 运维平台](https://github.com/starsliao/TenSunS)
+- [ Next Terminal：一个简单好用安全的开源交互审计堡垒机系统](https://github.com/dushixiang/next-terminal)
+
 ## 🤝 贡献者
 
 <!-- readme: collaborators,contributors -start -->
@@ -115,17 +135,17 @@
         </a>
     </td>
     <td align="center">
-        <a href="https://github.com/OTR37">
-            <img src="https://avatars.githubusercontent.com/u/51768167?v=4" width="100;" alt="OTR37"/>
-            <br />
-            <sub><b>OTR37</b></sub>
-        </a>
-    </td>
-    <td align="center">
         <a href="https://github.com/xinyuandd">
             <img src="https://avatars.githubusercontent.com/u/3397848?v=4" width="100;" alt="xinyuandd"/>
             <br />
             <sub><b>Xinyuandd</b></sub>
+        </a>
+    </td>
+    <td align="center">
+        <a href="https://github.com/RoninZc">
+            <img src="https://avatars.githubusercontent.com/u/48718694?v=4" width="100;" alt="RoninZc"/>
+            <br />
+            <sub><b>Ronin_Zc</b></sub>
         </a>
     </td>
     <td align="center">
@@ -143,25 +163,39 @@
         </a>
     </td>
     <td align="center">
-        <a href="https://github.com/nnsay">
-            <img src="https://avatars.githubusercontent.com/u/14331919?v=4" width="100;" alt="nnsay"/>
+        <a href="https://github.com/huxiangquan">
+            <img src="https://avatars.githubusercontent.com/u/52623921?v=4" width="100;" alt="huxiangquan"/>
             <br />
-            <sub><b>Jimmy Wang</b></sub>
+            <sub><b>Null</b></sub>
         </a>
     </td></tr>
 <tr>
     <td align="center">
-        <a href="https://github.com/Sdaiyan">
-            <img src="https://avatars.githubusercontent.com/u/53208364?v=4" width="100;" alt="Sdaiyan"/>
+        <a href="https://github.com/0x0034">
+            <img src="https://avatars.githubusercontent.com/u/39284250?v=4" width="100;" alt="0x0034"/>
             <br />
-            <sub><b>Sdaiyan</b></sub>
+            <sub><b>0x0034</b></sub>
         </a>
     </td>
     <td align="center">
-        <a href="https://github.com/xzzgwzh">
-            <img src="https://avatars.githubusercontent.com/u/133201531?v=4" width="100;" alt="xzzgwzh"/>
+        <a href="https://github.com/Pepperpotato">
+            <img src="https://avatars.githubusercontent.com/u/49708116?v=4" width="100;" alt="Pepperpotato"/>
             <br />
-            <sub><b>Xzzgwzh</b></sub>
+            <sub><b>Null</b></sub>
+        </a>
+    </td>
+    <td align="center">
+        <a href="https://github.com/Foustdg">
+            <img src="https://avatars.githubusercontent.com/u/20092889?v=4" width="100;" alt="Foustdg"/>
+            <br />
+            <sub><b>YD-SUN</b></sub>
+        </a>
+    </td>
+    <td align="center">
+        <a href="https://github.com/ckyoung123421">
+            <img src="https://avatars.githubusercontent.com/u/16368382?v=4" width="100;" alt="ckyoung123421"/>
+            <br />
+            <sub><b>Ckyoung123421</b></sub>
         </a>
     </td></tr>
 </table>
