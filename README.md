@@ -135,17 +135,17 @@
         </a>
     </td>
     <td align="center">
+        <a href="https://github.com/OTR37">
+            <img src="https://avatars.githubusercontent.com/u/51768167?v=4" width="100;" alt="OTR37"/>
+            <br />
+            <sub><b>OTR37</b></sub>
+        </a>
+    </td>
+    <td align="center">
         <a href="https://github.com/xinyuandd">
             <img src="https://avatars.githubusercontent.com/u/3397848?v=4" width="100;" alt="xinyuandd"/>
             <br />
             <sub><b>Xinyuandd</b></sub>
-        </a>
-    </td>
-    <td align="center">
-        <a href="https://github.com/RoninZc">
-            <img src="https://avatars.githubusercontent.com/u/48718694?v=4" width="100;" alt="RoninZc"/>
-            <br />
-            <sub><b>Ronin_Zc</b></sub>
         </a>
     </td>
     <td align="center">
@@ -163,39 +163,25 @@
         </a>
     </td>
     <td align="center">
-        <a href="https://github.com/huxiangquan">
-            <img src="https://avatars.githubusercontent.com/u/52623921?v=4" width="100;" alt="huxiangquan"/>
+        <a href="https://github.com/nnsay">
+            <img src="https://avatars.githubusercontent.com/u/14331919?v=4" width="100;" alt="nnsay"/>
             <br />
-            <sub><b>Null</b></sub>
+            <sub><b>Jimmy Wang</b></sub>
         </a>
     </td></tr>
 <tr>
     <td align="center">
-        <a href="https://github.com/0x0034">
-            <img src="https://avatars.githubusercontent.com/u/39284250?v=4" width="100;" alt="0x0034"/>
+        <a href="https://github.com/Sdaiyan">
+            <img src="https://avatars.githubusercontent.com/u/53208364?v=4" width="100;" alt="Sdaiyan"/>
             <br />
-            <sub><b>0x0034</b></sub>
+            <sub><b>Sdaiyan</b></sub>
         </a>
     </td>
     <td align="center">
-        <a href="https://github.com/Pepperpotato">
-            <img src="https://avatars.githubusercontent.com/u/49708116?v=4" width="100;" alt="Pepperpotato"/>
+        <a href="https://github.com/xzzgwzh">
+            <img src="https://avatars.githubusercontent.com/u/133201531?v=4" width="100;" alt="xzzgwzh"/>
             <br />
-            <sub><b>Null</b></sub>
-        </a>
-    </td>
-    <td align="center">
-        <a href="https://github.com/Foustdg">
-            <img src="https://avatars.githubusercontent.com/u/20092889?v=4" width="100;" alt="Foustdg"/>
-            <br />
-            <sub><b>YD-SUN</b></sub>
-        </a>
-    </td>
-    <td align="center">
-        <a href="https://github.com/ckyoung123421">
-            <img src="https://avatars.githubusercontent.com/u/16368382?v=4" width="100;" alt="ckyoung123421"/>
-            <br />
-            <sub><b>Ckyoung123421</b></sub>
+            <sub><b>xzzgwzh</b></sub>
         </a>
     </td></tr>
 </table>
