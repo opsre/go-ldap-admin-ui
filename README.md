@@ -181,7 +181,7 @@
         <a href="https://github.com/xzzgwzh">
             <img src="https://avatars.githubusercontent.com/u/133201531?v=4" width="100;" alt="xzzgwzh"/>
             <br />
-            <sub><b>xzzgwzh</b></sub>
+            <sub><b>Xzzgwzh</b></sub>
         </a>
     </td></tr>
 </table>
