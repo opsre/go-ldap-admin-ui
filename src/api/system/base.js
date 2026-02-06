@@ -28,3 +28,10 @@ export function getConfig() {
     method: 'get'
   })
 }
+// 获取版本信息
+export function getVersion() {
+  return request({
+    url: '/api/base/version',
+    method: 'get'
+  })
+}

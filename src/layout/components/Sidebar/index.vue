@@ -14,6 +14,7 @@
       >
         <sidebar-item v-for="route in permission_routes" :key="route.path" :item="route" :base-path="route.path" />
       </el-menu>
+      <version v-if="!isCollapse" />
     </el-scrollbar>
   </div>
 </template>
@@ -22,16 +23,17 @@
 import { mapGetters } from 'vuex'
 import Logo from './Logo'
 import SidebarItem from './SidebarItem'
+import Version from './Version'
 import variables from '@/styles/variables.scss'
 
 export default {
-  components: { SidebarItem, Logo },
+  components: { SidebarItem, Logo, Version },
   computed: {
     ...mapGetters([
       'permission_routes',
       'sidebar'
     ]),
-   
+
     activeMenu() {
       const route = this.$route
       const { meta, path } = route
@@ -48,7 +50,6 @@ export default {
       return variables
     },
     isCollapse() {
-    
       return !this.sidebar.opened
     }
   }
