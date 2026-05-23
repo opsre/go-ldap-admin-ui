@@ -114,7 +114,7 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="用户名" prop="username">
-                <el-input ref="password" v-model.trim="dialogFormData.username" :disabled="disabled" placeholder="用户名（拼音）" />
+                <el-input ref="password" v-model.trim="dialogFormData.username" :disabled="dialogUsernameDisabled" placeholder="用户名（拼音）" />
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -269,6 +269,25 @@ import { getGroupTree } from '@/api/personnel/group'
 import { getConfig } from '@/api/system/base'
 import { Message } from 'element-ui'
 
+const getDefaultDialogFormData = () => ({
+  username: '',
+  password: '',
+  nickname: '',
+  status: 1,
+  mobile: '',
+  avatar: '',
+  introduction: '',
+  roleIds: [],
+  ID: '',
+  mail: '',
+  givenName: '',
+  jobNumber: '',
+  postalAddress: '',
+  departments: '',
+  position: '',
+  departmentId: undefined
+})
+
 export default {
   name: 'User',
   components: {
@@ -325,24 +344,8 @@ export default {
       dialogFormTitle: '',
       dialogType: '',
       dialogFormVisible: false,
-      dialogFormData: {
-        username: '',
-        password: '',
-        nickname: '',
-        status: 1,
-        mobile: '',
-        avatar: '',
-        introduction: '',
-        roleIds: '',
-        ID: '',
-        mail: '',
-        givenName: '',
-        jobNumber: '',
-        postalAddress: '',
-        departments: '',
-        position: '',
-        departmentId: undefined
-      },
+      dialogUsernameDisabled: this.disabled,
+      dialogFormData: getDefaultDialogFormData(),
       dialogFormRules: {
         username: [
           { required: true, message: '请输入用户名', trigger: 'blur' },
@@ -474,37 +477,45 @@ export default {
     create() {
       this.dialogFormTitle = '新增用户'
       this.dialogType = 'create'
-      this.disabled = false
+      this.dialogUsernameDisabled = false
+      this.dialogFormData = getDefaultDialogFormData()
+      this.$nextTick(() => {
+        this.$refs['dialogForm'] && this.$refs['dialogForm'].clearValidate()
+      })
       this.getAllGroups()
       this.dialogFormVisible = true
     },
 
     // 修改
     update(row) {
-      this.disabled = true
+      this.dialogUsernameDisabled = true
       this.getAllGroups()
-      this.dialogFormData.ID = row.ID
-      this.dialogFormData.username = row.username
-      this.dialogFormData.password = ''
-      this.dialogFormData.nickname = row.nickname
-      this.dialogFormData.status = row.status
-      this.dialogFormData.mobile = row.mobile
-      this.dialogFormData.introduction = row.introduction
-      // 遍历角色数组，获取角色ID
-      this.dialogFormData.roleIds = row.roles.map(item => item.ID)
+      this.dialogFormData = {
+        ...getDefaultDialogFormData(),
+        ID: row.ID,
+        username: row.username,
+        nickname: row.nickname,
+        status: row.status,
+        mobile: row.mobile,
+        introduction: row.introduction,
+        // 遍历角色数组，获取角色ID
+        roleIds: row.roles.map(item => item.ID),
+        mail: row.mail,
+        givenName: row.givenName,
+        jobNumber: row.jobNumber,
+        postalAddress: row.postalAddress,
+        departments: row.departments,
+        departmentId: row.departmentId,
+        position: row.position
+      }
 
       this.dialogFormTitle = '修改用户'
       this.dialogType = 'update'
       this.passwordType = 'password'
       this.dialogFormVisible = true
-
-      this.dialogFormData.mail = row.mail
-      this.dialogFormData.givenName = row.givenName
-      this.dialogFormData.jobNumber = row.jobNumber
-      this.dialogFormData.postalAddress = row.postalAddress
-      this.dialogFormData.departments = row.departments
-      this.dialogFormData.departmentId = row.departmentId
-      this.dialogFormData.position = row.position
+      this.$nextTick(() => {
+        this.$refs['dialogForm'] && this.$refs['dialogForm'].clearValidate()
+      })
     },
 
     // 将 部门id 转换为 部门name
@@ -591,7 +602,7 @@ export default {
         })
         return false
       }
-      if (this.dialogFormData.roleIds === '') {
+      if (!this.dialogFormData.roleIds || this.dialogFormData.roleIds.length === 0) {
         Message({
           showClose: true,
           message: '请选择角色列表',
@@ -648,19 +659,9 @@ export default {
     resetForm() {
       this.dialogFormVisible = false
       this.$refs['dialogForm'].resetFields()
-      this.dialogFormData = {
-        username: '',
-        password: '',
-        nickname: '',
-        status: 1,
-        mobile: '',
-        avatar: '',
-        introduction: '',
-        roleIds: '',
-        departments: '',
-        position: '',
-        departmentId: undefined
-      }
+      this.dialogFormData = getDefaultDialogFormData()
+      this.dialogUsernameDisabled = this.disabled
+      this.passwordType = 'password'
     },
 
     // 批量删除
