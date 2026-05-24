@@ -13,7 +13,7 @@
         <el-input
           ref="username"
           v-model="loginForm.username"
-          placeholder="用户名"
+          :placeholder="$t('login.username')"
           name="username"
           type="text"
           tabindex="1"
@@ -21,7 +21,7 @@
         />
       </el-form-item>
 
-      <el-tooltip v-model="capsTooltip" content="Caps lock is On" placement="right" manual>
+      <el-tooltip v-model="capsTooltip" :content="$t('login.capsLock')" placement="right" manual>
         <el-form-item prop="password">
           <span class="svg-container">
             <svg-icon icon-class="password" />
@@ -31,7 +31,7 @@
             ref="password"
             v-model="loginForm.password"
             :type="passwordType"
-            placeholder="密码"
+            :placeholder="$t('login.password')"
             name="password"
             tabindex="2"
             autocomplete="on"
@@ -45,10 +45,8 @@
         </el-form-item>
       </el-tooltip>
       <div class="footer-btn">
-        <div class="btn-pass" @click="changePass">忘记密码</div>
-        <!-- <router-link :to="{path:'/changePass'}" class='btn-pass'>忘记密码</router-link> -->
-        <!-- <el-button :loading="loading" type="primary" class="login-btn" @click.native.prevent="delLogin">忘记密码</el-button> -->
-        <el-button :loading="loading" type="primary" class="login-btn" @click.native.prevent="handleLogin">登录</el-button>
+        <div class="btn-pass" @click="changePass">{{ $t('login.forgotPassword') }}</div>
+        <el-button :loading="loading" type="primary" class="login-btn" @click.native.prevent="handleLogin">{{ $t('login.submit') }}</el-button>
       </div>
 
     </el-form>
@@ -62,22 +60,11 @@ import JSEncrypt from 'jsencrypt'
 export default {
   name: 'Login',
   data() {
-    const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
-      } else {
-        callback()
-      }
-    }
     return {
       imgSrc: require('@/assets/backgd-image/login.jpeg'),
       loginForm: {
         username: '',
         password: ''
-      },
-      loginRules: {
-        username: [{ required: true, trigger: 'blur' }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },
       passwordType: 'password',
       publicKey: process.env.VUE_APP_PUBLIC_KEY,
@@ -85,6 +72,21 @@ export default {
       loading: false,
       redirect: undefined,
       otherQuery: {}
+    }
+  },
+  computed: {
+    loginRules() {
+      const validatePassword = (rule, value, callback) => {
+        if (value.length < 6) {
+          callback(new Error(this.$t('validation.lengthRange', { min: 6, max: 128 })))
+        } else {
+          callback()
+        }
+      }
+      return {
+        username: [{ required: true, message: this.$t('validation.required', { field: this.$t('login.username') }), trigger: 'blur' }],
+        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+      }
     }
   },
   watch: {

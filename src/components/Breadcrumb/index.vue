@@ -2,8 +2,8 @@
   <el-breadcrumb class="app-breadcrumb" separator="/">
     <transition-group name="breadcrumb">
       <el-breadcrumb-item v-for="(item,index) in levelList" :key="item.path">
-        <span v-if="item.redirect==='noRedirect'||index==levelList.length-1" class="no-redirect">{{ item.meta.title }}</span>
-        <a v-else @click.prevent="handleLink(item)">{{ item.meta.title }}</a>
+        <span v-if="item.redirect==='noRedirect'||index==levelList.length-1" class="no-redirect">{{ titleOf(item) }}</span>
+        <a v-else @click.prevent="handleLink(item)">{{ titleOf(item) }}</a>
       </el-breadcrumb-item>
     </transition-group>
   </el-breadcrumb>
@@ -11,6 +11,7 @@
 
 <script>
 import pathToRegexp from 'path-to-regexp'
+import { translateRouteTitle } from '@/utils/i18n'
 
 export default {
   data() {
@@ -31,14 +32,17 @@ export default {
   },
   methods: {
     getBreadcrumb() {
-      let matched = this.$route.matched.filter(item => item.meta && item.meta.title)
+      let matched = this.$route.matched.filter(item => item.meta && (item.meta.title || item.meta.titleKey))
       const first = matched[0]
 
       if (!this.isDashboard(first)) {
-        matched = [{ path: '/dashboard', meta: { title: '首页' }}].concat(matched)
+        matched = [{ path: '/dashboard', meta: { titleKey: 'route.dashboard', title: 'Dashboard' }}].concat(matched)
       }
 
-      this.levelList = matched.filter(item => item.meta && item.meta.title && item.meta.breadcrumb !== false)
+      this.levelList = matched.filter(item => item.meta && (item.meta.title || item.meta.titleKey) && item.meta.breadcrumb !== false)
+    },
+    titleOf(route) {
+      return translateRouteTitle(route.meta)
     },
     isDashboard(route) {
       const name = route && route.name

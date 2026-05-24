@@ -22,6 +22,7 @@ export const getRoutesFromMenuTree = (menuTree) => {
       children: menu.children,
       meta: {
         name: menu.name,
+        titleKey: menu.name ? `route.${menu.name}` : '',
         title: menu.title,
         icon: menu.icon,
         noCache: menu.noCache === 1,
@@ -59,10 +60,9 @@ const actions = {
   generateRoutes({ commit }, userinfo) {
     return new Promise((resolve, reject) => {
       let accessedRoutes = []
-      const {id, roles}=userinfo
+      const { id } = userinfo
       // 获取菜单树
-      getUserMenuTreeByUserId({id: id}).then(res => {
-
+      getUserMenuTreeByUserId({ id: id }).then(res => {
         const { data } = res
         const menuTree = data
         accessedRoutes = getRoutesFromMenuTree(menuTree)

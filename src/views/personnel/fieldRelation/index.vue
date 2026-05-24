@@ -7,11 +7,11 @@
         :model="params"
         class="demo-form-inline"
       >
-        <el-form-item label="字段标识">
+        <el-form-item :label="$t('fieldRelationPage.fields.flag')">
           <el-input
-            v-model.trim="params.remark"
+            v-model.trim="params.flag"
             clearable
-            placeholder="描述"
+            :placeholder="$t('fieldRelationPage.fields.flag')"
             @keyup.enter.native="search"
             @clear="search"
           />
@@ -22,7 +22,7 @@
             icon="el-icon-search"
             type="primary"
             @click="search"
-          >查询</el-button>
+          >{{ $t('common.search') }}</el-button>
         </el-form-item>
         <el-form-item>
           <el-button
@@ -30,7 +30,7 @@
             icon="el-icon-plus"
             type="warning"
             @click="create"
-          >新增</el-button>
+          >{{ $t('userPage.actions.create') }}</el-button>
         </el-form-item>
         <el-form-item>
           <el-button
@@ -39,7 +39,7 @@
             icon="el-icon-delete"
             type="danger"
             @click="batchDelete"
-          >批量删除</el-button>
+          >{{ $t('userPage.actions.batchDelete') }}</el-button>
         </el-form-item>
         <br>
       </el-form>
@@ -61,21 +61,21 @@
           width="52"
           sortable
           prop="ID"
-          label="序号"
+          :label="$t('fieldRelationPage.fields.id')"
         />
         <el-table-column
           show-overflow-tooltip
           sortable
           prop="CreatedAt"
-          label="创建时间"
+          :label="$t('userPage.fields.createdAt')"
         />
         <el-table-column
           show-overflow-tooltip
           sortable
           prop="Flag"
-          label="字段标识"
+          :label="$t('fieldRelationPage.fields.flag')"
         />
-        <el-table-column show-overflow-tooltip sortable label="字段属性">
+        <el-table-column show-overflow-tooltip sortable :label="$t('fieldRelationPage.fields.attributes')">
           <template slot-scope="props">
             <el-form>
               <el-form-item>
@@ -84,9 +84,9 @@
             </el-form>
           </template>
         </el-table-column>
-        <el-table-column fixed="right" label="操作" align="center" width="120">
+        <el-table-column fixed="right" :label="$t('userPage.fields.actions')" align="center" width="120">
           <template #default="scope">
-            <el-tooltip content="编辑" effect="dark" placement="top">
+            <el-tooltip :content="$t('userPage.actions.edit')" effect="dark" placement="top">
               <el-button
                 size="mini"
                 icon="el-icon-edit"
@@ -97,12 +97,12 @@
             </el-tooltip>
             <el-tooltip
               class="delete-popover"
-              content="删除"
+              :content="$t('userPage.actions.delete')"
               effect="dark"
               placement="top"
             >
               <el-popconfirm
-                title="确定删除吗？"
+                :title="$t('userPage.confirm.deleteOne')"
                 @onConfirm="singleDelete(scope.row.ID)"
               >
                 <el-button
@@ -118,10 +118,9 @@
         </el-table-column>
       </el-table>
 
-      <!-- 新增 -->
       <el-dialog :title="dialogFormTitle" :visible.sync="updateLoading">
         <div class="components-container">
-          <aside>动态关系管理说明文档参考： <a href="http://ldapdoc.eryajf.net/pages/84953d/" target="_blank">动态字段关系管理</a></aside>
+          <aside>{{ $t('fieldRelationPage.docs.prefix') }} <a href="http://ldapdoc.eryajf.net/pages/84953d/" target="_blank">{{ $t('fieldRelationPage.docs.link') }}</a></aside>
         </div>
         <el-form
           ref="dialogForm"
@@ -130,24 +129,24 @@
           :rules="dialogFormRules"
           label-width="120px"
         >
-          <el-form-item label="类型">
+          <el-form-item :label="$t('fieldRelationPage.fields.type')">
             <el-checkbox-group v-model="checked">
               <el-checkbox-button
-                v-for="city in cities"
-                :key="city"
-                :label="city"
-                @change="checkbox(city)"
+                v-for="type in relationTypes"
+                :key="type.value"
+                :label="type.value"
+                @change="checkbox(type.value)"
               >
-                {{ city }}
+                {{ type.label }}
               </el-checkbox-button>
             </el-checkbox-group>
           </el-form-item>
 
-          <template v-if="checked == '用户字段动态关联'">
-            <el-form-item label="类型标志">
+          <template v-if="checked[0] === 'user'">
+            <el-form-item :label="$t('fieldRelationPage.fields.typeFlag')">
               <el-select
                 v-model="userVal"
-                placeholder="请选择"
+                :placeholder="$t('fieldRelationPage.placeholders.select')"
                 @change="changeUser(userVal)"
               >
                 <el-option
@@ -158,91 +157,81 @@
                 />
               </el-select>
             </el-form-item>
-            <el-form-item label="用户名" prop="username">
+            <el-form-item :label="$t('userPage.fields.username')" prop="username">
               <el-input
                 v-model.trim="dialogFormData.username"
-                placeholder="用户名（拼音）"
+                :placeholder="$t('userPage.placeholders.username')"
               />
             </el-form-item>
-            <el-form-item label="中文名字" prop="nickname">
+            <el-form-item :label="$t('userPage.fields.nickname')" prop="nickname">
               <el-input
                 v-model.trim="dialogFormData.nickname"
-                placeholder="中文名字"
+                :placeholder="$t('userPage.fields.nickname')"
               />
             </el-form-item>
-            <el-form-item label="花名" prop="givenName">
+            <el-form-item :label="$t('userPage.fields.givenName')" prop="givenName">
               <el-input
                 v-model.trim="dialogFormData.givenName"
-                placeholder="花名"
+                :placeholder="$t('userPage.fields.givenName')"
               />
             </el-form-item>
-            <el-form-item label="邮箱" prop="mail">
-              <el-input v-model.trim="dialogFormData.mail" placeholder="邮箱" />
+            <el-form-item :label="$t('userPage.fields.mail')" prop="mail">
+              <el-input v-model.trim="dialogFormData.mail" :placeholder="$t('userPage.fields.mail')" />
             </el-form-item>
-            <el-form-item label="工号" prop="jobNumber">
+            <el-form-item :label="$t('userPage.fields.jobNumber')" prop="jobNumber">
               <el-input
                 v-model.trim="dialogFormData.jobNumber"
-                placeholder="工号"
+                :placeholder="$t('userPage.fields.jobNumber')"
               />
             </el-form-item>
-            <el-form-item label="手机号" prop="mobile">
+            <el-form-item :label="$t('userPage.fields.mobile')" prop="mobile">
               <el-input
                 v-model.trim="dialogFormData.mobile"
-                placeholder="手机号"
+                :placeholder="$t('userPage.fields.mobile')"
               />
             </el-form-item>
-            <el-form-item label="头像" prop="avatar">
+            <el-form-item :label="$t('fieldRelationPage.fields.avatar')" prop="avatar">
               <el-input
                 v-model.trim="dialogFormData.avatar"
-                placeholder="头像"
+                :placeholder="$t('fieldRelationPage.fields.avatar')"
               />
             </el-form-item>
-            <el-form-item label="地址" prop="postalAddress">
+            <el-form-item :label="$t('userPage.fields.postalAddress')" prop="postalAddress">
               <el-input
                 v-model.trim="dialogFormData.postalAddress"
-                placeholder="地址"
+                :placeholder="$t('userPage.fields.postalAddress')"
               />
             </el-form-item>
-            <el-form-item label="职位" prop="position">
+            <el-form-item :label="$t('userPage.fields.position')" prop="position">
               <el-input
                 v-model.trim="dialogFormData.position"
-                placeholder="职位"
+                :placeholder="$t('userPage.fields.position')"
               />
             </el-form-item>
-            <el-form-item label="源用户ID" prop="sourceUserId">
+            <el-form-item :label="$t('fieldRelationPage.fields.sourceUserId')" prop="sourceUserId">
               <el-input
                 v-model.trim="dialogFormData.sourceUserId"
-                placeholder="源用户ID"
+                :placeholder="$t('fieldRelationPage.fields.sourceUserId')"
               />
             </el-form-item>
-            <el-form-item label="源用户唯一ID" prop="sourceUnionId">
+            <el-form-item :label="$t('fieldRelationPage.fields.sourceUnionId')" prop="sourceUnionId">
               <el-input
                 v-model.trim="dialogFormData.sourceUnionId"
-                placeholder="源用户唯一ID"
+                :placeholder="$t('fieldRelationPage.fields.sourceUnionId')"
               />
             </el-form-item>
-            <el-form-item label="说明" prop="introduction">
+            <el-form-item :label="$t('userPage.fields.introduction')" prop="introduction">
               <el-input
                 v-model.trim="dialogFormData.introduction"
-                placeholder="说明"
+                :placeholder="$t('userPage.fields.introduction')"
               />
             </el-form-item>
-            <!-- <el-form-item label="说明" prop="introduction">
-              <el-input
-                v-model.trim="dialogFormData.introduction"
-                type="textarea"
-                placeholder="说明"
-                :autosize="{ minRows: 3, maxRows: 6 }"
-                show-word-limit
-                maxlength="100"
-              />
-            </el-form-item> -->
           </template>
           <template v-else>
-            <el-form-item label="类型标志">
+            <el-form-item :label="$t('fieldRelationPage.fields.typeFlag')">
               <el-select
                 v-model="groupVal"
-                placeholder="请选择"
+                :placeholder="$t('fieldRelationPage.placeholders.select')"
                 @change="changeGroup(groupVal)"
               >
                 <el-option
@@ -253,47 +242,46 @@
                 />
               </el-select>
             </el-form-item>
-            <el-form-item label="分组名称" prop="groupName">
+            <el-form-item :label="$t('groupPage.fields.name')" prop="groupName">
               <el-input
                 v-model.trim="dialogFormData.groupName"
-                placeholder="分组名称"
+                :placeholder="$t('groupPage.fields.name')"
               />
             </el-form-item>
-            <el-form-item label="父部门ID" prop="sourceDeptParentId">
+            <el-form-item :label="$t('fieldRelationPage.fields.sourceDeptParentId')" prop="sourceDeptParentId">
               <el-input
                 v-model.trim="dialogFormData.sourceDeptParentId"
-                placeholder="父部门ID"
+                :placeholder="$t('fieldRelationPage.fields.sourceDeptParentId')"
               />
             </el-form-item>
-            <el-form-item label="部门ID" prop="sourceDeptId">
+            <el-form-item :label="$t('fieldRelationPage.fields.sourceDeptId')" prop="sourceDeptId">
               <el-input
                 v-model.trim="dialogFormData.sourceDeptId"
-                placeholder="部门ID"
+                :placeholder="$t('fieldRelationPage.fields.sourceDeptId')"
               />
             </el-form-item>
-            <el-form-item label="分组描述" prop="remark">
+            <el-form-item :label="$t('groupPage.fields.remark')" prop="remark">
               <el-input
                 v-model.trim="dialogFormData.remark"
-                placeholder="分组描述"
+                :placeholder="$t('groupPage.fields.remark')"
               />
             </el-form-item>
           </template>
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button size="mini" @click="cancelForm()">取 消</el-button>
+          <el-button size="mini" @click="cancelForm()">{{ $t('common.cancel') }}</el-button>
           <el-button
             size="mini"
             :loading="submitLoading"
             type="primary"
             @click="submitForm('A')"
-          >确 定</el-button>
+          >{{ $t('common.confirm') }}</el-button>
         </div>
       </el-dialog>
 
-      <!-- 编辑 -->
       <el-dialog :title="dialogFormTitle" :visible.sync="dialogFormVisible">
         <div class="components-container">
-          <aside>动态关系管理说明文档参考： <a href="http://ldapdoc.eryajf.net/pages/84953d/" target="_blank">动态字段关系管理</a></aside>
+          <aside>{{ $t('fieldRelationPage.docs.prefix') }} <a href="http://ldapdoc.eryajf.net/pages/84953d/" target="_blank">{{ $t('fieldRelationPage.docs.link') }}</a></aside>
         </div>
         <el-form
           ref="dialogForm"
@@ -302,15 +290,15 @@
           :rules="dialogFormRules"
           label-width="120px"
         >
-          <template v-if="checked == '用户字段动态关联'">
-            <el-form-item label="类型">
-              <el-button type="primary">用户字段动态关联</el-button>
+          <template v-if="checked[0] === 'user'">
+            <el-form-item :label="$t('fieldRelationPage.fields.type')">
+              <el-button type="primary">{{ $t('fieldRelationPage.types.user') }}</el-button>
             </el-form-item>
 
-            <el-form-item label="类型标志">
+            <el-form-item :label="$t('fieldRelationPage.fields.typeFlag')">
               <el-select
                 v-model="userVal"
-                placeholder="请选择"
+                :placeholder="$t('fieldRelationPage.placeholders.select')"
                 @change="changeUser(userVal)"
               >
                 <el-option
@@ -321,84 +309,84 @@
                 />
               </el-select>
             </el-form-item>
-            <el-form-item label="用户名" prop="username">
+            <el-form-item :label="$t('userPage.fields.username')" prop="username">
               <el-input
                 v-model.trim="dialogFormData.username"
-                placeholder="用户名"
+                :placeholder="$t('userPage.fields.username')"
               />
             </el-form-item>
-            <el-form-item label="中文名字" prop="nickname">
+            <el-form-item :label="$t('userPage.fields.nickname')" prop="nickname">
               <el-input
                 v-model.trim="dialogFormData.nickname"
-                placeholder="中文名字"
+                :placeholder="$t('userPage.fields.nickname')"
               />
             </el-form-item>
-            <el-form-item label="花名" prop="givenName">
+            <el-form-item :label="$t('userPage.fields.givenName')" prop="givenName">
               <el-input
                 v-model.trim="dialogFormData.givenName"
-                placeholder="花名"
+                :placeholder="$t('userPage.fields.givenName')"
               />
             </el-form-item>
-            <el-form-item label="邮箱" prop="mail">
-              <el-input v-model.trim="dialogFormData.mail" placeholder="邮箱" />
+            <el-form-item :label="$t('userPage.fields.mail')" prop="mail">
+              <el-input v-model.trim="dialogFormData.mail" :placeholder="$t('userPage.fields.mail')" />
             </el-form-item>
-            <el-form-item label="工号" prop="jobNumber">
+            <el-form-item :label="$t('userPage.fields.jobNumber')" prop="jobNumber">
               <el-input
                 v-model.trim="dialogFormData.jobNumber"
-                placeholder="工号"
+                :placeholder="$t('userPage.fields.jobNumber')"
               />
             </el-form-item>
-            <el-form-item label="手机号" prop="mobile">
+            <el-form-item :label="$t('userPage.fields.mobile')" prop="mobile">
               <el-input
                 v-model.trim="dialogFormData.mobile"
-                placeholder="手机号"
+                :placeholder="$t('userPage.fields.mobile')"
               />
             </el-form-item>
-            <el-form-item label="头像" prop="avatar">
+            <el-form-item :label="$t('fieldRelationPage.fields.avatar')" prop="avatar">
               <el-input
                 v-model.trim="dialogFormData.avatar"
-                placeholder="头像"
+                :placeholder="$t('fieldRelationPage.fields.avatar')"
               />
             </el-form-item>
-            <el-form-item label="地址" prop="postalAddress">
+            <el-form-item :label="$t('userPage.fields.postalAddress')" prop="postalAddress">
               <el-input
                 v-model.trim="dialogFormData.postalAddress"
-                placeholder="地址"
+                :placeholder="$t('userPage.fields.postalAddress')"
               />
             </el-form-item>
-            <el-form-item label="职位" prop="position">
+            <el-form-item :label="$t('userPage.fields.position')" prop="position">
               <el-input
                 v-model.trim="dialogFormData.position"
-                placeholder="职位"
+                :placeholder="$t('userPage.fields.position')"
               />
             </el-form-item>
-            <el-form-item label="源用户ID" prop="sourceUserId">
+            <el-form-item :label="$t('fieldRelationPage.fields.sourceUserId')" prop="sourceUserId">
               <el-input
                 v-model.trim="dialogFormData.sourceUserId"
-                placeholder="源用户ID"
+                :placeholder="$t('fieldRelationPage.fields.sourceUserId')"
               />
             </el-form-item>
-            <el-form-item label="源用户唯一ID" prop="sourceUnionId">
+            <el-form-item :label="$t('fieldRelationPage.fields.sourceUnionId')" prop="sourceUnionId">
               <el-input
                 v-model.trim="dialogFormData.sourceUnionId"
-                placeholder="源用户唯一ID"
+                :placeholder="$t('fieldRelationPage.fields.sourceUnionId')"
               />
             </el-form-item>
-            <el-form-item label="说明" prop="introduction">
+            <el-form-item :label="$t('userPage.fields.introduction')" prop="introduction">
               <el-input
                 v-model.trim="dialogFormData.introduction"
-                placeholder="说明"
+                :placeholder="$t('userPage.fields.introduction')"
               />
             </el-form-item>
           </template>
           <template v-else>
-            <el-form-item label="类型">
-              <el-button type="primary">分组字段动态关联</el-button>
+            <el-form-item :label="$t('fieldRelationPage.fields.type')">
+              <el-button type="primary">{{ $t('fieldRelationPage.types.group') }}</el-button>
             </el-form-item>
-            <el-form-item label="类型标志">
+            <el-form-item :label="$t('fieldRelationPage.fields.typeFlag')">
               <el-select
                 v-model="groupVal"
-                placeholder="请选择"
+                :placeholder="$t('fieldRelationPage.placeholders.select')"
                 @change="changeGroup(groupVal)"
               >
                 <el-option
@@ -409,40 +397,40 @@
                 />
               </el-select>
             </el-form-item>
-            <el-form-item label="分组名称" prop="groupName">
+            <el-form-item :label="$t('groupPage.fields.name')" prop="groupName">
               <el-input
                 v-model.trim="dialogFormData.groupName"
-                placeholder="分组名称"
+                :placeholder="$t('groupPage.fields.name')"
               />
             </el-form-item>
-            <el-form-item label="父部门ID" prop="sourceDeptParentId">
+            <el-form-item :label="$t('fieldRelationPage.fields.sourceDeptParentId')" prop="sourceDeptParentId">
               <el-input
                 v-model.trim="dialogFormData.sourceDeptParentId"
-                placeholder="父部门ID"
+                :placeholder="$t('fieldRelationPage.fields.sourceDeptParentId')"
               />
             </el-form-item>
-            <el-form-item label="部门ID" prop="sourceDeptId">
+            <el-form-item :label="$t('fieldRelationPage.fields.sourceDeptId')" prop="sourceDeptId">
               <el-input
                 v-model.trim="dialogFormData.sourceDeptId"
-                placeholder="部门ID"
+                :placeholder="$t('fieldRelationPage.fields.sourceDeptId')"
               />
             </el-form-item>
-            <el-form-item label="分组描述" prop="remark">
+            <el-form-item :label="$t('groupPage.fields.remark')" prop="remark">
               <el-input
                 v-model.trim="dialogFormData.remark"
-                placeholder="分组描述"
+                :placeholder="$t('groupPage.fields.remark')"
               />
             </el-form-item>
           </template>
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button size="mini" @click="cancelForm()">取 消</el-button>
+          <el-button size="mini" @click="cancelForm()">{{ $t('common.cancel') }}</el-button>
           <el-button
             size="mini"
             :loading="submitLoading"
             type="primary"
             @click="submitForm('B')"
-          >确 定</el-button>
+          >{{ $t('common.confirm') }}</el-button>
         </div>
       </el-dialog>
     </el-card>
@@ -460,7 +448,6 @@ import {
 } from '@/api/personnel/fieldRelation'
 import { Message } from 'element-ui'
 
-const cityOptions = ['用户字段动态关联', '分组字段动态关联']
 export default {
   name: 'FieldRelation',
   components: {
@@ -478,34 +465,11 @@ export default {
     }
   },
   data() {
-    var checkPhone = (rule, value, callback) => {
-      if (!value) {
-        return callback(new Error('手机号不能为空'))
-      } else {
-        const reg = /1\d{10}/
-        if (reg.test(value)) {
-          callback()
-        } else {
-          return callback(new Error('请输入正确的手机号'))
-        }
-      }
-    }
     return {
-      options: [
-        { label: '飞书', value: 'feishu_group' },
-        { label: '钉钉', value: 'dingtalk_group' },
-        { label: '企业微信', value: 'wecom_group' }
-      ],
-      userOptions: [
-        { label: '飞书', value: 'feishu_user' },
-        { label: '钉钉', value: 'dingtalk_user' },
-        { label: '企业微信', value: 'wecom_user' }
-      ],
       userVal: '',
       groupVal: '',
       updateId: '',
-      checked: ['用户字段动态关联'], // 新增数据默认选中
-      cities: cityOptions, // 新增默认选中
+      checked: ['user'], // 新增数据默认选中
       // 查询参数
       params: {
         flag: '',
@@ -544,122 +508,89 @@ export default {
         sourceDeptId: '', // 部门ID
         sourceDeptParentId: '' // 父部门ID
       },
-      //   dialogFromGroup: {
-
-      //   },
-      dialogFormRules: {
-        sourceDeptParentId: [
-          { required: true, message: '请输入父部门ID', trigger: 'blur' },
-          { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
-        ],
-        sourceDeptId: [
-          { required: true, message: '请输入部门ID', trigger: 'blur' },
-          { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
-        ],
-        username: [
-          { required: true, message: '请输入类型标志', trigger: 'blur' },
-          { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
-        ],
-        givenName: [
-          { required: true, message: '请输入所属类别', trigger: 'blur' },
-          { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
-        ],
-        avatar: [
-          { required: true, message: '请输入所属类别', trigger: 'blur' },
-          { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
-        ],
-        postalAddress: [
-          { required: true, message: '请输入所属类别', trigger: 'blur' },
-          { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
-        ],
-        position: [
-          { required: true, message: '请输入所属类别', trigger: 'blur' },
-          { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
-        ],
-        sourceUserId: [
-          { required: true, message: '请输入所属类别', trigger: 'blur' },
-          { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: ['blur', 'change'] }
-        ],
-        sourceUnionId: [
-          { required: true, message: '请输入所属类别', trigger: 'blur' },
-          { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: ['blur', 'change'] }
-        ],
-        groupName: [
-          { required: true, message: '请输入分组名称', trigger: 'blur' },
-          { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
-        ],
-        remark: [
-          { required: true, message: '请输入描述', trigger: 'blur' },
-          {
-            min: 1,
-            max: 50,
-            message: '长度在 1 到 50 个字符',
-            trigger: 'blur'
-          }
-        ],
-        // mail: [
-        //   { required: true, message: '请输入邮箱', trigger: 'blur' },
-        //   { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
-        // ],
-         mail: [
-          { required: true, message: '请输入邮箱', trigger: 'blur' },
-          { min:1,max:50, message: '请输入邮箱地址', trigger: 'blur' }
-        ],
-        jobNumber: [
-          { required: true, message: '请输入工号', trigger: 'blur' },
-          {
-            min: 0,
-            max: 20,
-            message: '长度在 0 到 20 个字符',
-            trigger: 'blur'
-          }
-        ],
-        nickname: [
-          { required: true, message: '请输入昵称', trigger: 'blur' },
-          {
-            min: 2,
-            max: 20,
-            message: '长度在 2 到 20 个字符',
-            trigger: 'blur'
-          }
-        ],
-        mobile: [{ required: true, message: '请输入手机号', trigger: 'blur'}],
-        introduction: [
-          { required: true, message: '说明', trigger: 'blur' },
-          {
-            min: 0,
-            max: 100,
-            message: '长度在 0 到 100 个字符',
-            trigger: 'blur'
-          }
-        ]
-      },
       // 表格多选
       multipleSelection: []
       // typeFlag:
+    }
+  },
+  computed: {
+    relationTypes() {
+      return [
+        { label: this.$t('fieldRelationPage.types.user'), value: 'user' },
+        { label: this.$t('fieldRelationPage.types.group'), value: 'group' }
+      ]
+    },
+    dialogFormRules() {
+      return {
+        sourceDeptParentId: this.requiredTextRules(this.$t('fieldRelationPage.fields.sourceDeptParentId'), 1, 50),
+        sourceDeptId: this.requiredTextRules(this.$t('fieldRelationPage.fields.sourceDeptId'), 1, 50),
+        username: this.requiredTextRules(this.$t('userPage.fields.username'), 1, 50),
+        givenName: this.requiredTextRules(this.$t('userPage.fields.givenName'), 1, 50),
+        avatar: this.requiredTextRules(this.$t('fieldRelationPage.fields.avatar'), 1, 50),
+        postalAddress: this.requiredTextRules(this.$t('userPage.fields.postalAddress'), 1, 50),
+        position: this.requiredTextRules(this.$t('userPage.fields.position'), 1, 50),
+        sourceUserId: this.requiredTextRules(this.$t('fieldRelationPage.fields.sourceUserId'), 1, 50, ['blur', 'change']),
+        sourceUnionId: this.requiredTextRules(this.$t('fieldRelationPage.fields.sourceUnionId'), 1, 50, ['blur', 'change']),
+        groupName: this.requiredTextRules(this.$t('groupPage.fields.name'), 1, 50),
+        remark: this.requiredTextRules(this.$t('groupPage.fields.remark'), 1, 50),
+        mail: this.requiredTextRules(this.$t('userPage.fields.mail'), 1, 50),
+        jobNumber: this.requiredTextRules(this.$t('userPage.fields.jobNumber'), 0, 20),
+        nickname: this.requiredTextRules(this.$t('userPage.fields.nickname'), 2, 20),
+        mobile: [{ required: true, validator: this.checkPhone, trigger: 'blur' }],
+        introduction: this.requiredTextRules(this.$t('userPage.fields.introduction'), 0, 100)
+      }
+    },
+    options() {
+      return [
+        { label: this.$t('fieldRelationPage.providers.feishu'), value: 'feishu_group' },
+        { label: this.$t('fieldRelationPage.providers.dingtalk'), value: 'dingtalk_group' },
+        { label: this.$t('fieldRelationPage.providers.wecom'), value: 'wecom_group' }
+      ]
+    },
+    userOptions() {
+      return [
+        { label: this.$t('fieldRelationPage.providers.feishu'), value: 'feishu_user' },
+        { label: this.$t('fieldRelationPage.providers.dingtalk'), value: 'dingtalk_user' },
+        { label: this.$t('fieldRelationPage.providers.wecom'), value: 'wecom_user' }
+      ]
     }
   },
   created() {
     this.getTableData()
   },
   methods: {
+    checkPhone(rule, value, callback) {
+      if (!value) {
+        return callback(new Error(this.$t('userPage.validation.mobileRequired')))
+      }
+      const reg = /1\d{10}/
+      if (reg.test(value)) {
+        callback()
+      } else {
+        return callback(new Error(this.$t('userPage.validation.mobileInvalid')))
+      }
+    },
+    requiredTextRules(field, min, max, trigger = 'blur') {
+      return [
+        { required: true, message: this.$t('validation.required', { field }), trigger: 'blur' },
+        { min, max, message: this.$t('validation.lengthRange', { min, max }), trigger }
+      ]
+    },
     checkbox(city) {
       this.checked = this.checked.includes(city) ? [city] : []
       this.value = this.city
     },
     changeUser(e) {
-
       this.userVal = e
     },
     changeGroup(e) {
-
       this.groupVal = e
     },
     // 查询
     search() {
-        // 初始化表格数据
-        this.infoTableData = JSON.parse(JSON.stringify(this.tableData))
-        this.infoTableData = this.deal(this.infoTableData, (node) =>
+      // 初始化表格数据
+      this.infoTableData = JSON.parse(JSON.stringify(this.tableData))
+      this.infoTableData = this.deal(this.infoTableData, (node) =>
         node.Flag.includes(this.params.flag)
       )
     },
@@ -701,18 +632,17 @@ export default {
 
     // 新增
     create() {
-      this.checked = ['用户字段动态关联'];
-      this.userVal = '',
-      this.groupVal = '',
-      this.dialogFormData = {},
-      this.dialogFromGroup = {},
-      this.dialogFormTitle = '新增'
+      this.checked = ['user']
+      this.userVal = ''
+      this.groupVal = ''
+      this.dialogFormData = {}
+      this.dialogFromGroup = {}
+      this.dialogFormTitle = this.$t('fieldRelationPage.dialog.createTitle')
       this.updateLoading = true // 新增的展示
       this.dialogType = 'create'
     },
     // 修改
     update(row) {
-
       const typeDialog = row.Flag.split('_')[1]
 
       const {
@@ -736,33 +666,32 @@ export default {
 
       if (typeDialog === 'user') {
         this.updateId = row.ID
-        this.checked = ['用户字段动态关联'];
+        this.checked = ['user']
 
-
-        this.userVal = row.Flag,
-        this.dialogFormData.username = username, // 用户名(通常为用户名拼音) name_pinyin
-        this.dialogFormData.nickname = nickname, // 中文名字 name
-        this.dialogFormData.givenName = givenName, // 花名 name
-        this.dialogFormData.mail = mail, // 邮箱 email
-        this.dialogFormData.jobNumber = jobNumber, // 工号 job_number
-        this.dialogFormData.mobile = mobile, // 手机号 mobile
-        this.dialogFormData.avatar = avatar, // 头像 avatar
-        this.dialogFormData.postalAddress = postalAddress, // 地址 work_place
-        this.dialogFormData.position = position, // 职位 title
-        this.dialogFormData.introduction = introduction, // 说明 remark
-        this.dialogFormData.sourceUserId = sourceUserId, // 源用户ID  userid
+        this.userVal = row.Flag
+        this.dialogFormData.username = username // 用户名(通常为用户名拼音) name_pinyin
+        this.dialogFormData.nickname = nickname // 中文名字 name
+        this.dialogFormData.givenName = givenName // 花名 name
+        this.dialogFormData.mail = mail // 邮箱 email
+        this.dialogFormData.jobNumber = jobNumber // 工号 job_number
+        this.dialogFormData.mobile = mobile // 手机号 mobile
+        this.dialogFormData.avatar = avatar // 头像 avatar
+        this.dialogFormData.postalAddress = postalAddress // 地址 work_place
+        this.dialogFormData.position = position // 职位 title
+        this.dialogFormData.introduction = introduction // 说明 remark
+        this.dialogFormData.sourceUserId = sourceUserId // 源用户ID  userid
         this.dialogFormData.sourceUnionId = sourceUnionId // 源用户唯一ID   unionid
       } else {
         this.updateId = row.ID
-        this.checked = ['分组字段动态关联'];
+        this.checked = ['group']
         this.groupVal = row.Flag
-        this.dialogFormData.groupName = groupName, // 分组名称（通常为分组名的拼音）
-        this.dialogFormData.remark = remark, // 分组描述
-        this.dialogFormData.sourceDeptId = sourceDeptId, // 部门ID
+        this.dialogFormData.groupName = groupName // 分组名称（通常为分组名的拼音）
+        this.dialogFormData.remark = remark // 分组描述
+        this.dialogFormData.sourceDeptId = sourceDeptId // 部门ID
         this.dialogFormData.sourceDeptParentId = sourceDeptParentId // 父部门ID
       }
 
-      this.dialogFormTitle = '修改'
+      this.dialogFormTitle = this.$t('fieldRelationPage.dialog.updateTitle')
       this.dialogType = 'update'
       this.dialogFormVisible = true
     },
@@ -770,10 +699,10 @@ export default {
     // 提交表单
     submitForm(e) {
       let flag, attributes
-      if (this.checked[0] === '用户字段动态关联') {
+      if (this.checked[0] === 'user') {
         if (this.userVal === '') {
           Message({
-            message: '请选择类型标志',
+            message: this.$t('fieldRelationPage.validation.selectTypeFlag'),
             type: 'warning'
           })
           return false
@@ -783,7 +712,7 @@ export default {
       } else {
         if (this.groupVal === '') {
           Message({
-            message: '请选择类型标志',
+            message: this.$t('fieldRelationPage.validation.selectTypeFlag'),
             type: 'warning'
           })
           return false
@@ -814,13 +743,13 @@ export default {
           this.getTableData()
           Message({
             showClose: true,
-            message: "操作成功",
+            message: this.$t('common.operationSuccess'),
             type: 'success'
           })
         } else {
           Message({
             showClose: true,
-            message: '表单校验失败',
+            message: this.$t('common.formInvalid'),
             type: 'warn'
           })
           return false
@@ -845,9 +774,9 @@ export default {
 
     // 批量删除
     batchDelete() {
-      this.$confirm('此操作将永久删除, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('fieldRelationPage.confirm.batchDelete'), this.$t('userPage.confirm.title'), {
+        confirmButtonText: this.$t('common.confirm'),
+        cancelButtonText: this.$t('common.cancel'),
         type: 'warning'
       })
         .then(async(res) => {
@@ -864,7 +793,7 @@ export default {
           this.getTableData()
           Message({
             showClose: true,
-            message: "删除成功",
+            message: this.$t('fieldRelationPage.messages.deleteSuccess'),
             type: 'success'
           })
         })
@@ -872,7 +801,7 @@ export default {
           Message({
             showClose: true,
             type: 'info',
-            message: '已取消删除'
+            message: this.$t('userPage.messages.deleteCanceled')
           })
         })
     },

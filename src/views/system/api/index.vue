@@ -2,53 +2,53 @@
   <div>
     <el-card class="container-card" shadow="always">
       <el-form size="mini" :inline="true" :model="params" class="demo-form-inline">
-        <el-form-item label="访问路径">
-          <el-input v-model.trim="params.path" clearable placeholder="访问路径" @keyup.enter.native="search" @clear="search" />
+        <el-form-item :label="$t('apiPage.fields.path')">
+          <el-input v-model.trim="params.path" clearable :placeholder="$t('apiPage.fields.path')" @keyup.enter.native="search" @clear="search" />
         </el-form-item>
-        <el-form-item label="所属类别">
-          <el-input v-model.trim="params.category" clearable placeholder="所属类别" @keyup.enter.native="search" @clear="search" />
+        <el-form-item :label="$t('apiPage.fields.category')">
+          <el-input v-model.trim="params.category" clearable :placeholder="$t('apiPage.fields.category')" @keyup.enter.native="search" @clear="search" />
         </el-form-item>
-        <el-form-item label="请求方法">
-          <el-select v-model.trim="params.method" clearable placeholder="请求方式" @change="search" @clear="search">
-            <el-option label="GET[获取资源]" value="GET" />
-            <el-option label="POST[新增资源]" value="POST" />
-            <el-option label="PUT[全部更新]" value="PUT" />
-            <el-option label="PATCH[增量更新]" value="PATCH" />
-            <el-option label="DELETE[删除资源]" value="DELETE" />
+        <el-form-item :label="$t('apiPage.fields.method')">
+          <el-select v-model.trim="params.method" clearable :placeholder="$t('apiPage.placeholders.method')" @change="search" @clear="search">
+            <el-option :label="$t('apiPage.methods.get')" value="GET" />
+            <el-option :label="$t('apiPage.methods.post')" value="POST" />
+            <el-option :label="$t('apiPage.methods.put')" value="PUT" />
+            <el-option :label="$t('apiPage.methods.patch')" value="PATCH" />
+            <el-option :label="$t('apiPage.methods.delete')" value="DELETE" />
           </el-select>
         </el-form-item>
-        <el-form-item label="创建人">
-          <el-input v-model.trim="params.creator" clearable placeholder="创建人" @keyup.enter.native="search" @clear="search" />
+        <el-form-item :label="$t('userPage.fields.creator')">
+          <el-input v-model.trim="params.creator" clearable :placeholder="$t('userPage.fields.creator')" @keyup.enter.native="search" @clear="search" />
         </el-form-item>
         <el-form-item>
-          <el-button :loading="loading" icon="el-icon-search" type="primary" @click="search">查询</el-button>
+          <el-button :loading="loading" icon="el-icon-search" type="primary" @click="search">{{ $t('common.search') }}</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button :loading="loading" icon="el-icon-plus" type="warning" @click="create">新增</el-button>
+          <el-button :loading="loading" icon="el-icon-plus" type="warning" @click="create">{{ $t('apiPage.actions.create') }}</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button :disabled="multipleSelection.length === 0" :loading="loading" icon="el-icon-delete" type="danger" @click="batchDelete">批量删除</el-button>
+          <el-button :disabled="multipleSelection.length === 0" :loading="loading" icon="el-icon-delete" type="danger" @click="batchDelete">{{ $t('userPage.actions.batchDelete') }}</el-button>
         </el-form-item>
       </el-form>
 
       <el-table v-loading="loading" :data="tableData" border stripe style="width: 100%" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center" />
-        <el-table-column show-overflow-tooltip sortable prop="path" label="访问路径" />
-        <el-table-column show-overflow-tooltip sortable prop="category" label="所属类别" />
-        <el-table-column show-overflow-tooltip sortable prop="method" label="请求方式" align="center">
+        <el-table-column show-overflow-tooltip sortable prop="path" :label="$t('apiPage.fields.path')" />
+        <el-table-column show-overflow-tooltip sortable prop="categoryDisplay" :label="$t('apiPage.fields.category')" />
+        <el-table-column show-overflow-tooltip sortable prop="method" :label="$t('apiPage.fields.method')" align="center">
           <template slot-scope="scope">
             <el-tag size="small" :type="scope.row.method | methodTagFilter" disable-transitions>{{ scope.row.method }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column show-overflow-tooltip sortable prop="creator" label="创建人" />
-        <el-table-column show-overflow-tooltip sortable prop="remark" label="说明" />
-        <el-table-column fixed="right" label="操作" align="center" width="120">
+        <el-table-column show-overflow-tooltip sortable prop="creatorDisplay" :label="$t('userPage.fields.creator')" />
+        <el-table-column show-overflow-tooltip sortable prop="remarkDisplay" :label="$t('userPage.fields.introduction')" />
+        <el-table-column fixed="right" :label="$t('userPage.fields.actions')" align="center" width="120">
           <template slot-scope="scope">
-            <el-tooltip content="编辑" effect="dark" placement="top">
+            <el-tooltip :content="$t('userPage.actions.edit')" effect="dark" placement="top">
               <el-button size="mini" icon="el-icon-edit" circle type="primary" @click="update(scope.row)" />
             </el-tooltip>
-            <el-tooltip class="delete-popover" content="删除" effect="dark" placement="top">
-              <el-popconfirm title="确定删除吗？" @onConfirm="singleDelete(scope.row.ID)">
+            <el-tooltip class="delete-popover" :content="$t('userPage.actions.delete')" effect="dark" placement="top">
+              <el-popconfirm :title="$t('userPage.confirm.deleteOne')" @onConfirm="singleDelete(scope.row.ID)">
                 <el-button slot="reference" size="mini" icon="el-icon-delete" circle type="danger" />
               </el-popconfirm>
             </el-tooltip>
@@ -70,28 +70,28 @@
 
       <el-dialog :title="dialogFormTitle" :visible.sync="dialogFormVisible">
         <el-form ref="dialogForm" size="small" :model="dialogFormData" :rules="dialogFormRules" label-width="120px">
-          <el-form-item label="访问路径" prop="path">
-            <el-input v-model.trim="dialogFormData.path" placeholder="访问路径" />
+          <el-form-item :label="$t('apiPage.fields.path')" prop="path">
+            <el-input v-model.trim="dialogFormData.path" :placeholder="$t('apiPage.fields.path')" />
           </el-form-item>
-          <el-form-item label="所属类别" prop="category">
-            <el-input v-model.trim="dialogFormData.category" placeholder="所属类别" />
+          <el-form-item :label="$t('apiPage.fields.category')" prop="category">
+            <el-input v-model.trim="dialogFormData.category" :placeholder="$t('apiPage.fields.category')" />
           </el-form-item>
-          <el-form-item label="请求方式" prop="method">
-            <el-select v-model.trim="dialogFormData.method" placeholder="请选择请求方式">
-              <el-option label="GET[获取资源]" value="GET" />
-              <el-option label="POST[新增资源]" value="POST" />
-              <el-option label="PUT[全部更新]" value="PUT" />
-              <el-option label="PATCH[增量更新]" value="PATCH" />
-              <el-option label="DELETE[删除资源]" value="DELETE" />
+          <el-form-item :label="$t('apiPage.fields.method')" prop="method">
+            <el-select v-model.trim="dialogFormData.method" :placeholder="$t('apiPage.placeholders.method')">
+              <el-option :label="$t('apiPage.methods.get')" value="GET" />
+              <el-option :label="$t('apiPage.methods.post')" value="POST" />
+              <el-option :label="$t('apiPage.methods.put')" value="PUT" />
+              <el-option :label="$t('apiPage.methods.patch')" value="PATCH" />
+              <el-option :label="$t('apiPage.methods.delete')" value="DELETE" />
             </el-select>
           </el-form-item>
-          <el-form-item label="说明" prop="remark">
-            <el-input v-model.trim="dialogFormData.remark" type="textarea" placeholder="说明" show-word-limit maxlength="100" />
+          <el-form-item :label="$t('userPage.fields.introduction')" prop="remark">
+            <el-input v-model.trim="dialogFormData.remark" type="textarea" :placeholder="$t('userPage.fields.introduction')" show-word-limit maxlength="100" />
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button size="mini" @click="cancelForm()">取 消</el-button>
-          <el-button size="mini" :loading="submitLoading" type="primary" @click="submitForm()">确 定</el-button>
+          <el-button size="mini" @click="cancelForm()">{{ $t('common.cancel') }}</el-button>
+          <el-button size="mini" :loading="submitLoading" type="primary" @click="submitForm()">{{ $t('common.confirm') }}</el-button>
         </div>
       </el-dialog>
 
@@ -150,28 +150,31 @@ export default {
         method: '',
         remark: ''
       },
-      dialogFormRules: {
-        path: [
-          { required: true, message: '请输入访问路径', trigger: 'blur' },
-          { min: 1, max: 100, message: '长度在 1 到 100 个字符', trigger: 'blur' }
-        ],
-        category: [
-          { required: true, message: '请输入所属类别', trigger: 'blur' },
-          { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
-        ],
-        method: [
-          { required: true, message: '请选择请求方式', trigger: 'change' }
-        ],
-        remark: [
-          { required: false, message: '说明', trigger: 'blur' },
-          { min: 0, max: 100, message: '长度在 0 到 100 个字符', trigger: 'blur' }
-        ]
-      },
-
       // 删除按钮弹出框
       popoverVisible: false,
       // 表格多选
       multipleSelection: []
+    }
+  },
+  computed: {
+    dialogFormRules() {
+      return {
+        path: [
+          { required: true, message: this.$t('validation.required', { field: this.$t('apiPage.fields.path') }), trigger: 'blur' },
+          { min: 1, max: 100, message: this.$t('validation.lengthRange', { min: 1, max: 100 }), trigger: 'blur' }
+        ],
+        category: [
+          { required: true, message: this.$t('validation.required', { field: this.$t('apiPage.fields.category') }), trigger: 'blur' },
+          { min: 1, max: 50, message: this.$t('validation.lengthRange', { min: 1, max: 50 }), trigger: 'blur' }
+        ],
+        method: [
+          { required: true, message: this.$t('apiPage.validation.selectMethod'), trigger: 'change' }
+        ],
+        remark: [
+          { required: false, message: this.$t('userPage.fields.introduction'), trigger: 'blur' },
+          { min: 0, max: 100, message: this.$t('validation.lengthRange', { min: 0, max: 100 }), trigger: 'blur' }
+        ]
+      }
     }
   },
   created() {
@@ -198,7 +201,7 @@ export default {
 
     // 新增
     create() {
-      this.dialogFormTitle = '新增接口'
+      this.dialogFormTitle = this.$t('apiPage.dialog.createTitle')
       this.dialogType = 'create'
       this.dialogFormVisible = true
     },
@@ -211,20 +214,20 @@ export default {
       this.dialogFormData.method = row.method
       this.dialogFormData.remark = row.remark
 
-      this.dialogFormTitle = '修改接口'
+      this.dialogFormTitle = this.$t('apiPage.dialog.updateTitle')
       this.dialogType = 'update'
       this.dialogFormVisible = true
     },
 
     // 判断结果
-    judgeResult(res){
-      if (res.code==0){
-          Message({
-            showClose: true,
-            message: "操作成功",
-            type: 'success'
-          })
-        }
+    judgeResult(res) {
+      if (res.code === 0) {
+        Message({
+          showClose: true,
+          message: this.$t('common.operationSuccess'),
+          type: 'success'
+        })
+      }
     },
 
     // 提交表单
@@ -234,11 +237,11 @@ export default {
           this.submitLoading = true
           try {
             if (this.dialogType === 'create') {
-              await createApi(this.dialogFormData).then(res =>{
+              await createApi(this.dialogFormData).then(res => {
                 this.judgeResult(res)
               })
             } else {
-              await updateApiById(this.dialogFormData).then(res =>{
+              await updateApiById(this.dialogFormData).then(res => {
                 this.judgeResult(res)
               })
             }
@@ -250,7 +253,7 @@ export default {
         } else {
           Message({
             showClose: true,
-            message: '表单校验失败',
+            message: this.$t('common.formInvalid'),
             type: 'warn'
           })
           return false
@@ -277,9 +280,9 @@ export default {
 
     // 批量删除
     batchDelete() {
-      this.$confirm('此操作将永久删除, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('apiPage.confirm.batchDelete'), this.$t('userPage.confirm.title'), {
+        confirmButtonText: this.$t('common.confirm'),
+        cancelButtonText: this.$t('common.cancel'),
         type: 'warning'
       }).then(async res => {
         this.loading = true
@@ -288,7 +291,7 @@ export default {
           apiIds.push(x.ID)
         })
         try {
-          await batchDeleteApiByIds({ apiIds: apiIds }).then(res =>{
+          await batchDeleteApiByIds({ apiIds: apiIds }).then(res => {
             this.judgeResult(res)
           })
         } finally {
@@ -299,7 +302,7 @@ export default {
         Message({
           showClose: true,
           type: 'info',
-          message: '已取消删除'
+          message: this.$t('userPage.messages.deleteCanceled')
         })
       })
     },
@@ -313,7 +316,7 @@ export default {
     async singleDelete(Id) {
       this.loading = true
       try {
-        await batchDeleteApiByIds({ apiIds: [Id] }).then(res =>{
+        await batchDeleteApiByIds({ apiIds: [Id] }).then(res => {
           this.judgeResult(res)
         })
       } finally {

@@ -2,44 +2,44 @@
   <div>
     <el-card class="container-card" shadow="always">
       <el-form size="mini" :inline="true" :model="params" class="demo-form-inline">
-        <el-form-item label="请求人">
+        <el-form-item :label="$t('operationLogPage.fields.username')">
           <el-input
             v-model.trim="params.username"
             clearable
-            placeholder="请求人"
+            :placeholder="$t('operationLogPage.fields.username')"
             @keyup.enter.native="search"
             @clear="search"
           />
         </el-form-item>
-        <el-form-item label="IP地址">
-          <el-input v-model.trim="params.ip" clearable placeholder="IP地址" @keyup.enter.native="search" @clear="search" />
+        <el-form-item :label="$t('operationLogPage.fields.ip')">
+          <el-input v-model.trim="params.ip" clearable :placeholder="$t('operationLogPage.fields.ip')" @keyup.enter.native="search" @clear="search" />
         </el-form-item>
-        <el-form-item label="请求路径">
+        <el-form-item :label="$t('operationLogPage.fields.path')">
           <el-input
             v-model.trim="params.path"
             clearable
-            placeholder="请求路径"
+            :placeholder="$t('operationLogPage.fields.path')"
             @keyup.enter.native="search"
             @clear="search"
           />
         </el-form-item>
-        <el-form-item prop="method" label="请求方式">
-          <el-select v-model="params.method" placeholder="请选择请求状态" clearable @change="search" @clear="search">
+        <el-form-item prop="method" :label="$t('operationLogPage.fields.method')">
+          <el-select v-model="params.method" :placeholder="$t('apiPage.placeholders.method')" clearable @change="search" @clear="search">
             <el-option v-for="item in RequestList" :key="item.value" :label="item.label" :value="item.value" />
           </el-select>
         </el-form-item>
 
-        <el-form-item label="请求状态">
+        <el-form-item :label="$t('operationLogPage.fields.status')">
           <el-input
             v-model.trim="params.status"
             clearable
-            placeholder="请求状态"
+            :placeholder="$t('operationLogPage.fields.status')"
             @keyup.enter.native="search"
             @clear="search"
           />
         </el-form-item>
         <el-form-item>
-          <el-button :loading="loading" icon="el-icon-search" type="primary" @click="search">查询</el-button>
+          <el-button :loading="loading" icon="el-icon-search" type="primary" @click="search">{{ $t('common.search') }}</el-button>
         </el-form-item>
         <el-form-item>
           <el-button
@@ -48,10 +48,10 @@
             icon="el-icon-delete"
             type="danger"
             @click="batchDelete"
-          >批量删除</el-button>
+          >{{ $t('userPage.actions.batchDelete') }}</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button type="danger" plain icon="el-icon-delete" size="mini" @click="handleClean">清空日志</el-button>
+          <el-button type="danger" plain icon="el-icon-delete" size="mini" @click="handleClean">{{ $t('operationLogPage.actions.clean') }}</el-button>
         </el-form-item>
       </el-form>
 
@@ -64,10 +64,10 @@
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="55" align="center" />
-        <el-table-column show-overflow-tooltip sortable prop="username" label="请求人" />
-        <el-table-column show-overflow-tooltip sortable prop="ip" label="IP地址" />
-        <el-table-column show-overflow-tooltip sortable prop="path" label="请求路径" />
-        <el-table-column show-overflow-tooltip sortable prop="method" label="请求方式" align="center">
+        <el-table-column show-overflow-tooltip sortable prop="username" :label="$t('operationLogPage.fields.username')" />
+        <el-table-column show-overflow-tooltip sortable prop="ip" :label="$t('operationLogPage.fields.ip')" />
+        <el-table-column show-overflow-tooltip sortable prop="path" :label="$t('operationLogPage.fields.path')" />
+        <el-table-column show-overflow-tooltip sortable prop="method" :label="$t('operationLogPage.fields.method')" align="center">
           <template slot-scope="scope">
             <el-tag v-if="scope.row.method === 'GET'" type="success">GET</el-tag>
             <el-tag v-else-if="scope.row.method === 'POST'" type="warning">POST</el-tag>
@@ -76,28 +76,28 @@
             <el-tag v-else type="info">{{ scope.row.method }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column show-overflow-tooltip sortable prop="status" label="请求状态" align="center">
+        <el-table-column show-overflow-tooltip sortable prop="status" :label="$t('operationLogPage.fields.status')" align="center">
           <template slot-scope="scope">
             <el-tag size="small" :type="scope.row.status | statusTagFilter" disable-transitions>{{ scope.row.status
             }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column show-overflow-tooltip sortable prop="startTime" label="发起时间">
+        <el-table-column show-overflow-tooltip sortable prop="startTime" :label="$t('operationLogPage.fields.startTime')">
           <!-- <template slot-scope="scope">
             {{ parseGoTime(scope.row.startTime) }}
           </template> -->
         </el-table-column>
-        <el-table-column show-overflow-tooltip sortable prop="timeCost" label="请求耗时(ms)" align="center">
+        <el-table-column show-overflow-tooltip sortable prop="timeCost" :label="$t('operationLogPage.fields.timeCost')" align="center">
           <template slot-scope="scope">
             <el-tag size="small" :type="scope.row.timeCost | timeCostTagFilter" disable-transitions>{{ scope.row.timeCost
             }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column show-overflow-tooltip sortable prop="desc" label="说明" />
-        <el-table-column fixed="right" label="操作" align="center" width="80">
+        <el-table-column show-overflow-tooltip sortable prop="desc" :label="$t('userPage.fields.introduction')" />
+        <el-table-column fixed="right" :label="$t('userPage.fields.actions')" align="center" width="80">
           <template slot-scope="scope">
-            <el-tooltip content="删除" effect="dark" placement="top">
-              <el-popconfirm title="确定删除吗？" @onConfirm="singleDelete(scope.row.ID)">
+            <el-tooltip :content="$t('userPage.actions.delete')" effect="dark" placement="top">
+              <el-popconfirm :title="$t('userPage.confirm.deleteOne')" @onConfirm="singleDelete(scope.row.ID)">
                 <el-button slot="reference" size="mini" icon="el-icon-delete" circle type="danger" />
               </el-popconfirm>
             </el-tooltip>
@@ -218,16 +218,16 @@ export default {
       if (res.code === 0) {
         Message({
           showClose: true,
-          message: '操作成功',
+          message: this.$t('common.operationSuccess'),
           type: 'success'
         })
       }
     },
     // 清空日志
     handleClean() {
-      this.$confirm('此操作将永久删除, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('operationLogPage.confirm.clean'), this.$t('userPage.confirm.title'), {
+        confirmButtonText: this.$t('common.confirm'),
+        cancelButtonText: this.$t('common.cancel'),
         type: 'warning'
       }).then(async res => {
         this.loading = true
@@ -243,16 +243,16 @@ export default {
         Message({
           showClose: true,
           type: 'info',
-          message: '已取消删除'
+          message: this.$t('userPage.messages.deleteCanceled')
         })
       })
     },
 
     // 批量删除
     batchDelete() {
-      this.$confirm('此操作将永久删除, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('operationLogPage.confirm.batchDelete'), this.$t('userPage.confirm.title'), {
+        confirmButtonText: this.$t('common.confirm'),
+        cancelButtonText: this.$t('common.cancel'),
         type: 'warning'
       }).then(async res => {
         this.loading = true
@@ -272,7 +272,7 @@ export default {
         Message({
           showClose: true,
           type: 'info',
-          message: '已取消删除'
+          message: this.$t('userPage.messages.deleteCanceled')
         })
       })
     },

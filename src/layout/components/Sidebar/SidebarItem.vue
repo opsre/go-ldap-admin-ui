@@ -3,14 +3,14 @@
     <template v-if="hasOneShowingChild(item.children,item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow">
       <app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path)">
         <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}">
-          <item :icon="onlyOneChild.meta.icon||(item.meta&&item.meta.icon)" :title="onlyOneChild.meta.title" />
+          <item :icon="onlyOneChild.meta.icon||(item.meta&&item.meta.icon)" :title="titleOf(onlyOneChild)" />
         </el-menu-item>
       </app-link>
     </template>
 
     <el-submenu v-else ref="subMenu" :index="resolvePath(item.path)" popper-append-to-body>
       <template slot="title">
-        <item v-if="item.meta" :icon="item.meta && item.meta.icon" :title="item.meta.title" />
+        <item v-if="item.meta" :icon="item.meta && item.meta.icon" :title="titleOf(item)" />
       </template>
       <sidebar-item
         v-for="child in item.children"
@@ -30,6 +30,7 @@ import { isExternal } from '@/utils/validate'
 import Item from './Item'
 import AppLink from './Link'
 import FixiOSBug from './FixiOSBug'
+import { translateRouteTitle } from '@/utils/i18n'
 
 export default {
   name: 'SidebarItem',
@@ -57,8 +58,10 @@ export default {
     return {}
   },
   methods: {
+    titleOf(route) {
+      return translateRouteTitle(route.meta)
+    },
     hasOneShowingChild(children = [], parent) {
-      
       const showingChildren = children.filter(item => {
         if (item.hidden) {
           return false
@@ -83,13 +86,10 @@ export default {
       return false
     },
     resolvePath(routePath) {
-    
       if (isExternal(routePath)) {
-        // 
         return routePath
       }
       if (isExternal(this.basePath)) {
-  
         return this.basePath
       }
       return path.resolve(this.basePath, routePath)

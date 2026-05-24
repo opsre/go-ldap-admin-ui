@@ -2,35 +2,35 @@
   <div>
     <el-card style="margin-bottom:20px;max-width: 580px;">
       <div slot="header" class="clearfix">
-        <span>修改账户密码</span>
+        <span>{{ $t('account.title') }}</span>
       </div>
 
       <el-form ref="dialogForm" size="small" :model="dialogFormData" :rules="dialogFormRules" label-width="100px">
 
-        <el-form-item label="原密码" prop="oldPassword">
-          <el-input v-model.trim="dialogFormData.oldPassword" autocomplete="on" :type="passwordTypeOld" placeholder="请输入原密码" />
+        <el-form-item :label="$t('account.oldPassword')" prop="oldPassword">
+          <el-input v-model.trim="dialogFormData.oldPassword" autocomplete="on" :type="passwordTypeOld" :placeholder="$t('account.oldPasswordPlaceholder')" />
           <span class="show-pwd" @click="showPwdOld">
             <svg-icon :icon-class="passwordTypeOld === 'password' ? 'eye' : 'eye-open'" />
           </span>
         </el-form-item>
 
-        <el-form-item label="新密码" prop="newPassword">
-          <el-input v-model.trim="dialogFormData.newPassword" autocomplete="on" :type="passwordTypeNew" placeholder="请输入新密码" />
+        <el-form-item :label="$t('account.newPassword')" prop="newPassword">
+          <el-input v-model.trim="dialogFormData.newPassword" autocomplete="on" :type="passwordTypeNew" :placeholder="$t('account.newPasswordPlaceholder')" />
           <span class="show-pwd" @click="showPwdNew">
             <svg-icon :icon-class="passwordTypeNew === 'password' ? 'eye' : 'eye-open'" />
           </span>
         </el-form-item>
 
-        <el-form-item label="确认密码" prop="confirmPassword">
-          <el-input v-model.trim="dialogFormData.confirmPassword" autocomplete="on" :type="passwordTypeConfirm" placeholder="请确认新密码" />
+        <el-form-item :label="$t('account.confirmPassword')" prop="confirmPassword">
+          <el-input v-model.trim="dialogFormData.confirmPassword" autocomplete="on" :type="passwordTypeConfirm" :placeholder="$t('account.confirmPasswordPlaceholder')" />
           <span class="show-pwd" @click="showPwdConfirm">
             <svg-icon :icon-class="passwordTypeConfirm === 'password' ? 'eye' : 'eye-open'" />
           </span>
         </el-form-item>
 
         <el-form-item>
-          <el-button :loading="submitLoading" type="primary" @click="submitForm">确定</el-button>
-          <el-button @click="cancelForm">取消</el-button>
+          <el-button :loading="submitLoading" type="primary" @click="submitForm">{{ $t('common.confirm') }}</el-button>
+          <el-button @click="cancelForm">{{ $t('common.cancel') }}</el-button>
         </el-form-item>
 
       </el-form>
@@ -46,17 +46,6 @@ import { Message } from 'element-ui'
 
 export default {
   data() {
-    const confirmPass = (rule, value, callback) => {
-      if (value) {
-        if (this.dialogFormData.newPassword !== value) {
-          callback(new Error('两次输入的密码不一致'))
-        } else {
-          callback()
-        }
-      } else {
-        callback(new Error('请再次输入新密码'))
-      }
-    }
     return {
       submitLoading: false,
       dialogFormData: {
@@ -64,23 +53,38 @@ export default {
         newPassword: '',
         confirmPassword: ''
       },
-      dialogFormRules: {
-        oldPassword: [
-          { required: true, message: '请输入旧密码', trigger: 'blur' },
-          { min: 6, max: 30, message: '长度在 6 到 30 个字符', trigger: 'blur' }
-        ],
-        newPassword: [
-          { required: true, message: '请输入新密码', trigger: 'blur' },
-          { min: 6, max: 30, message: '长度在 6 到 30 个字符', trigger: 'blur' }
-        ],
-        confirmPassword: [
-          { required: true, validator: confirmPass, trigger: 'blur' }
-        ]
-      },
       publicKey: process.env.VUE_APP_PUBLIC_KEY,
       passwordTypeOld: 'password',
       passwordTypeNew: 'password',
       passwordTypeConfirm: 'password'
+    }
+  },
+  computed: {
+    dialogFormRules() {
+      const confirmPass = (rule, value, callback) => {
+        if (value) {
+          if (this.dialogFormData.newPassword !== value) {
+            callback(new Error(this.$t('account.passwordMismatch')))
+          } else {
+            callback()
+          }
+        } else {
+          callback(new Error(this.$t('account.confirmPasswordRequired')))
+        }
+      }
+      return {
+        oldPassword: [
+          { required: true, message: this.$t('validation.required', { field: this.$t('account.oldPassword') }), trigger: 'blur' },
+          { min: 6, max: 30, message: this.$t('validation.lengthRange', { min: 6, max: 30 }), trigger: 'blur' }
+        ],
+        newPassword: [
+          { required: true, message: this.$t('validation.required', { field: this.$t('account.newPassword') }), trigger: 'blur' },
+          { min: 6, max: 30, message: this.$t('validation.lengthRange', { min: 6, max: 30 }), trigger: 'blur' }
+        ],
+        confirmPassword: [
+          { required: true, validator: confirmPass, trigger: 'blur' }
+        ]
+      }
     }
   },
   methods: {
@@ -115,7 +119,7 @@ export default {
           this.resetForm()
           Message({
             showClose: true,
-            message: '密码修改成功，请重新登录',
+            message: this.$t('account.changeSuccess'),
             type: 'success'
           })
           // 重新登录
@@ -127,7 +131,7 @@ export default {
         } else {
           this.$message({
             showClose: true,
-            message: '表单校验失败',
+            message: this.$t('common.formInvalid'),
             type: 'warn'
           })
           return false
