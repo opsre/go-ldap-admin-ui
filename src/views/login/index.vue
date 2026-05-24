@@ -1,6 +1,7 @@
 <template>
   <div class="login-container" :style="{backgroundImage:`url(${imgSrc})`}">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on" label-position="left">
+      <lang-select class="login-lang-select" />
 
       <div class="title-container">
         <h3 class="title">Go-Ldap-Admin </h3>
@@ -56,9 +57,13 @@
 
 <script>
 import JSEncrypt from 'jsencrypt'
+import LangSelect from '@/components/LangSelect'
 
 export default {
   name: 'Login',
+  components: {
+    LangSelect
+  },
   data() {
     return {
       imgSrc: require('@/assets/backgd-image/login.jpeg'),
@@ -265,7 +270,7 @@ $light_gray:#eee;
   align-items: center;
 
   .login-form {
-    // position: relative;
+    position: relative;
     width: 520px;
     max-width: 100%;
     // padding: 160px 35px 0;
@@ -275,6 +280,27 @@ $light_gray:#eee;
     border-radius: 8px;
     margin-left: 850px;
     margin-top: -125px;
+
+    .login-lang-select {
+      position: absolute;
+      top: 12px;
+      right: 18px;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      transition: background .3s;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.12);
+      }
+
+      ::v-deep .lang-select-trigger {
+        color: $light_gray;
+      }
+    }
   }
 
   .svg-container {

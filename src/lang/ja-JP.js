@@ -342,6 +342,33 @@ export default {
       remove: '削除'
     }
   },
+  dashboard: {
+    radar: {
+      indicators: {
+        sales: '売上',
+        administration: '管理',
+        informationTechnology: '情報技術',
+        customerSupport: 'カスタマーサポート',
+        development: '開発',
+        marketing: 'マーケティング'
+      },
+      legend: {
+        allocatedBudget: '割当予算',
+        expectedSpending: '予想支出',
+        actualSpending: '実支出'
+      }
+    },
+    pie: {
+      seriesName: '週間記事',
+      categories: {
+        industries: '産業',
+        technology: 'テクノロジー',
+        forex: '為替',
+        gold: '金',
+        forecasts: '予測'
+      }
+    }
+  },
   fieldRelationPage: {
     fields: {
       id: '番号',

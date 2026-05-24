@@ -27,6 +27,18 @@ export default {
       chart: null
     }
   },
+  computed: {
+    locale() {
+      return this.$store.getters.locale
+    }
+  },
+  watch: {
+    locale() {
+      if (this.chart) {
+        this.refreshChart()
+      }
+    }
+  },
   mounted() {
     this.initChart()
     this.__resizeHandler = debounce(() => {
@@ -48,7 +60,29 @@ export default {
     initChart() {
       this.chart = echarts.init(this.$el, 'macarons')
 
-      this.chart.setOption({
+      this.chart.setOption(this.getChartOption())
+    },
+    refreshChart() {
+      this.$nextTick(() => {
+        window.requestAnimationFrame(() => {
+          if (!this.chart) {
+            return
+          }
+          this.chart.setOption(this.getChartOption())
+          this.chart.resize()
+          window.requestAnimationFrame(() => {
+            if (this.chart) {
+              this.chart.resize()
+            }
+          })
+        })
+      })
+    },
+    getChartOption() {
+      const categoryKeys = ['industries', 'technology', 'forex', 'gold', 'forecasts']
+      const categories = categoryKeys.map(key => this.$t(`dashboard.pie.categories.${key}`))
+
+      return {
         tooltip: {
           trigger: 'item',
           formatter: '{a} <br/>{b} : {c} ({d}%)'
@@ -56,28 +90,28 @@ export default {
         legend: {
           left: 'center',
           bottom: '10',
-          data: ['Industries', 'Technology', 'Forex', 'Gold', 'Forecasts']
+          data: categories
         },
         calculable: true,
         series: [
           {
-            name: 'WEEKLY WRITE ARTICLES',
+            name: this.$t('dashboard.pie.seriesName'),
             type: 'pie',
             roseType: 'radius',
             radius: [15, 95],
             center: ['50%', '38%'],
             data: [
-              { value: 320, name: 'Industries' },
-              { value: 240, name: 'Technology' },
-              { value: 149, name: 'Forex' },
-              { value: 100, name: 'Gold' },
-              { value: 59, name: 'Forecasts' }
+              { value: 320, name: categories[0] },
+              { value: 240, name: categories[1] },
+              { value: 149, name: categories[2] },
+              { value: 100, name: categories[3] },
+              { value: 59, name: categories[4] }
             ],
             animationEasing: 'cubicInOut',
             animationDuration: 2600
           }
         ]
-      })
+      }
     }
   }
 }

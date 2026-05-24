@@ -29,6 +29,18 @@ export default {
       chart: null
     }
   },
+  computed: {
+    locale() {
+      return this.$store.getters.locale
+    }
+  },
+  watch: {
+    locale() {
+      if (this.chart) {
+        this.refreshChart()
+      }
+    }
+  },
   mounted() {
     this.initChart()
     this.__resizeHandler = debounce(() => {
@@ -50,7 +62,41 @@ export default {
     initChart() {
       this.chart = echarts.init(this.$el, 'macarons')
 
-      this.chart.setOption({
+      this.chart.setOption(this.getChartOption())
+    },
+    refreshChart() {
+      this.$nextTick(() => {
+        window.requestAnimationFrame(() => {
+          if (!this.chart) {
+            return
+          }
+          this.chart.setOption(this.getChartOption())
+          this.chart.resize()
+          window.requestAnimationFrame(() => {
+            if (this.chart) {
+              this.chart.resize()
+            }
+          })
+        })
+      })
+    },
+    getChartOption() {
+      const indicatorKeys = [
+        'sales',
+        'administration',
+        'informationTechnology',
+        'customerSupport',
+        'development',
+        'marketing'
+      ]
+      const legendKeys = ['allocatedBudget', 'expectedSpending', 'actualSpending']
+      const indicators = indicatorKeys.map(key => ({
+        name: this.$t(`dashboard.radar.indicators.${key}`),
+        max: key === 'sales' ? 10000 : 20000
+      }))
+      const legends = legendKeys.map(key => this.$t(`dashboard.radar.legend.${key}`))
+
+      return {
         tooltip: {
           trigger: 'axis',
           axisPointer: { // 坐标轴指示器，坐标轴触发有效
@@ -71,19 +117,12 @@ export default {
               shadowOffsetY: 15
             }
           },
-          indicator: [
-            { name: 'Sales', max: 10000 },
-            { name: 'Administration', max: 20000 },
-            { name: 'Information Techology', max: 20000 },
-            { name: 'Customer Support', max: 20000 },
-            { name: 'Development', max: 20000 },
-            { name: 'Marketing', max: 20000 }
-          ]
+          indicator: indicators
         },
         legend: {
           left: 'center',
           bottom: '10',
-          data: ['Allocated Budget', 'Expected Spending', 'Actual Spending']
+          data: legends
         },
         series: [{
           type: 'radar',
@@ -100,20 +139,20 @@ export default {
           data: [
             {
               value: [5000, 7000, 12000, 11000, 15000, 14000],
-              name: 'Allocated Budget'
+              name: legends[0]
             },
             {
               value: [4000, 9000, 15000, 15000, 13000, 11000],
-              name: 'Expected Spending'
+              name: legends[1]
             },
             {
               value: [5500, 11000, 12000, 15000, 12000, 12000],
-              name: 'Actual Spending'
+              name: legends[2]
             }
           ],
           animationDuration: animationDuration
         }]
-      })
+      }
     }
   }
 }
