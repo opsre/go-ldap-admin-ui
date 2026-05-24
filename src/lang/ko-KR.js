@@ -342,6 +342,33 @@ export default {
       remove: '제거'
     }
   },
+  dashboard: {
+    radar: {
+      indicators: {
+        sales: '매출',
+        administration: '관리',
+        informationTechnology: '정보 기술',
+        customerSupport: '고객 지원',
+        development: '개발',
+        marketing: '마케팅'
+      },
+      legend: {
+        allocatedBudget: '배정 예산',
+        expectedSpending: '예상 지출',
+        actualSpending: '실제 지출'
+      }
+    },
+    pie: {
+      seriesName: '주간 글',
+      categories: {
+        industries: '산업',
+        technology: '기술',
+        forex: '외환',
+        gold: '금',
+        forecasts: '예측'
+      }
+    }
+  },
   fieldRelationPage: {
     fields: {
       id: '번호',

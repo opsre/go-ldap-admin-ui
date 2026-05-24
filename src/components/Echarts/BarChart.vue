@@ -29,6 +29,18 @@ export default {
       chart: null
     }
   },
+  computed: {
+    locale() {
+      return this.$store.getters.locale
+    }
+  },
+  watch: {
+    locale() {
+      if (this.chart) {
+        this.refreshChart()
+      }
+    }
+  },
   mounted() {
     this.initChart()
     this.__resizeHandler = debounce(() => {
@@ -50,7 +62,29 @@ export default {
     initChart() {
       this.chart = echarts.init(this.$el, 'macarons')
 
-      this.chart.setOption({
+      this.chart.setOption(this.getChartOption())
+    },
+    refreshChart() {
+      this.$nextTick(() => {
+        window.requestAnimationFrame(() => {
+          if (!this.chart) {
+            return
+          }
+          this.chart.setOption(this.getChartOption())
+          this.chart.resize()
+          window.requestAnimationFrame(() => {
+            if (this.chart) {
+              this.chart.resize()
+            }
+          })
+        })
+      })
+    },
+    getChartOption() {
+      const weekdays = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
+        .map(day => this.$t(`date.weekday.${day}`))
+
+      return {
         tooltip: {
           trigger: 'axis',
           axisPointer: { // 坐标轴指示器，坐标轴触发有效
@@ -66,7 +100,7 @@ export default {
         },
         xAxis: [{
           type: 'category',
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          data: weekdays,
           axisTick: {
             alignWithLabel: true
           }
@@ -99,7 +133,7 @@ export default {
           data: [30, 52, 200, 334, 390, 330, 220],
           animationDuration
         }]
-      })
+      }
     }
   }
 }

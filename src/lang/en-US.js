@@ -342,6 +342,33 @@ export default {
       remove: 'Remove'
     }
   },
+  dashboard: {
+    radar: {
+      indicators: {
+        sales: 'Sales',
+        administration: 'Administration',
+        informationTechnology: 'Information Technology',
+        customerSupport: 'Customer Support',
+        development: 'Development',
+        marketing: 'Marketing'
+      },
+      legend: {
+        allocatedBudget: 'Allocated Budget',
+        expectedSpending: 'Expected Spending',
+        actualSpending: 'Actual Spending'
+      }
+    },
+    pie: {
+      seriesName: 'Weekly Articles',
+      categories: {
+        industries: 'Industries',
+        technology: 'Technology',
+        forex: 'Forex',
+        gold: 'Gold',
+        forecasts: 'Forecasts'
+      }
+    }
+  },
   fieldRelationPage: {
     fields: {
       id: 'ID',

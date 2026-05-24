@@ -342,6 +342,33 @@ export default {
       remove: 'Quitar'
     }
   },
+  dashboard: {
+    radar: {
+      indicators: {
+        sales: 'Ventas',
+        administration: 'Administración',
+        informationTechnology: 'Tecnología de la información',
+        customerSupport: 'Atención al cliente',
+        development: 'Desarrollo',
+        marketing: 'Marketing'
+      },
+      legend: {
+        allocatedBudget: 'Presupuesto asignado',
+        expectedSpending: 'Gasto previsto',
+        actualSpending: 'Gasto real'
+      }
+    },
+    pie: {
+      seriesName: 'Artículos semanales',
+      categories: {
+        industries: 'Industrias',
+        technology: 'Tecnología',
+        forex: 'Divisas',
+        gold: 'Oro',
+        forecasts: 'Previsiones'
+      }
+    }
+  },
   fieldRelationPage: {
     fields: {
       id: 'N.º',

@@ -342,6 +342,33 @@ export default {
       remove: '移除'
     }
   },
+  dashboard: {
+    radar: {
+      indicators: {
+        sales: '销售',
+        administration: '管理',
+        informationTechnology: '信息技术',
+        customerSupport: '客户支持',
+        development: '研发',
+        marketing: '市场'
+      },
+      legend: {
+        allocatedBudget: '已分配预算',
+        expectedSpending: '预期支出',
+        actualSpending: '实际支出'
+      }
+    },
+    pie: {
+      seriesName: '每周文章',
+      categories: {
+        industries: '行业',
+        technology: '技术',
+        forex: '外汇',
+        gold: '黄金',
+        forecasts: '预测'
+      }
+    }
+  },
   fieldRelationPage: {
     fields: {
       id: '序号',
