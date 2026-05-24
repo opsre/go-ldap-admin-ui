@@ -1,5 +1,6 @@
 import variables from '@/styles/element-variables.scss'
 import defaultSettings from '@/settings'
+import { getLocale, setLocale } from '@/lang'
 
 const { showSettings, tagsView, fixedHeader, sidebarLogo } = defaultSettings
 
@@ -8,7 +9,8 @@ const state = {
   showSettings: showSettings,
   tagsView: tagsView,
   fixedHeader: fixedHeader,
-  sidebarLogo: sidebarLogo
+  sidebarLogo: sidebarLogo,
+  locale: getLocale()
 }
 
 const mutations = {
@@ -17,12 +19,18 @@ const mutations = {
     if (state.hasOwnProperty(key)) {
       state[key] = value
     }
+  },
+  SET_LOCALE: (state, locale) => {
+    state.locale = setLocale(locale)
   }
 }
 
 const actions = {
   changeSetting({ commit }, data) {
     commit('CHANGE_SETTING', data)
+  },
+  setLocale({ commit }, locale) {
+    commit('SET_LOCALE', locale)
   }
 }
 
@@ -32,4 +40,3 @@ export default {
   mutations,
   actions
 }
-

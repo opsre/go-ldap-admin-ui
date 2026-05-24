@@ -11,7 +11,7 @@
     >
       <i class="el-icon-upload" />
       <div class="el-upload__text">
-        将文件拖到此处，或<em>点击上传</em>
+        {{ $t('components.upload.dragHere') }}<em>{{ $t('components.upload.click') }}</em>
       </div>
     </el-upload>
     <div class="image-preview image-app-preview">
@@ -76,8 +76,7 @@ export default {
           this.tempUrl = response.data.qiniu_url
           resolve(true)
         }).catch(err => {
-  
-          reject(false)
+          reject(err)
         })
       })
     }

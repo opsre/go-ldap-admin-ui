@@ -15,7 +15,7 @@ router.beforeEach(async(to, from, next) => {
   NProgress.start()
 
   // set page title
-  document.title = getPageTitle(to.meta.title)
+  document.title = getPageTitle(to.meta.title, to.meta)
 
   // determine whether the user has logged in 确定用户是否已经登录
   const hasToken = getToken()

@@ -4,10 +4,12 @@ import store from '@/store'
 // import router from '@/router'
 import { getToken } from '@/utils/auth'
 import router from '@/router'
+import i18n, { getLocale } from '@/lang'
+import { buildAcceptLanguage } from '@/utils/i18n'
 
 // create an axios instance
 const service = axios.create({
-  baseURL: process.env.NODE_ENV === 'production' ? process.env.VUE_APP_BASE_API : '/', // api 的 base_url
+  baseURL: process.env.NODE_ENV === 'production' ? process.env.VUE_APP_BASE_API : '/' // api 的 base_url
   // withCredentials: true, // send cookies when cross-domain requests
   // timeout: 5000 // request timeout
 })
@@ -16,6 +18,9 @@ const service = axios.create({
 service.interceptors.request.use(
   config => {
     // do something before request is sent
+    const locale = getLocale()
+    config.headers['X-Locale'] = locale
+    config.headers['Accept-Language'] = buildAcceptLanguage(locale)
     if (store.getters.token) {
       // let each request carry token
       // ['X-Token'] is a custom headers key
@@ -45,25 +50,39 @@ service.interceptors.response.use(
    */
   response => {
     const res = response.data
-    if (res.code==0 || res.code==200){
+    if (res.code === 0 || res.code === 200) {
       return res
-    }else{
+    } else {
       Message({
-        message: res.msg,
+        message: res.msg || res.message || i18n.t('common.unknownError'),
         type: 'error'
       })
       return false
     }
   },
   error => {
-    if (error.response.status === 401) {
-      if (error.response.data.message.indexOf('JWT认证失败') !== -1) {
+    const response = error.response || {}
+    const data = response.data || {}
+    const message = data.msg || data.message || error.message || i18n.t('common.unknownError')
+
+    if (!response.status) {
+      Message({
+        showClose: true,
+        message,
+        type: 'error',
+        duration: 5 * 1000
+      })
+      return Promise.reject(error)
+    }
+
+    if (response.status === 401) {
+      if (store.getters.token) {
         MessageBox.confirm(
-          '登录失败,用户名或密码错误,重新登录或继续停留在当前页？',
-          '登录状态已失效',
+          i18n.t('login.invalid'),
+          i18n.t('login.expired'),
           {
-            confirmButtonText: '重新登录',
-            cancelButtonText: '继续停留',
+            confirmButtonText: i18n.t('common.relogin'),
+            cancelButtonText: i18n.t('common.stay'),
             type: 'warning'
           }
         ).then(() => {
@@ -77,19 +96,18 @@ service.interceptors.response.use(
       } else {
         Message({
           showClose: true,
-          message: error.response.data.message,
+          message,
           type: 'error',
           duration: 5 * 1000
         })
         return Promise.reject(error)
       }
-    } else if (error.response.status === 403) {
+    } else if (response.status === 403) {
       router.push({ path: '/401' })
     } else {
-
       Message({
         showClose: true,
-        message: error.response.data.message || error.message,
+        message,
         type: 'error',
         duration: 5 * 1000
       })

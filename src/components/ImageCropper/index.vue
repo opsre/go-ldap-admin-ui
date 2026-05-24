@@ -141,6 +141,16 @@ import language from './utils/language.js'
 import mimes from './utils/mimes.js'
 import data2blob from './utils/data2blob.js'
 import effectRipple from './utils/effectRipple.js'
+import { getLocale } from '@/lang'
+
+const cropperLocaleMap = {
+  'zh-CN': 'zh',
+  'en-US': 'en',
+  'ja-JP': 'ja',
+  'es-ES': 'es-MX',
+  'ko-KR': 'en'
+}
+
 export default {
   props: {
     // 域，上传文件name，触发事件会带上（如果一个页面多个图片上传控件，可以做区分
@@ -206,7 +216,7 @@ export default {
     // 语言类型
     langType: {
       type: String,
-      default: 'zh'
+      default: ''
     },
     // 语言包
     langExt: {
@@ -230,7 +240,8 @@ export default {
     const allowImgFormat = ['jpg', 'png']
     const tempImgFormat =
       allowImgFormat.indexOf(imgFormat) === -1 ? 'jpg' : imgFormat
-    const lang = language[langType] ? language[langType] : language['en']
+    const normalizedLangType = langType || cropperLocaleMap[getLocale()] || 'en'
+    const lang = language[normalizedLangType] ? language[normalizedLangType] : language['en']
     const mime = mimes[tempImgFormat]
     // 规范图片格式
     this.imgFormat = tempImgFormat

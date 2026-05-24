@@ -35,7 +35,6 @@ import RadarChart from '@/components/Echarts/RadarChart'
 import PieChart from '@/components/Echarts/PieChart'
 import BarChart from '@/components/Echarts/BarChart'
 import { mapGetters } from 'vuex'
-import { Message } from 'element-ui'
 
 const lineChartData = {
   newVisitis: {
@@ -67,25 +66,24 @@ export default {
     PieChart,
     BarChart
   },
-  computed: {
-    ...mapGetters(['roles'])
-  },
   data() {
     return {
       lineChartData: lineChartData.newVisitis
     }
   },
-  //普通用户登录后跳转到个人中心
- beforeRouteEnter(to, from, next) {
+  computed: {
+    ...mapGetters(['roles'])
+  },
+  beforeRouteEnter(to, from, next) {
     next(vm => {
-      const roles = vm.$store.getters.roles;
-      if (roles.length > 0 && roles.includes('普通用户')) {
-        vm.$router.push('/profile/index');
+      const roleKeywords = vm.$store.getters.roleKeywords
+      if (roleKeywords.length > 0 && roleKeywords.includes('user')) {
+        vm.$router.push('/profile/index')
       }
-    });
+    })
   },
 
-   methods: {
+  methods: {
     handleSetLineChartData(type) {
       this.lineChartData = lineChartData[type]
     }

@@ -8,7 +8,8 @@ const state = {
   name: '',
   avatar: '',
   introduction: '',
-  roles: []
+  roles: [],
+  roleKeywords: []
 }
 
 const mutations = {
@@ -26,14 +27,16 @@ const mutations = {
   },
   SET_ROLES: (state, roles) => {
     state.roles = roles
+  },
+  SET_ROLE_KEYWORDS: (state, roleKeywords) => {
+    state.roleKeywords = roleKeywords
   }
 }
 
 const actions = {
-  
+
   // user login
   login({ commit }, userInfo) {
-   
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
@@ -65,8 +68,13 @@ const actions = {
           reject('getInfo: roles must be a non-null array!')
         }
         const rolesNames = []
-        roles.forEach(x => { rolesNames.push(x.name) })
+        const roleKeywords = []
+        roles.forEach(x => {
+          rolesNames.push(x.name)
+          roleKeywords.push(x.keyword)
+        })
         commit('SET_ROLES', rolesNames)
+        commit('SET_ROLE_KEYWORDS', roleKeywords)
         commit('SET_NAME', username)
         commit('SET_AVATAR', avatar)
         commit('SET_INTRODUCTION', introduction)
@@ -83,6 +91,7 @@ const actions = {
       logout(state.token).then(() => {
         commit('SET_TOKEN', '')
         commit('SET_ROLES', [])
+        commit('SET_ROLE_KEYWORDS', [])
         removeToken()
         resetRouter()
 
@@ -110,6 +119,7 @@ const actions = {
     return new Promise(resolve => {
       commit('SET_TOKEN', '')
       commit('SET_ROLES', [])
+      commit('SET_ROLE_KEYWORDS', [])
       removeToken()
       resolve()
     })

@@ -4,55 +4,55 @@
 
       <template>
         <el-tabs v-model="activeName" @tab-click="handleClick">
-          <el-tab-pane label="分组内成员" name="first">
+          <el-tab-pane :label="$t('groupUserPage.tabs.inGroup')" name="first">
             <div v-if="infoRoles" class="role-header">
               <div class="header-name">
-                <span class="name-des">分组名：</span>
+                <span class="name-des">{{ $t('groupUserPage.groupName') }}</span>
                 <span>{{ infoRoles.groupName }}</span>
               </div>
               <div class="header-name">
-                <span class="name-des">分组描述：</span>
+                <span class="name-des">{{ $t('groupUserPage.groupRemark') }}</span>
                 <span>{{ infoRoles.groupRemark }}</span>
               </div>
               <div class="header-name header-search">
-                <el-input v-model.trim="transParams.nickname" clearable placeholder="用户名" @input="onInput($event)" />
-                <el-button class="search-btn" :loading="loading" icon="el-icon-search" type="primary" @click="search">查询</el-button>
-                <el-button class="search-btn" :disabled="multipleSelection.length === 0" :loading="loading" icon="el-icon-delete" type="danger" @click="batchDelete">移除</el-button>
+                <el-input v-model.trim="transParams.nickname" clearable :placeholder="$t('userPage.fields.username')" @input="onInput($event)" />
+                <el-button class="search-btn" :loading="loading" icon="el-icon-search" type="primary" @click="search">{{ $t('common.search') }}</el-button>
+                <el-button class="search-btn" :disabled="multipleSelection.length === 0" :loading="loading" icon="el-icon-delete" type="danger" @click="batchDelete">{{ $t('groupUserPage.actions.remove') }}</el-button>
               </div>
             </div>
             <el-table v-loading="loading" :data="tableData" border stripe style="width: 100%" @selection-change="handleSelectionChange">
               <el-table-column type="selection" width="55" align="center" />
-              <el-table-column align="center" prop="nickName" label="用户名" />
-              <el-table-column align="center" prop="jobNumber" label="工号" />
-              <el-table-column align="center" prop="mobile" label="手机号" />
-              <el-table-column align="center" prop="mail" label="邮箱" />
-              <el-table-column align="center" prop="introduction" label="介绍" />
+              <el-table-column align="center" prop="nickName" :label="$t('userPage.fields.username')" />
+              <el-table-column align="center" prop="jobNumber" :label="$t('userPage.fields.jobNumber')" />
+              <el-table-column align="center" prop="mobile" :label="$t('userPage.fields.mobile')" />
+              <el-table-column align="center" prop="mail" :label="$t('userPage.fields.mail')" />
+              <el-table-column align="center" prop="introduction" :label="$t('userPage.fields.introduction')" />
 
             </el-table>
           </el-tab-pane>
-          <el-tab-pane label="分组外成员" name="second">
+          <el-tab-pane :label="$t('groupUserPage.tabs.outGroup')" name="second">
             <div v-if="infoRoles" class="role-header">
               <div class="header-name">
-                <span class="name-des">分组名：</span>
+                <span class="name-des">{{ $t('groupUserPage.groupName') }}</span>
                 <span>{{ infoRoles.groupName }}</span>
               </div>
               <div class="header-name">
-                <span class="name-des">分组描述：</span>
+                <span class="name-des">{{ $t('groupUserPage.groupRemark') }}</span>
                 <span>{{ infoRoles.groupRemark }}</span>
               </div>
               <div class="header-name header-search">
-                <el-input v-model.trim="transParams.nickname" clearable placeholder="用户名" @input="onInput($event)" />
-                <el-button class="search-btn" :loading="loading" icon="el-icon-search" type="primary" @click="search">查询</el-button>
-                <el-button class="search-btn" :disabled="multipleSelection.length === 0" :loading="loading" icon="el-icon-edit" type="primary" @click="batchAdd">添加</el-button>
+                <el-input v-model.trim="transParams.nickname" clearable :placeholder="$t('userPage.fields.username')" @input="onInput($event)" />
+                <el-button class="search-btn" :loading="loading" icon="el-icon-search" type="primary" @click="search">{{ $t('common.search') }}</el-button>
+                <el-button class="search-btn" :disabled="multipleSelection.length === 0" :loading="loading" icon="el-icon-edit" type="primary" @click="batchAdd">{{ $t('groupPage.actions.addUser') }}</el-button>
               </div>
             </div>
             <el-table v-loading="loading" :data="tableData" border stripe style="width: 100%" @selection-change="handleSelectionChange">
               <el-table-column type="selection" width="55" align="center" />
-              <el-table-column align="center" prop="nickName" label="用户名" />
-              <el-table-column align="center" prop="jobNumber" label="工号" />
-              <el-table-column align="center" prop="mobile" label="手机号" />
-              <el-table-column align="center" prop="mail" label="邮箱" />
-              <el-table-column align="center" prop="introduction" label="介绍" />
+              <el-table-column align="center" prop="nickName" :label="$t('userPage.fields.username')" />
+              <el-table-column align="center" prop="jobNumber" :label="$t('userPage.fields.jobNumber')" />
+              <el-table-column align="center" prop="mobile" :label="$t('userPage.fields.mobile')" />
+              <el-table-column align="center" prop="mail" :label="$t('userPage.fields.mail')" />
+              <el-table-column align="center" prop="introduction" :label="$t('userPage.fields.introduction')" />
             </el-table>
           </el-tab-pane>
         </el-tabs>
@@ -158,14 +158,14 @@ export default {
       this.multipleSelection = val
     },
     // 判断结果
-    judgeResult(res){
-      if (res.code==0){
-          Message({
-            showClose: true,
-            message: "操作成功",
-            type: 'success'
-          })
-        }
+    judgeResult(res) {
+      if (res.code === 0) {
+        Message({
+          showClose: true,
+          message: this.$t('common.operationSuccess'),
+          type: 'success'
+        })
+      }
     },
     // 移除操作
     async batchDelete() {
@@ -175,7 +175,7 @@ export default {
       })
       this.loading = true
       try {
-        await delGroup({ groupId: Number(this.transParams.groupId), userIds: userRoles }).then(res =>{
+        await delGroup({ groupId: Number(this.transParams.groupId), userIds: userRoles }).then(res => {
           this.judgeResult(res)
         })
       } finally {
