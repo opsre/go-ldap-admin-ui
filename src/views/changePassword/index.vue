@@ -25,7 +25,7 @@ export default {
   name: 'ChangePass',
   data() {
     return {
-      // 查询参数
+      // Query parameters
       form: {
         mail: '',
         code: ''
@@ -33,7 +33,7 @@ export default {
     }
   },
   methods: {
-    // 判断结果
+    // Check the result
     judgeResult(res) {
       if (res.code === 0) {
         Message({
@@ -44,18 +44,18 @@ export default {
       }
     },
 
-    // 发送邮箱验证码
+    // Send email verification code
     async sendEmailCode() {
       await sendCode({ mail: this.form.mail }).then(res => {
         this.judgeResult(res)
       })
     },
-    // 重置密码
+    // Reset password
     async resetPass() {
       await emailPass(this.form).then(res => {
         this.judgeResult(res)
       })
-      // 重新登录
+      // Log in again
       setTimeout(() => {
         this.$router.replace({ path: '/login' })
       }, 1500)

@@ -70,7 +70,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <!-- 新增 -->
+      <!-- Create -->
       <el-dialog :title="dialogFormTitle" :visible.sync="updateLoading">
         <el-form ref="dialogForm" size="small" :model="dialogFormData" :rules="dialogFormRules" label-width="120px">
           <el-form-item :label="$t('groupPage.fields.name')" prop="groupName">
@@ -100,7 +100,7 @@
           <el-button size="mini" :loading="submitLoading" type="primary" @click="submitForm()">{{ $t('common.confirm') }}</el-button>
         </div>
       </el-dialog>
-      <!-- 编辑 -->
+      <!-- Edit -->
       <el-dialog :title="dialogFormTitle" :visible.sync="dialogFormVisible">
         <el-form ref="dialogForm" size="small" :model="dialogFormData" :rules="dialogFormRules" label-width="120px">
           <el-form-item :label="$t('groupPage.fields.name')" prop="groupName">
@@ -144,24 +144,24 @@ export default {
   },
   data() {
     return {
-      // 查询参数
+      // Query parameters
       params: {
         groupName: undefined,
         remark: undefined,
         syncState: undefined,
         pageNum: 1,
-        pageSize: 1000// 平常百姓人家应该不会有这么多数据吧,后台限制最大单次获取1000条
+        pageSize: 1000// Most users should not have this many records; the backend limits each request to 1000 records.
       },
-      // 表格数据
+      // Table data
       tableData: [],
       infoTableData: [],
       total: 0,
       loading: false,
-      // 上级目录数据
+      // Parent directory data
       treeselectData: [],
       treeselectValue: 0,
-      updateLoading: false, // 新增
-      // dialog对话框
+      updateLoading: false, // Create
+      // Dialog box
       submitLoading: false,
       dialogFormTitle: '',
       dialogType: '',
@@ -174,11 +174,11 @@ export default {
         groupType: '',
         remark: ''
       },
-      // 删除按钮弹出框
+      // Delete button confirmation dialog
       popoverVisible: false,
-      // 表格多选
+      // Table selection
       multipleSelection: [],
-      dialogTransfer: '', // 穿梭框头部
+      dialogTransfer: '', // Transfer panel header
       dialogTransferVisible: false,
 
       transParams: {
@@ -188,16 +188,16 @@ export default {
       renderFunc(h, option) {
         return <span>{option.key} - {option.label}</span>
       },
-      userArrInfo: [], // 初始人员列表数据
-      data: [], // 转化后人员列表数据
-      value3: [], // 右侧默认人员列表数据
-      userId: [], // 送到后台 -> 勾选的数据code数组
+      userArrInfo: [], // Initial user list data
+      data: [], // Transformed user list data
+      value3: [], // Default user list data on the right
+      userId: [], // Send the selected data code array to the backend
       ui: {
         submitLoading: false
       },
       statusTrans: '',
 
-      // 同步配置
+      // Sync configuration
       syncConfig: {
         ldapEnableSync: false,
         dingTalkEnableSync: false,
@@ -239,7 +239,7 @@ export default {
     this.getSyncConfig()
   },
   methods: {
-    // 获取同步配置
+    // Fetch sync configuration
     async getSyncConfig() {
       try {
         const { data } = await getConfig()
@@ -248,9 +248,9 @@ export default {
         console.error('failed to get sync config:', error)
       }
     },
-    // // 查询
+    // // Query
     search() {
-      // 初始化表格数据
+      // Initialize table data
       this.infoTableData = JSON.parse(JSON.stringify(this.tableData))
       this.infoTableData = this.deal(this.infoTableData, node =>
         (node.groupNameDisplay || node.groupName).includes(this.params.groupName) ||
@@ -261,27 +261,27 @@ export default {
     resetData() {
       this.infoTableData = JSON.parse(JSON.stringify(this.tableData))
     },
-    // 页面数据过滤
+    // Filter page data
     deal(nodes, predicate) {
-      // 如果已经没有节点了，结束递归
+      // If there are no nodes left, stop the recursion
       if (!(nodes && nodes.length)) {
         return []
       }
       const newChildren = []
       for (const node of nodes) {
         if (predicate(node)) {
-          // 如果节点符合条件，直接加入新的节点集
+          // If the node matches, add it directly to the new node set
           newChildren.push(node)
           node.children = this.deal(node.children, predicate)
         } else {
-          // 如果当前节点不符合条件，递归过滤子节点，
-          // 把符合条件的子节点提升上来，并入新节点集
+          // If the current node does not match, recursively filter its child nodes,
+          // promote matching child nodes and add them to the new node set
           newChildren.push(...this.deal(node.children, predicate))
         }
       }
       return newChildren
     },
-    // 获取表格数据
+    // Fetch table data
     async getTableData() {
       this.loading = true
       try {
@@ -294,13 +294,13 @@ export default {
       }
     },
 
-    // 新增
+    // Create
     create() {
       this.dialogFormTitle = this.$t('groupPage.dialog.createTitle')
-      this.updateLoading = true // 新增的展示
+      this.updateLoading = true // Create loading indicator
       this.dialogType = 'create'
     },
-    // 修改
+    // Edit
     update(row) {
       this.dialogFormData.ID = row.ID
       this.dialogFormData.groupName = row.groupName
@@ -309,7 +309,7 @@ export default {
       this.dialogType = 'update'
       this.dialogFormVisible = true
     },
-    // 穿梭框
+    // Transfer panel
     addUp(row) {
       this.dialogTransfer = this.$t('route.User')
       this.dialogTransferVisible = true
@@ -318,7 +318,7 @@ export default {
       this.$router.push({ path: '/userList', query: row })
     },
 
-    // 判断结果
+    // Check the result
     judgeResult(res) {
       if (res.code === 0) {
         Message({
@@ -329,7 +329,7 @@ export default {
       }
     },
 
-    // 提交表单
+    // Submit form
     submitForm() {
       this.$refs['dialogForm'].validate(async valid => {
         if (valid) {
@@ -360,7 +360,7 @@ export default {
       })
     },
 
-    // 提交表单
+    // Submit form
     cancelForm() {
       this.resetForm()
     },
@@ -376,7 +376,7 @@ export default {
       }
     },
 
-    // 批量删除
+    // Delete selected items
     batchDelete() {
       this.$confirm(this.$t('groupPage.confirm.batchDelete'), this.$t('userPage.confirm.title'), {
         confirmButtonText: this.$t('common.confirm'),
@@ -404,7 +404,7 @@ export default {
         })
       })
     },
-    // 批量同步
+    // Sync selected items
     batchSync() {
       this.$confirm(this.$t('groupPage.confirm.batchSync'), this.$t('userPage.confirm.title'), {
         confirmButtonText: this.$t('common.confirm'),
@@ -433,12 +433,12 @@ export default {
       })
     },
 
-    // 表格多选
+    // Table selection
     handleSelectionChange(val) {
       this.multipleSelection = val
     },
 
-    // 单个删除
+    // Delete one item
     async singleDelete(Id) {
       this.loading = true
       try {
@@ -450,7 +450,7 @@ export default {
       }
       this.getTableData()
     },
-    // 单个同步
+    // Sync one item
     async singleSync(Id) {
       this.loading = true
       try {
@@ -463,7 +463,7 @@ export default {
       this.getTableData()
     },
 
-    // 分页
+    // Pagination
     handleSizeChange(val) {
       this.params.pageSize = val
       this.getTableData()

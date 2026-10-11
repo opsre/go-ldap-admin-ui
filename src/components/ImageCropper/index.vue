@@ -153,27 +153,27 @@ const cropperLocaleMap = {
 
 export default {
   props: {
-    // 域，上传文件name，触发事件会带上（如果一个页面多个图片上传控件，可以做区分
+    // Domain and uploaded file name, included with the triggered event (use these to distinguish multiple image upload controls on one page)
     field: {
       type: String,
       default: 'avatar'
     },
-    // 原名key，类似于id，触发事件会带上（如果一个页面多个图片上传控件，可以做区分
+    // Original name key, similar to an ID, included with the triggered event (use it to distinguish multiple image upload controls on one page)
     ki: {
       type: Number,
       default: 0
     },
-    // 显示该控件与否
+    // Whether to display this control
     value: {
       type: Boolean,
       default: true
     },
-    // 上传地址
+    // Upload URL
     url: {
       type: String,
       default: ''
     },
-    // 其他要上传文件附带的数据，对象格式
+    // Additional data to upload with the file, as an object
     params: {
       type: Object,
       default: null
@@ -183,52 +183,52 @@ export default {
       type: Object,
       default: null
     },
-    // 剪裁图片的宽
+    // Width of the cropped image
     width: {
       type: Number,
       default: 200
     },
-    // 剪裁图片的高
+    // Height of the cropped image
     height: {
       type: Number,
       default: 200
     },
-    // 不显示旋转功能
+    // Hide the rotation controls
     noRotate: {
       type: Boolean,
       default: true
     },
-    // 不预览圆形图片
+    // Do not preview a circular image
     noCircle: {
       type: Boolean,
       default: false
     },
-    // 不预览方形图片
+    // Do not preview a square image
     noSquare: {
       type: Boolean,
       default: false
     },
-    // 单文件大小限制
+    // Single-file size limit
     maxSize: {
       type: Number,
       default: 10240
     },
-    // 语言类型
+    // Language type
     langType: {
       type: String,
       default: ''
     },
-    // 语言包
+    // Language pack
     langExt: {
       type: Object,
       default: null
     },
-    // 图片上传格式
+    // Image upload format
     imgFormat: {
       type: String,
       default: 'png'
     },
-    // 是否支持跨域
+    // Whether cross-origin requests are supported
     withCredentials: {
       type: Boolean,
       default: false
@@ -243,7 +243,7 @@ export default {
     const normalizedLangType = langType || cropperLocaleMap[getLocale()] || 'en'
     const lang = language[normalizedLangType] ? language[normalizedLangType] : language['en']
     const mime = mimes[tempImgFormat]
-    // 规范图片格式
+    // Normalize the image format
     this.imgFormat = tempImgFormat
     if (langExt) {
       Object.assign(lang, langExt)
@@ -252,78 +252,78 @@ export default {
       isSupported = false
     }
     return {
-      // 图片的mime
+      // Image MIME type
       mime,
-      // 语言包
+      // Language pack
       lang,
-      // 浏览器是否支持该控件
+      // Whether the browser supports this control
       isSupported,
-      // 浏览器是否支持触屏事件
+      // Whether the browser supports touch events
       // eslint-disable-next-line no-prototype-builtins
       isSupportTouch: document.hasOwnProperty('ontouchstart'),
-      // 步骤
-      step: 1, // 1选择文件 2剪裁 3上传
-      // 上传状态及进度
-      loading: 0, // 0未开始 1正在 2成功 3错误
+      // Step
+      step: 1, // 1 select file, 2 crop, 3 upload
+      // Upload status and progress
+      loading: 0, // 0 not started, 1 in progress, 2 succeeded, 3 failed
       progress: 0,
-      // 是否有错误及错误信息
+      // Whether there is an error and its message
       hasError: false,
       errorMsg: '',
-      // 需求图宽高比
+      // Target image aspect ratio
       ratio: width / height,
-      // 原图地址、生成图片地址
+      // Original image URL and generated image URL
       sourceImg: null,
       sourceImgUrl: '',
       createImgUrl: '',
-      // 原图片拖动事件初始值
+      // Initial values for the original image drag event
       sourceImgMouseDown: {
         on: false,
-        mX: 0, // 鼠标按下的坐标
+        mX: 0, // Coordinates where the mouse was pressed
         mY: 0,
-        x: 0, // scale原图坐标
+        x: 0, // Original image coordinates in scale
         y: 0
       },
-      // 生成图片预览的容器大小
+      // Generated image preview container size
       previewContainer: {
         width: 100,
         height: 100
       },
-      // 原图容器宽高
+      // Original image container width and height
       sourceImgContainer: {
         // sic
         width: 240,
-        height: 184 // 如果生成图比例与此一致会出现bug，先改成特殊的格式吧，哈哈哈
+        height: 184 // If the generated image has this aspect ratio, a bug occurs. Use a special value for now.
       },
-      // 原图展示属性
+      // Original image display properties
       scale: {
-        zoomAddOn: false, // 按钮缩放事件开启
-        zoomSubOn: false, // 按钮缩放事件开启
-        range: 1, // 最大100
-        rotateLeft: false, // 按钮向左旋转事件开启
-        rotateRight: false, // 按钮向右旋转事件开启
-        degree: 0, // 旋转度数
+        zoomAddOn: false, // Button zoom event enabled
+        zoomSubOn: false, // Button zoom event enabled
+        range: 1, // Maximum 100
+        rotateLeft: false, // Button rotate-left event enabled
+        rotateRight: false, // Button rotate-right event enabled
+        degree: 0, // Rotation angle
         x: 0,
         y: 0,
         width: 0,
         height: 0,
         maxWidth: 0,
         maxHeight: 0,
-        minWidth: 0, // 最宽
+        minWidth: 0, // Maximum width
         minHeight: 0,
-        naturalWidth: 0, // 原宽
+        naturalWidth: 0, // Original width
         naturalHeight: 0
       }
     }
   },
   computed: {
-    // 进度条样式
+    // Progress bar styles
     progressStyle() {
       const { progress } = this
       return {
         width: progress + '%'
       }
     },
-    // 原图样式
+    // Original image styles
     sourceImgStyle() {
       const { scale, sourceImgMasking } = this
       const top = scale.y + sourceImgMasking.y + 'px'
@@ -333,18 +333,18 @@ export default {
         left,
         width: scale.width + 'px',
         height: scale.height + 'px',
-        transform: 'rotate(' + scale.degree + 'deg)', // 旋转时 左侧原始图旋转样式
-        '-ms-transform': 'rotate(' + scale.degree + 'deg)', // 兼容IE9
-        '-moz-transform': 'rotate(' + scale.degree + 'deg)', // 兼容FireFox
-        '-webkit-transform': 'rotate(' + scale.degree + 'deg)', // 兼容Safari 和 chrome
-        '-o-transform': 'rotate(' + scale.degree + 'deg)' // 兼容 Opera
+        transform: 'rotate(' + scale.degree + 'deg)', // Style for rotating the original image on the left
+        '-ms-transform': 'rotate(' + scale.degree + 'deg)', // IE9 compatibility
+        '-moz-transform': 'rotate(' + scale.degree + 'deg)', // Firefox compatibility
+        '-webkit-transform': 'rotate(' + scale.degree + 'deg)', // Safari and Chrome compatibility
+        '-o-transform': 'rotate(' + scale.degree + 'deg)' // Opera compatibility
       }
     },
-    // 原图蒙版属性
+    // Original image mask properties
     sourceImgMasking() {
       const { width, height, ratio, sourceImgContainer } = this
       const sic = sourceImgContainer
-      const sicRatio = sic.width / sic.height // 原图容器宽高比
+      const sicRatio = sic.width / sic.height // Original image container aspect ratio
       let x = 0
       let y = 0
       let w = sic.width
@@ -361,14 +361,14 @@ export default {
         y = (sic.height - h) / 2
       }
       return {
-        scale, // 蒙版相对需求宽高的缩放
+        scale, // Mask scaling relative to the target dimensions
         x,
         y,
         width: w,
         height: h
       }
     },
-    // 原图遮罩样式
+    // Original image overlay styles
     sourceImgShadeStyle() {
       const { sourceImgMasking, sourceImgContainer } = this
       const sic = sourceImgContainer
@@ -408,18 +408,18 @@ export default {
     }
   },
   created() {
-    // 绑定按键esc隐藏此插件事件
+    // Bind the Esc key to hide this plugin
     document.addEventListener('keyup', this.closeHandler)
   },
   destroyed() {
     document.removeEventListener('keyup', this.closeHandler)
   },
   methods: {
-    // 点击波纹效果
+    // Click ripple effect
     ripple(e) {
       effectRipple(e)
     },
-    // 关闭控件
+    // Close the control
     off() {
       setTimeout(() => {
         this.$emit('input', false)
@@ -429,14 +429,14 @@ export default {
         }
       }, 200)
     },
-    // 设置步骤
+    // Set the step
     setStep(no) {
-      // 延时是为了显示动画效果呢，哈哈哈
+      // The delay allows the animation to appear.
       setTimeout(() => {
         this.step = no
       }, 200)
     },
-    /* 图片选择区域函数绑定
+    /* Bind functions for the image selection area
      ---------------------------------------------------------------*/
     preventDefault(e) {
       e.preventDefault()
@@ -463,16 +463,16 @@ export default {
       }
     },
     /* ---------------------------------------------------------------*/
-    // 检测选择的文件是否合适
+    // Check whether the selected file is suitable
     checkFile(file) {
       const { lang, maxSize } = this
-      // 仅限图片
+      // Images only
       if (file.type.indexOf('image') === -1) {
         this.hasError = true
         this.errorMsg = lang.error.onlyImg
         return false
       }
-      // 超出大小
+      // Exceeds the size limit
       if (file.size / 1024 > maxSize) {
         this.hasError = true
         this.errorMsg = lang.error.outOfSize + maxSize + 'kb'
@@ -480,14 +480,14 @@ export default {
       }
       return true
     },
-    // 重置控件
+    // Reset the control
     reset() {
       this.loading = 0
       this.hasError = false
       this.errorMsg = ''
       this.progress = 0
     },
-    // 设置图片源
+    // Set the image source
     setSourceImg(file) {
       const fr = new FileReader()
       fr.onload = e => {
@@ -496,7 +496,7 @@ export default {
       }
       fr.readAsDataURL(file)
     },
-    // 剪裁前准备工作
+    // Prepare before cropping
     startCrop() {
       const {
         width,
@@ -518,7 +518,7 @@ export default {
         let h = sim.height
         let x = 0
         let y = 0
-        // 图片像素不达标
+        // Image dimensions are below the minimum
         if (nWidth < width || nHeight < height) {
           this.hasError = true
           this.errorMsg = lang.error.lowestPx + width + '*' + height
@@ -549,10 +549,10 @@ export default {
         this.setStep(2)
       }
     },
-    // 鼠标按下图片准备移动
+    // Press the mouse on the image to prepare to move it
     imgStartMove(e) {
       e.preventDefault()
-      // 支持触摸事件，则鼠标事件无效
+      // When touch events are supported, mouse events are disabled
       if (this.isSupportTouch && !e.targetTouches) {
         return false
       }
@@ -565,10 +565,10 @@ export default {
       simd.y = scale.y
       simd.on = true
     },
-    // 鼠标按下状态下移动，图片移动
+    // Move the image while the mouse button is held down
     imgMove(e) {
       e.preventDefault()
-      // 支持触摸事件，则鼠标事件无效
+      // When touch events are supported, mouse events are disabled
       if (this.isSupportTouch && !e.targetTouches) {
         return false
       }
@@ -601,7 +601,7 @@ export default {
       scale.x = rX
       scale.y = rY
     },
-    // 按钮按下开始向右旋转
+    // Start rotating right when the button is pressed
     startRotateRight(e) {
       const { scale } = this
       scale.rotateRight = true
@@ -616,7 +616,7 @@ export default {
       }
       rotate()
     },
-    // 按钮按下开始向左旋转
+    // Start rotating left when the button is pressed
     startRotateLeft(e) {
       const { scale } = this
       scale.rotateLeft = true
@@ -631,13 +631,13 @@ export default {
       }
       rotate()
     },
-    // 停止旋转
+    // Stop rotating
     endRotate() {
       const { scale } = this
       scale.rotateLeft = false
       scale.rotateRight = false
     },
-    // 按钮按下开始放大
+    // Start zooming in when the button is pressed
     startZoomAdd(e) {
       const { scale } = this
       scale.zoomAddOn = true
@@ -652,11 +652,11 @@ export default {
       }
       zoom()
     },
-    // 按钮松开或移开取消放大
+    // Stop zooming in when the button is released or moved away
     endZoomAdd(e) {
       this.scale.zoomAddOn = false
     },
-    // 按钮按下开始缩小
+    // Start zooming out when the button is pressed
     startZoomSub(e) {
       const { scale } = this
       scale.zoomSubOn = true
@@ -671,7 +671,7 @@ export default {
       }
       zoom()
     },
-    // 按钮松开或移开取消缩小
+    // Stop zooming out when the button is released or moved away
     endZoomSub(e) {
       const { scale } = this
       scale.zoomSubOn = false
@@ -679,7 +679,7 @@ export default {
     zoomChange(e) {
       this.zoomImg(e.target.value)
     },
-    // 缩放原图
+    // Scale the original image
     zoomImg(newRange) {
       const { sourceImgMasking, scale } = this
       const {
@@ -693,16 +693,16 @@ export default {
         y
       } = scale
       const sim = sourceImgMasking
-      // 蒙版宽高
+      // Mask width and height
       const sWidth = sim.width
       const sHeight = sim.height
-      // 新宽高
+      // New width and height
       const nWidth = minWidth + ((maxWidth - minWidth) * newRange) / 100
       const nHeight = minHeight + ((maxHeight - minHeight) * newRange) / 100
-      // 新坐标（根据蒙版中心点缩放）
+      // New coordinates (scaled around the mask center)
       let nX = sWidth / 2 - (nWidth / width) * (sWidth / 2 - x)
       let nY = sHeight / 2 - (nHeight / height) * (sHeight / 2 - y)
-      // 判断新坐标是否超过蒙版限制
+      // Check whether the new coordinates exceed the mask bounds
       if (nX > 0) {
         nX = 0
       }
@@ -715,7 +715,7 @@ export default {
       if (nY < sHeight - nHeight) {
         nY = sHeight - nHeight
       }
-      // 赋值处理
+      // Assign the values
       scale.x = nX
       scale.y = nY
       scale.width = nWidth
@@ -727,7 +727,7 @@ export default {
         }
       }, 300)
     },
-    // 生成需求图片
+    // Generate the target image
     createImg(e) {
       const {
         mime,
@@ -738,13 +738,13 @@ export default {
       const canvas = this.$refs.canvas
       const ctx = canvas.getContext('2d')
       if (e) {
-        // 取消鼠标按下移动状态
+        // Clear the mouse-down move state
         this.sourceImgMouseDown.on = false
       }
       canvas.width = this.width
       canvas.height = this.height
       ctx.clearRect(0, 0, this.width, this.height)
-      // 将透明区域设置为白色底边
+      // Set transparent areas to a white background
       ctx.fillStyle = '#fff'
       ctx.fillRect(0, 0, this.width, this.height)
       ctx.translate(this.width * 0.5, this.height * 0.5)
@@ -768,7 +768,7 @@ export default {
         this.off()
       }
     },
-    // 上传图片
+    // Upload the image
     upload() {
       const {
         lang,
@@ -786,19 +786,19 @@ export default {
         data2blob(createImgUrl, mime),
         field + '.' + imgFormat
       )
-      // 添加其他参数
+      // Add other parameters
       if (typeof params === 'object' && params) {
         Object.keys(params).forEach(k => {
           fmData.append(k, params[k])
         })
       }
-      // 监听进度回调
+      // Listen to the progress callback
       // const uploadProgress = (event) => {
       //   if (event.lengthComputable) {
       //     this.progress = 100 * Math.round(event.loaded) / event.total
       //   }
       // }
-      // 上传文件
+      // Upload file
       this.reset()
       this.loading = 1
       this.setStep(3)
@@ -1299,9 +1299,9 @@ export default {
   -moz-appearance: none;
   appearance: none;
   cursor: pointer;
-  /* 滑块
+  /* Slider
                ---------------------------------------------------------------*/
-  /* 轨道
+  /* Track
                ---------------------------------------------------------------*/
 }
 .vue-image-crop-upload

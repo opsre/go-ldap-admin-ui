@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-// 获取角色列表（已完成）
+// Fetch the role list (completed)
 export function getRoles(params) {
   return request({
     url: '/api/role/list',
@@ -9,7 +9,7 @@ export function getRoles(params) {
   })
 }
 
-// 创建角色（已完成）
+// Create a role (completed)
 export function createRole(data) {
   return request({
     url: '/api/role/add',
@@ -18,7 +18,7 @@ export function createRole(data) {
   })
 }
 
-// 更新角色(已完成)
+// Update a role (completed)
 export function updateRoleById(data) {
   return request({
     url: '/api/role/update',
@@ -27,7 +27,7 @@ export function updateRoleById(data) {
   })
 }
 
-// 获取角色的权限菜单(已完成)
+// Fetch role permission menus (completed)
 export function getRoleMenusById(params) {
   return request({
     url: '/api/role/getmenulist',
@@ -36,7 +36,7 @@ export function getRoleMenusById(params) {
   })
 }
 
-// 更新角色的权限菜单(已完成)
+// Update role permission menus (completed)
 export function updateRoleMenusById( data) {
   return request({
     url: '/api/role/updatemenus',
@@ -45,7 +45,7 @@ export function updateRoleMenusById( data) {
   })
 }
 
-// 获取角色的权限接口(已完成)
+// Fetch role permission APIs (completed)
 export function getRoleApisById(params) {
   return request({
     url: '/api/role/getapilist',
@@ -54,7 +54,7 @@ export function getRoleApisById(params) {
   })
 }
 
-// 更新角色的权限接口(已完成)
+// Update role permission APIs (completed)
 export function updateRoleApisById(data) {
   return request({
     url: '/api/role/updateapis',
@@ -63,7 +63,7 @@ export function updateRoleApisById(data) {
   })
 }
 
-// 批量删除角色(已完成)
+// Delete roles in batches (completed)
 export function batchDeleteRoleByIds(data) {
   return request({
     url: '/api/role/delete',

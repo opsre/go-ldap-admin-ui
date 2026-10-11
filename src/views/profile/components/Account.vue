@@ -93,11 +93,11 @@ export default {
         if (valid) {
           this.dialogFormDataCopy = { ...this.dialogFormData }
 
-          // 密码RSA加密处理
+          // RSA-encrypt the password
           const encryptor = new JSEncrypt()
-          // 设置公钥
+          // Set the public key
           encryptor.setPublicKey(this.publicKey)
-          // 加密密码
+          // Encrypt the password
           const oldPasswd = encryptor.encrypt(this.dialogFormData.oldPassword)
           const newPasswd = encryptor.encrypt(this.dialogFormData.newPassword)
           const confirmPasswd = encryptor.encrypt(this.dialogFormData.confirmPassword)
@@ -122,10 +122,10 @@ export default {
             message: this.$t('account.changeSuccess'),
             type: 'success'
           })
-          // 重新登录
+          // Log in again
           setTimeout(() => {
             store.dispatch('user/logout').then(() => {
-              location.reload() // 为了重新实例化vue-router对象 避免bug
+              location.reload() // Reinitialize the vue-router object to avoid bugs
             })
           }, 1500)
         } else {

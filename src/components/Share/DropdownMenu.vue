@@ -38,7 +38,7 @@ export default {
 </script>
 
 <style lang="scss" >
-$n: 9; //和items.length 相同
+$n: 9; //Same as items.length
 $t: .1s;
 .share-dropdown-menu {
   width: 250px;

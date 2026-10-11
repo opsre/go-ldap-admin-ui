@@ -157,7 +157,7 @@ export default {
   },
   data() {
     return {
-      // 查询参数
+      // Query parameters
       params: {
         username: '',
         ip: '',
@@ -166,14 +166,14 @@ export default {
         pageNum: 1,
         pageSize: 10
       },
-      // 表格数据
+      // Table data
       tableData: [],
       total: 0,
       loading: false,
 
-      // 删除按钮弹出框
+      // Delete button confirmation dialog
       popoverVisible: false,
-      // 表格多选
+      // Table selection
       multipleSelection: [],
       RequestList: [{
         value: 'GET',
@@ -195,13 +195,13 @@ export default {
   },
   methods: {
     parseGoTime,
-    // 查询
+    // Query
     search() {
       this.params.pageNum = 1
       this.getTableData()
     },
 
-    // 获取表格数据
+    // Fetch table data
     async getTableData() {
       this.loading = true
       try {
@@ -213,7 +213,7 @@ export default {
       }
     },
 
-    // 判断结果
+    // Check the result
     judgeResult(res) {
       if (res.code === 0) {
         Message({
@@ -223,7 +223,7 @@ export default {
         })
       }
     },
-    // 清空日志
+    // Clear logs
     handleClean() {
       this.$confirm(this.$t('operationLogPage.confirm.clean'), this.$t('userPage.confirm.title'), {
         confirmButtonText: this.$t('common.confirm'),
@@ -248,7 +248,7 @@ export default {
       })
     },
 
-    // 批量删除
+    // Delete selected items
     batchDelete() {
       this.$confirm(this.$t('operationLogPage.confirm.batchDelete'), this.$t('userPage.confirm.title'), {
         confirmButtonText: this.$t('common.confirm'),
@@ -277,12 +277,12 @@ export default {
       })
     },
 
-    // 表格多选
+    // Table selection
     handleSelectionChange(val) {
       this.multipleSelection = val
     },
 
-    // 单个删除
+    // Delete one item
     async singleDelete(Id) {
       this.loading = true
       try {
@@ -295,7 +295,7 @@ export default {
       this.getTableData()
     },
 
-    // 分页
+    // Pagination
     handleSizeChange(val) {
       this.params.pageSize = val
       this.getTableData()

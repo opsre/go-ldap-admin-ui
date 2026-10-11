@@ -469,46 +469,46 @@ export default {
       userVal: '',
       groupVal: '',
       updateId: '',
-      checked: ['user'], // 新增数据默认选中
-      // 查询参数
+      checked: ['user'], // Select new data by default
+      // Query parameters
       params: {
         flag: '',
         pageNum: 1,
-        pageSize: 1000 // 平常百姓人家应该不会有这么多数据吧,后台限制最大单次获取1000条
+        pageSize: 1000 // Most users should not have this many records; the backend limits each request to 1000 records.
       },
-      // 表格数据
+      // Table data
       tableData: [],
       infoTableData: [],
       total: 0,
       loading: false,
-      // 上级目录数据
+      // Parent directory data
       // treeselectData: [],
       // treeselectValue: 0,
-      updateLoading: false, // 新增
-      // dialog对话框
+      updateLoading: false, // Create
+      // Dialog box
       submitLoading: false,
       dialogFormTitle: '',
       dialogType: '',
       dialogFormVisible: false,
       dialogFormData: {
-        username: '', // 用户名(通常为用户名拼音) name_pinyin
-        nickname: '', // 中文名字 name
-        givenName: '', // 花名 name
-        mail: '', // 邮箱 email
-        jobNumber: '', // 工号 job_number
-        mobile: '', // 手机号 mobile
-        avatar: '', // 头像 avatar
-        postalAddress: '', // 地址 work_place
-        position: '', // 职位 title
-        introduction: '', // 说明 remark
-        sourceUserId: '', // 源用户ID  userid
-        sourceUnionId: '', // 源用户唯一ID   unionid
-        groupName: '', // 分组名称（通常为分组名的拼音）
-        remark: '', // 分组描述
-        sourceDeptId: '', // 部门ID
-        sourceDeptParentId: '' // 父部门ID
+        username: '', // Username (usually the pinyin of the username), name_pinyin
+        nickname: '', // Chinese name, name
+        givenName: '', // Display name, name
+        mail: '', // Email, email
+        jobNumber: '', // Employee number, job_number
+        mobile: '', // Mobile number, mobile
+        avatar: '', // Avatar, avatar
+        postalAddress: '', // Address, work_place
+        position: '', // Position, title
+        introduction: '', // Description, remark
+        sourceUserId: '', // Source user ID, userid
+        sourceUnionId: '', // Source user unique ID, unionid
+        groupName: '', // Group name (usually the pinyin of the group name)
+        remark: '', // Group description
+        sourceDeptId: '', // Department ID
+        sourceDeptParentId: '' // Parent department ID
       },
-      // 表格多选
+      // Table selection
       multipleSelection: []
       // typeFlag:
     }
@@ -586,9 +586,9 @@ export default {
     changeGroup(e) {
       this.groupVal = e
     },
-    // 查询
+    // Query
     search() {
-      // 初始化表格数据
+      // Initialize table data
       this.infoTableData = JSON.parse(JSON.stringify(this.tableData))
       this.infoTableData = this.deal(this.infoTableData, (node) =>
         node.Flag.includes(this.params.flag)
@@ -597,27 +597,27 @@ export default {
     resetData() {
       this.infoTableData = JSON.parse(JSON.stringify(this.tableData))
     },
-    // 页面数据过滤
+    // Filter page data
     deal(nodes, predicate) {
-      // 如果已经没有节点了，结束递归
+      // If there are no nodes left, stop the recursion
       if (!(nodes && nodes.length)) {
         return []
       }
       const newChildren = []
       for (const node of nodes) {
         if (predicate(node)) {
-          // 如果节点符合条件，直接加入新的节点集
+          // If the node matches, add it directly to the new node set
           newChildren.push(node)
           node.children = this.deal(node.children, predicate)
         } else {
-          // 如果当前节点不符合条件，递归过滤子节点，
-          // 把符合条件的子节点提升上来，并入新节点集
+          // If the current node does not match, recursively filter its child nodes,
+          // promote matching child nodes and add them to the new node set
           newChildren.push(...this.deal(node.children, predicate))
         }
       }
       return newChildren
     },
-    // 获取表格数据
+    // Fetch table data
     async getTableData() {
       this.loading = true
       try {
@@ -630,7 +630,7 @@ export default {
       }
     },
 
-    // 新增
+    // Create
     create() {
       this.checked = ['user']
       this.userVal = ''
@@ -638,10 +638,10 @@ export default {
       this.dialogFormData = {}
       this.dialogFromGroup = {}
       this.dialogFormTitle = this.$t('fieldRelationPage.dialog.createTitle')
-      this.updateLoading = true // 新增的展示
+      this.updateLoading = true // Create loading indicator
       this.dialogType = 'create'
     },
-    // 修改
+    // Edit
     update(row) {
       const typeDialog = row.Flag.split('_')[1]
 
@@ -669,26 +669,26 @@ export default {
         this.checked = ['user']
 
         this.userVal = row.Flag
-        this.dialogFormData.username = username // 用户名(通常为用户名拼音) name_pinyin
-        this.dialogFormData.nickname = nickname // 中文名字 name
-        this.dialogFormData.givenName = givenName // 花名 name
-        this.dialogFormData.mail = mail // 邮箱 email
-        this.dialogFormData.jobNumber = jobNumber // 工号 job_number
-        this.dialogFormData.mobile = mobile // 手机号 mobile
-        this.dialogFormData.avatar = avatar // 头像 avatar
-        this.dialogFormData.postalAddress = postalAddress // 地址 work_place
-        this.dialogFormData.position = position // 职位 title
-        this.dialogFormData.introduction = introduction // 说明 remark
-        this.dialogFormData.sourceUserId = sourceUserId // 源用户ID  userid
-        this.dialogFormData.sourceUnionId = sourceUnionId // 源用户唯一ID   unionid
+        this.dialogFormData.username = username // Username (usually the pinyin of the username), name_pinyin
+        this.dialogFormData.nickname = nickname // Chinese name, name
+        this.dialogFormData.givenName = givenName // Display name, name
+        this.dialogFormData.mail = mail // Email, email
+        this.dialogFormData.jobNumber = jobNumber // Employee number, job_number
+        this.dialogFormData.mobile = mobile // Mobile number, mobile
+        this.dialogFormData.avatar = avatar // Avatar, avatar
+        this.dialogFormData.postalAddress = postalAddress // Address, work_place
+        this.dialogFormData.position = position // Position, title
+        this.dialogFormData.introduction = introduction // Description, remark
+        this.dialogFormData.sourceUserId = sourceUserId // Source user ID, userid
+        this.dialogFormData.sourceUnionId = sourceUnionId // Source user unique ID, unionid
       } else {
         this.updateId = row.ID
         this.checked = ['group']
         this.groupVal = row.Flag
-        this.dialogFormData.groupName = groupName // 分组名称（通常为分组名的拼音）
-        this.dialogFormData.remark = remark // 分组描述
-        this.dialogFormData.sourceDeptId = sourceDeptId // 部门ID
-        this.dialogFormData.sourceDeptParentId = sourceDeptParentId // 父部门ID
+        this.dialogFormData.groupName = groupName // Group name (usually the pinyin of the group name)
+        this.dialogFormData.remark = remark // Group description
+        this.dialogFormData.sourceDeptId = sourceDeptId // Department ID
+        this.dialogFormData.sourceDeptParentId = sourceDeptParentId // Parent department ID
       }
 
       this.dialogFormTitle = this.$t('fieldRelationPage.dialog.updateTitle')
@@ -696,7 +696,7 @@ export default {
       this.dialogFormVisible = true
     },
 
-    // 提交表单
+    // Submit form
     submitForm(e) {
       let flag, attributes
       if (this.checked[0] === 'user') {
@@ -757,7 +757,7 @@ export default {
       })
     },
 
-    // 提交表单
+    // Submit form
     cancelForm() {
       this.resetForm()
     },
@@ -772,7 +772,7 @@ export default {
       }
     },
 
-    // 批量删除
+    // Delete selected items
     batchDelete() {
       this.$confirm(this.$t('fieldRelationPage.confirm.batchDelete'), this.$t('userPage.confirm.title'), {
         confirmButtonText: this.$t('common.confirm'),
@@ -805,7 +805,7 @@ export default {
           })
         })
     },
-    // 单个删除
+    // Delete one item
     async singleDelete(Id) {
       this.loading = true
       try {
@@ -816,12 +816,12 @@ export default {
       this.getTableData()
     },
 
-    // 表格多选
+    // Table selection
     handleSelectionChange(val) {
       this.multipleSelection = val
     },
 
-    // 分页
+    // Pagination
     handleSizeChange(val) {
       this.params.pageSize = val
       this.getTableData()

@@ -29,7 +29,7 @@ export default {
     },
     formattedBuildTime() {
       if (!this.versionInfo || !this.versionInfo.buildTime) return ''
-      // 格式化时间，只显示到分钟：2026-02-09 11:01
+      // Format the time and show only minutes: 2026-02-09 11:01
       const timeStr = this.versionInfo.buildTime
       if (timeStr.length >= 16) {
         return timeStr.substring(0, 16)
@@ -47,7 +47,7 @@ export default {
           this.versionInfo = res.data
         }
       }).catch(() => {
-        // 静默失败，不显示任何内容
+        // Fail silently and display nothing
       })
     }
   }

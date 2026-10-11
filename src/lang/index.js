@@ -17,12 +17,12 @@ import koKR from './ko-KR'
 Vue.use(VueI18n)
 
 export const LocaleKey = 'locale'
-export const DefaultLocale = 'zh-CN'
-export const SupportedLocales = ['zh-CN', 'en-US', 'ja-JP', 'es-ES', 'ko-KR']
+export const DefaultLocale = 'en-US'
+export const SupportedLocales = ['en-US', 'zh-CN', 'ja-JP', 'es-ES', 'ko-KR']
 
 export const localeOptions = [
-  { value: 'zh-CN', labelKey: 'locale.zhCN' },
   { value: 'en-US', labelKey: 'locale.enUS' },
+  { value: 'zh-CN', labelKey: 'locale.zhCN' },
   { value: 'ja-JP', labelKey: 'locale.jaJP' },
   { value: 'es-ES', labelKey: 'locale.esES' },
   { value: 'ko-KR', labelKey: 'locale.koKR' }

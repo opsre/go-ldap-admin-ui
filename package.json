@@ -1,7 +1,7 @@
 {
   "name": "go-ldap-admin-ui",
   "version": "1.0.0",
-  "description": "go-ldap-admin前端项目",
+  "description": "go-ldap-admin frontend project",
   "author": "eryajf <Linuxlql@163.com>",
   "scripts": {
     "dev": "vue-cli-service serve",

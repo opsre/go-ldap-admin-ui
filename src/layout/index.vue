@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import RightPanel from '@/components/RightPanel' //这个是设置的icon组件
+import RightPanel from '@/components/RightPanel' //This is the settings icon component
 import { AppMain, Navbar, Settings, Sidebar, TagsView } from './components'
 import ResizeMixin from './mixin/ResizeHandler'
 import { mapState } from 'vuex'

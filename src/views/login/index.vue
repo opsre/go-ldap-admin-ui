@@ -138,11 +138,11 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
-          // 密码RSA加密处理
+          // RSA-encrypt the password
           const encryptor = new JSEncrypt()
-          // 设置公钥
+          // Set the public key
           encryptor.setPublicKey(this.publicKey)
-          // 加密密码
+          // Encrypt the password
           const encPassword = encryptor.encrypt(this.loginForm.password)
           const encLoginForm = { username: this.loginForm.username, password: encPassword }
           this.$store.dispatch('user/login', encLoginForm)
@@ -175,7 +175,7 @@ export default {
 </script>
 
 <style lang="scss">
-/* 修复input 背景不协调 和光标变色 */
+/* Fix the input background mismatch and cursor color. */
 /* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
 
 $bg:#5c646d;

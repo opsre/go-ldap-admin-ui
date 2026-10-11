@@ -144,7 +144,7 @@ export default {
   name: 'Role',
   data() {
     return {
-      // 查询参数
+      // Query parameters
       params: {
         name: '',
         keyword: '',
@@ -152,12 +152,12 @@ export default {
         pageNum: 1,
         pageSize: 10
       },
-      // 表格数据
+      // Table data
       tableData: [],
       total: 0,
       loading: false,
 
-      // dialog对话框
+      // Dialog box
       submitLoading: false,
       dialogFormTitle: '',
       dialogType: '',
@@ -171,12 +171,12 @@ export default {
         remark: ''
       },
 
-      // 删除按钮弹出框
+      // Delete button confirmation dialog
       popoverVisible: false,
-      // 表格多选
+      // Table selection
       multipleSelection: [],
 
-      // 修改权限
+      // Edit permissions
       permsDialogVisible: false,
       permissionLoading: false,
       menuTree: [],
@@ -184,7 +184,7 @@ export default {
       apiTree: [],
       defaultCheckedRoleApi: [],
 
-      // 被修改权限的角色ID
+      // ID of the role whose permissions are being changed
       roleId: 0
     }
   },
@@ -215,13 +215,13 @@ export default {
     this.getApiTree()
   },
   methods: {
-    // 查询
+    // Query
     search() {
       this.params.pageNum = 1
       this.getTableData()
     },
 
-    // 获取表格数据
+    // Fetch table data
     async getTableData() {
       this.loading = true
       try {
@@ -233,14 +233,14 @@ export default {
       }
     },
 
-    // 新增
+    // Create
     create() {
       this.dialogFormTitle = this.$t('rolePage.dialog.createTitle')
       this.dialogType = 'create'
       this.dialogFormVisible = true
     },
 
-    // 修改
+    // Edit
     update(row) {
       this.dialogFormData.ID = row.ID
       this.dialogFormData.name = row.name
@@ -254,7 +254,7 @@ export default {
       this.dialogFormVisible = true
     },
 
-    // 判断结果
+    // Check the result
     judgeResult(res) {
       if (res.code === 0) {
         Message({
@@ -265,7 +265,7 @@ export default {
       }
     },
 
-    // 提交表单
+    // Submit form
     submitForm() {
       this.$refs['dialogForm'].validate(async valid => {
         if (valid) {
@@ -296,12 +296,12 @@ export default {
       })
     },
 
-    // 取消表单提交
+    // Cancel form submission
     cancelForm() {
       this.resetForm()
     },
 
-    // 重置表单
+    // Reset form
     resetForm() {
       this.dialogFormVisible = false
       this.$refs['dialogForm'].resetFields()
@@ -314,7 +314,7 @@ export default {
       }
     },
 
-    // 批量删除
+    // Delete selected items
     batchDelete() {
       this.$confirm(this.$t('rolePage.confirm.batchDelete'), this.$t('userPage.confirm.title'), {
         confirmButtonText: this.$t('common.confirm'),
@@ -343,12 +343,12 @@ export default {
       })
     },
 
-    // 表格多选
+    // Table selection
     handleSelectionChange(val) {
       this.multipleSelection = val
     },
 
-    // 单个删除
+    // Delete one item
     async singleDelete(id) {
       this.loading = true
       try {
@@ -360,7 +360,7 @@ export default {
       }
     },
 
-    // 修改权限按钮
+    // Edit permissions button
     async updatePermission(roleId) {
       this.roleId = roleId
       this.permsDialogVisible = true
@@ -370,7 +370,7 @@ export default {
       this.getRoleApisById(roleId)
     },
 
-    // 获取菜单树
+    // Fetch menu tree
     async getMenuTree() {
       this.menuTreeLoading = true
       try {
@@ -381,7 +381,7 @@ export default {
       }
     },
 
-    // 获取接口树
+    // Fetch API tree
     async getApiTree() {
       this.apiTreeLoading = true
       try {
@@ -392,7 +392,7 @@ export default {
       }
     },
 
-    // 获取角色的权限菜单
+    // Fetch the role permission menu
     async getRoleMenusById(roleId) {
       this.permissionLoading = true
       let rseData = []
@@ -412,7 +412,7 @@ export default {
       this.$refs.roleMenuTree.setCheckedKeys(this.defaultCheckedRoleMenu)
     },
 
-    // 获取角色的权限接口
+    // Fetch the role permission APIs
     async getRoleApisById(roleId) {
       this.permissionLoading = true
       let resData = []
@@ -432,7 +432,7 @@ export default {
       this.$refs.roleApiTree.setCheckedKeys(this.defaultCheckedRoleApi)
     },
 
-    // 修改角色菜单
+    // Edit role menu
     async updateRoleMenusById() {
       this.permissionLoading = true
       let ids = this.$refs.roleMenuTree.getCheckedKeys()
@@ -450,7 +450,7 @@ export default {
       this.permsDialogVisible = false
     },
 
-    // 修改角色接口
+    // Edit role APIs
     async updateRoleApisById() {
       this.permissionLoading = true
       const ids = this.$refs.roleApiTree.getCheckedKeys(true)
@@ -464,18 +464,18 @@ export default {
       this.permsDialogVisible = false
     },
 
-    // 确定修改角色权限
+    // Confirm role permission changes
     submitPermissionForm() {
       this.updateRoleMenusById()
       this.updateRoleApisById()
     },
 
-    // 取消修改角色权限
+    // Cancel role permission changes
     cancelPermissionForm() {
       this.permsDialogVisible = false
     },
 
-    // 分页
+    // Pagination
     handleSizeChange(val) {
       this.params.pageSize = val
       this.getTableData()

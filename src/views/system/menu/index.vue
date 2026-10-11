@@ -143,15 +143,15 @@ export default {
   },
   data() {
     return {
-      // 表格数据
+      // Table data
       tableData: [],
       loading: false,
 
-      // 上级目录数据
+      // Parent directory data
       treeselectData: [],
       treeselectValue: 0,
 
-      // dialog对话框
+      // Dialog box
       submitLoading: false,
       dialogFormTitle: '',
       dialogType: '',
@@ -173,9 +173,9 @@ export default {
         // activeMenu: '',
         parentId: 0
       },
-      // 删除按钮弹出框
+      // Delete button confirmation dialog
       popoverVisible: false,
-      // 表格多选
+      // Table selection
       multipleSelection: []
     }
   },
@@ -212,7 +212,7 @@ export default {
     this.getTableData()
   },
   methods: {
-    // 获取表格数据
+    // Fetch table data
     async getTableData() {
       this.loading = true
       try {
@@ -225,14 +225,14 @@ export default {
       }
     },
 
-    // 新增
+    // Create
     create() {
       this.dialogFormTitle = this.$t('menuPage.dialog.createTitle')
       this.dialogType = 'create'
       this.dialogFormVisible = true
     },
 
-    // 修改
+    // Edit
     update(row) {
       this.dialogFormData.ID = row.ID
       this.dialogFormData.title = row.title
@@ -253,7 +253,7 @@ export default {
       this.dialogFormVisible = true
     },
 
-    // 判断结果
+    // Check the result
     judgeResult(res) {
       if (res.code === 0) {
         Message({
@@ -264,7 +264,7 @@ export default {
       }
     },
 
-    // 提交表单
+    // Submit form
     submitForm() {
       this.$refs['dialogForm'].validate(async valid => {
         if (valid) {
@@ -309,7 +309,7 @@ export default {
       })
     },
 
-    // 提交表单
+    // Submit form
     cancelForm() {
       this.resetForm()
     },
@@ -335,7 +335,7 @@ export default {
       }
     },
 
-    // 批量删除
+    // Delete selected items
     batchDelete() {
       this.$confirm(this.$t('menuPage.confirm.batchDelete'), this.$t('userPage.confirm.title'), {
         confirmButtonText: this.$t('common.confirm'),
@@ -363,12 +363,12 @@ export default {
       })
     },
 
-    // 表格多选
+    // Table selection
     handleSelectionChange(val) {
       this.multipleSelection = val
     },
 
-    // 单个删除
+    // Delete one item
     async singleDelete(Id) {
       this.loading = true
       try {
@@ -381,7 +381,7 @@ export default {
       this.getTableData()
     },
 
-    // 选中图标
+    // Select icon
     selected(name) {
       this.dialogFormData.icon = name
     },

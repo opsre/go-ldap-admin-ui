@@ -108,7 +108,7 @@ const actions = {
 
   // refresh token
   async refreshToken({ commit }) {
-    // 刷新token
+    // Refresh the token
     const { data } = await refreshToken()
     commit('SET_TOKEN', data.token)
     setToken(data.token)

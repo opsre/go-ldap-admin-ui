@@ -83,15 +83,15 @@ export default {
     return {
       size: '',
       infoRoles: null,
-      activeName: 'first', // 默认展示
-      tableData: [], // 表格数据
+      activeName: 'first', // Shown by default
+      tableData: [], // Table data
       loading: false,
       transParams: {
         groupId: '',
         nickname: ''
-      }, // 获取角色的参数
+      }, // Role query parameters
       tabIndex: '',
-      multipleSelection: [] // 表格多选
+      multipleSelection: [] // Table selection
     }
   },
 
@@ -113,7 +113,7 @@ export default {
         this.getNoMenu()
       }
     },
-    // 搜索框查询
+    // Search field query
     onInput(e) {
       if (this.tabIndex === '0') {
         this.transParams.nickname = e
@@ -123,7 +123,7 @@ export default {
         this.getNoMenu()
       }
     },
-    // 搜索框查询
+    // Search field query
     search() {
       if (this.tabIndex === '0') {
         this.getTableData()
@@ -132,7 +132,7 @@ export default {
       }
     },
 
-    // 在分组内的用户
+    // Users in the group
     async getTableData() {
       this.loading = true
       try {
@@ -143,7 +143,7 @@ export default {
         this.loading = false
       }
     },
-    // 不再分组内的用户
+    // Users no longer in the group
     async getNoMenu() {
       try {
         const { data } = await useGroupRole(this.transParams)
@@ -153,11 +153,11 @@ export default {
         this.loading = false
       }
     },
-    // 表格多选
+    // Table selection
     handleSelectionChange(val) {
       this.multipleSelection = val
     },
-    // 判断结果
+    // Check the result
     judgeResult(res) {
       if (res.code === 0) {
         Message({
@@ -167,7 +167,7 @@ export default {
         })
       }
     },
-    // 移除操作
+    // Remove operation
     async batchDelete() {
       const userRoles = []
       this.multipleSelection.forEach(x => {
@@ -185,7 +185,7 @@ export default {
         window.location.reload()
       }, 500)
     },
-    // batchAdd 添加操作
+    // batchAdd add operation
     async batchAdd() {
       const userRoles = []
       this.multipleSelection.forEach(x => {

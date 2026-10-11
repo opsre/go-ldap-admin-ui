@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-// 字段动态关系列表（完成）
+// List dynamic field relations (completed)
 export function relationList(params) {
   return request({
     url: '/api/fieldrelation/list',
@@ -8,7 +8,7 @@ export function relationList(params) {
     params
   })
 }
-// 添加字段动态关系（完成）
+// Add a dynamic field relation (completed)
 export function relationAdd(data) {
   return request({
     url: '/api/fieldrelation/add',
@@ -16,7 +16,7 @@ export function relationAdd(data) {
     data
   })
 }
-// 更新字段动态关系 （完成）
+// Update a dynamic field relation (completed)
 export function relationUp(data) {
   return request({
     url: '/api/fieldrelation/update',
@@ -24,7 +24,7 @@ export function relationUp(data) {
     data
   })
 }
-// 删除字段动态关系（完成）
+// Delete a dynamic field relation (completed)
 export function relationDel(data) {
   return request({
     url: '/api/fieldrelation/delete',

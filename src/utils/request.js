@@ -9,7 +9,7 @@ import { buildAcceptLanguage } from '@/utils/i18n'
 
 // create an axios instance
 const service = axios.create({
-  baseURL: process.env.NODE_ENV === 'production' ? process.env.VUE_APP_BASE_API : '/' // api 的 base_url
+  baseURL: process.env.NODE_ENV === 'production' ? process.env.VUE_APP_BASE_API : '/' // API base URL
   // withCredentials: true, // send cookies when cross-domain requests
   // timeout: 5000 // request timeout
 })

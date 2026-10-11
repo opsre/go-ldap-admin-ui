@@ -52,7 +52,7 @@
         <el-table-column show-overflow-tooltip sortable prop="username" :label="$t('userPage.fields.username')" />
         <el-table-column show-overflow-tooltip sortable prop="nickname" :label="$t('userPage.fields.nickname')" />
         <el-table-column show-overflow-tooltip sortable prop="givenName" :label="$t('userPage.fields.givenName')" />
-        <!-- 使用按钮方式展示，以后改成布尔参数比较合适 -->
+        <!-- Displayed as a button; changing this to a boolean parameter later may be more suitable. -->
         <el-table-column :label="$t('userPage.fields.status')" align="center">
           <template slot-scope="scope">
             <el-switch v-model="scope.row.status" :active-value="1" :inactive-value="2" @change="userStateChanged(scope.row)" />
@@ -128,7 +128,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <!-- 修改用户时，不显示密码字段 -->
+              <!-- Do not show the password field when editing a user. -->
               <el-form-item v-if="dialogType === 'create'" :label="$t('account.newPassword')" prop="password">
                 <el-input v-model.trim="dialogFormData.password" autocomplete="off" :type="passwordType" :placeholder="$t('account.newPassword')" />
                 <span class="show-pwd" @click="showPwd">
@@ -205,7 +205,7 @@
         </div>
       </el-dialog>
 
-      <!-- 重置密码结果对话框 -->
+      <!-- Password reset result dialog -->
       <el-dialog
         :title="$t('userPage.resetPassword.title')"
         :visible.sync="resetPasswordDialogVisible"
@@ -289,7 +289,7 @@ export default {
     Treeselect
   },
   props: {
-    disabled: { // username 默认不可编辑，若需要至为可编辑，请（在新增和编辑处）去掉这个值的控制，且配合后端的ldap-user-name-modify配置使用
+    disabled: { // username is read-only by default. To make it editable, remove this restriction when creating and editing users, and configure ldap-user-name-modify on the backend.
       type: Boolean,
       default: false
     }
@@ -308,7 +308,7 @@ export default {
       }
     }
     return {
-      // 查询参数
+      // Query parameters
       params: {
         username: '',
         nickname: '',
@@ -318,23 +318,23 @@ export default {
         pageNum: 1,
         pageSize: 10
       },
-      // 表格数据
+      // Table data
       tableData: [],
       total: 0,
       loading: false,
       isUpdate: false,
-      // 部门信息数据
+      // Department information data
       treeselectValue: 0,
-      // 角色
+      // Role
       roles: [],
-      // 部门信息
+      // Department information
       departmentsOptions: [],
 
       passwordType: 'password',
 
       publicKey: process.env.VUE_APP_PUBLIC_KEY,
 
-      // dialog对话框
+      // Dialog box
       submitLoading: false,
       dialogFormTitle: '',
       dialogType: '',
@@ -343,21 +343,21 @@ export default {
       dialogFormData: getDefaultDialogFormData(),
       phoneValidator: checkPhone,
 
-      // 删除按钮弹出框
+      // Delete button confirmation dialog
       popoverVisible: false,
-      // 表格多选
+      // Table selection
       multipleSelection: [],
       changeUserStatusFormData: {
         id: '',
         status: ''
       },
 
-      // 重置密码结果对话框
+      // Password reset result dialog
       resetPasswordDialogVisible: false,
       newPassword: '',
       resetUsername: '',
 
-      // 同步配置
+      // Sync configuration
       syncConfig: {
         ldapEnableSync: false,
         dingTalkEnableSync: false,
@@ -418,7 +418,7 @@ export default {
     this.getSyncConfig()
   },
   methods: {
-    // 获取同步配置
+    // Fetch sync configuration
     async getSyncConfig() {
       try {
         const { data } = await getConfig()
@@ -427,13 +427,13 @@ export default {
         console.error('failed to get sync config:', error)
       }
     },
-    // 查询
+    // Query
     search() {
       this.params.pageNum = 1
       this.getTableData()
     },
 
-    // 获取表格数据
+    // Fetch table data
     async getTableData() {
       this.loading = true
       try {
@@ -452,13 +452,13 @@ export default {
         this.loading = false
       }
     },
-    // 获取所有的分组信息，用于弹框选取上级分组
+    // Fetch all group information for selecting a parent group in the dialog.
     async getAllGroups() {
       this.loading = true
       try {
         const checkParams = {
           pageNum: 1,
-          pageSize: 1000 // 平常百姓人家应该不会有这么多数据吧
+          pageSize: 1000 // Most users should not have this many records.
         }
         const { data } = await getGroupTree(checkParams)
         this.departmentsOptions = [{ ID: 0, groupName: this.$t('userPage.placeholders.departmentInfo'), groupType: 'T', children: data }]
@@ -466,14 +466,14 @@ export default {
         this.loading = false
       }
     },
-    // 获取角色数据
+    // Fetch role data
     async getRoles() {
       const res = await getRoles(null)
 
       this.roles = res.data.roles
     },
 
-    // 新增
+    // Create
     create() {
       this.dialogFormTitle = this.$t('userPage.dialog.createTitle')
       this.dialogType = 'create'
@@ -486,7 +486,7 @@ export default {
       this.dialogFormVisible = true
     },
 
-    // 修改
+    // Edit
     update(row) {
       this.dialogUsernameDisabled = true
       this.getAllGroups()
@@ -498,7 +498,7 @@ export default {
         status: row.status,
         mobile: row.mobile,
         introduction: row.introduction,
-        // 遍历角色数组，获取角色ID
+        // Iterate through the role array and get each role ID
         roleIds: row.roles.map(item => item.ID),
         mail: row.mail,
         givenName: row.givenName,
@@ -518,12 +518,14 @@ export default {
       })
     },
 
-    // 将 部门id 转换为 部门name
+    // Convert department id to department name
     setDepartmentNameByDepartmentId() {
       const ids = this.dialogFormData.departmentId
       if (!ids || !ids.length) return
+      const departmentIds = ids.filter(id => id !== 0)
+      this.dialogFormData.departmentId = departmentIds
       const departments = []
-      // 深度优先遍函数
+      // Depth-first traversal function
       const dfs = (node, cb) => {
         if (!node) return
         cb(node)
@@ -534,14 +536,14 @@ export default {
         }
       }
       dfs(this.departmentsOptions[0], node => {
-        if (ids.includes(node.ID)) {
+        if (node.ID !== 0 && departmentIds.includes(node.ID)) {
           departments.push(node.groupName)
         }
       })
       this.dialogFormData.departments = departments.join(',')
     },
 
-    // 判断结果
+    // Check the result
     judgeResult(res) {
       if (res.code === 0) {
         Message({
@@ -552,7 +554,7 @@ export default {
       }
     },
 
-    // 提交表单
+    // Submit form
     submitForm() {
       if (this.dialogFormData.nickname === '') {
         Message({
@@ -613,15 +615,15 @@ export default {
       this.$refs['dialogForm'].validate(async valid => {
         if (valid) {
           this.submitLoading = true
-          // 在这里自动填充下部门字段
+          // Automatically fill in the department field here
           this.setDepartmentNameByDepartmentId()
           this.dialogFormDataCopy = { ...this.dialogFormData }
           if (this.dialogFormData.password !== '') {
-          // 密码RSA加密处理
+          // RSA-encrypt the password
             const encryptor = new JSEncrypt()
-            // 设置公钥
+            // Set the public key
             encryptor.setPublicKey(this.publicKey)
-            // 加密密码
+            // Encrypt the password
             const encPassword = encryptor.encrypt(this.dialogFormData.password)
             this.dialogFormDataCopy.password = encPassword
           }
@@ -651,7 +653,7 @@ export default {
       })
     },
 
-    // 提交表单
+    // Submit form
     cancelForm() {
       this.resetForm()
     },
@@ -664,7 +666,7 @@ export default {
       this.passwordType = 'password'
     },
 
-    // 批量删除
+    // Delete selected items
     batchDelete() {
       this.$confirm(this.$t('userPage.confirm.batchDelete'), this.$t('userPage.confirm.title'), {
         confirmButtonText: this.$t('common.confirm'),
@@ -692,7 +694,7 @@ export default {
         })
       })
     },
-    // 批量同步
+    // Sync selected items
     batchSync() {
       this.$confirm(this.$t('userPage.confirm.batchSync'), this.$t('userPage.confirm.title'), {
         confirmButtonText: this.$t('common.confirm'),
@@ -721,7 +723,7 @@ export default {
       })
     },
 
-    // 监听 switch 开关 状态改变
+    // Listen for changes to the switch state
     async userStateChanged(userInfo) {
       this.changeUserStatusFormData.id = userInfo.ID
       this.changeUserStatusFormData.status = userInfo.status
@@ -732,12 +734,12 @@ export default {
       Message.success(this.$t('userPage.messages.statusUpdateSuccess'))
     },
 
-    // 表格多选
+    // Table selection
     handleSelectionChange(val) {
       this.multipleSelection = val
     },
 
-    // 单个删除
+    // Delete one item
     async singleDelete(Id) {
       this.loading = true
       try {
@@ -749,7 +751,7 @@ export default {
       }
       this.getTableData()
     },
-    // 单个同步
+    // Sync one item
     async singleSync(Id) {
       this.loading = true
       try {
@@ -770,7 +772,7 @@ export default {
       }
     },
 
-    // 分页
+    // Pagination
     handleSizeChange(val) {
       this.params.pageSize = val
       this.getTableData()
@@ -824,7 +826,7 @@ export default {
       })
     },
 
-    // 重置用户密码
+    // Reset user password
     async resetUserPassword(username) {
       this.loading = true
       try {
@@ -851,7 +853,7 @@ export default {
       this.getTableData()
     },
 
-    // 复制密码到剪贴板
+    // Copy password to clipboard
     copyPassword() {
       const textArea = document.createElement('textarea')
       textArea.value = this.newPassword
@@ -874,7 +876,7 @@ export default {
       document.body.removeChild(textArea)
     },
 
-    // 关闭重置密码对话框
+    // Close the password reset dialog
     closeResetPasswordDialog() {
       this.resetPasswordDialogVisible = false
       this.newPassword = ''

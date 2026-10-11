@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-// 获取菜单树(已完成)
+// Fetch the menu tree (completed)
 export function getMenuTree() {
   return request({
     url: '/api/menu/tree',
@@ -8,7 +8,7 @@ export function getMenuTree() {
   })
 }
 
-// 获取菜单列表
+// Fetch the menu list
 export function getMenus() {
   return request({
     url: '/api/menu/list',
@@ -16,7 +16,7 @@ export function getMenus() {
   })
 }
 
-// 创建菜单(已完成)
+// Create a menu (completed)
 export function createMenu(data) {
   return request({
     url: '/api/menu/add',
@@ -25,7 +25,7 @@ export function createMenu(data) {
   })
 }
 
-// 更新菜单(已完成)
+// Update a menu (completed)
 export function updateMenuById(data) {
   return request({
     url: '/api/menu/update',
@@ -34,7 +34,7 @@ export function updateMenuById(data) {
   })
 }
 
-// 批量删除菜单(已完成)
+// Delete menus in batches (completed)
 export function batchDeleteMenuByIds(data) {
   return request({
     url: '/api/menu/delete',
@@ -43,7 +43,7 @@ export function batchDeleteMenuByIds(data) {
   })
 }
 
-// 获取用户的可访问菜单列表
+// Fetch the list of menus accessible to the user
 export function getUserMenusByUserId(Id) {
   return request({
     url: '/api/menu/access/list/' + Id,
@@ -51,7 +51,7 @@ export function getUserMenusByUserId(Id) {
   })
 }
 
-// 获取用户的可访问菜单树
+// Fetch the menu tree accessible to the user
 export function getUserMenuTreeByUserId(params) {
   return request({
     url: '/api/menu/access/tree',

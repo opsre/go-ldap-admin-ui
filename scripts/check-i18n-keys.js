@@ -25,7 +25,46 @@ const migratedVueFiles = [
   'src/components/IconSelect/index.vue',
   'src/components/Upload/SingleImage.vue',
   'src/components/Upload/SingleImage2.vue',
-  'src/components/Upload/SingleImage3.vue'
+  'src/components/Upload/SingleImage3.vue',
+  'src/App.vue',
+  'src/components/Echarts/BarChart.vue',
+  'src/components/Echarts/PieChart.vue',
+  'src/components/Echarts/RadarChart.vue',
+  'src/components/ErrorLog/index.vue',
+  'src/components/GithubCorner/index.vue',
+  'src/components/Hamburger/index.vue',
+  'src/components/HeaderSearch/index.vue',
+  'src/components/ImageCropper/index.vue',
+  'src/components/JsonEditor/index.vue',
+  'src/components/MDinput/index.vue',
+  'src/components/MarkdownEditor/index.vue',
+  'src/components/Pagination/index.vue',
+  'src/components/PanThumb/index.vue',
+  'src/components/RightPanel/index.vue',
+  'src/components/Screenfull/index.vue',
+  'src/components/Share/DropdownMenu.vue',
+  'src/components/SizeSelect/index.vue',
+  'src/components/Sticky/index.vue',
+  'src/components/SvgIcon/index.vue',
+  'src/components/TextHoverEffect/Mallki.vue',
+  'src/components/ThemePicker/index.vue',
+  'src/components/Tinymce/components/EditorImage.vue',
+  'src/components/Tinymce/index.vue',
+  'src/components/UploadExcel/index.vue',
+  'src/layout/components/AppMain.vue',
+  'src/layout/components/Settings/index.vue',
+  'src/layout/components/Sidebar/Link.vue',
+  'src/layout/components/Sidebar/Logo.vue',
+  'src/layout/components/Sidebar/Version.vue',
+  'src/layout/components/Sidebar/index.vue',
+  'src/layout/components/TagsView/ScrollPane.vue',
+  'src/layout/index.vue',
+  'src/views/dashboard/components/LineChart.vue',
+  'src/views/dashboard/components/PanelGroup.vue',
+  'src/views/dashboard/index.vue',
+  'src/views/profile/components/Account.vue',
+  'src/views/profile/index.vue',
+  'src/views/redirect/index.vue',
 ]
 
 function parseLocale(locale) {
@@ -59,10 +98,10 @@ function keysOf(locale) {
   return keys
 }
 
-const base = keysOf('zh-CN')
+const base = keysOf('en-US')
 let failed = false
 
-locales.filter(locale => locale !== 'zh-CN').forEach(locale => {
+locales.filter(locale => locale !== 'en-US').forEach(locale => {
   const keys = keysOf(locale)
   const missing = base.filter(key => !keys.includes(key))
   const extra = keys.filter(key => !base.includes(key))

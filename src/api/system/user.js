@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-// 获取当前登录用户信息 (已完成)
+// Fetch the current logged-in user information (completed)
 export function getInfo() {
   return request({
     url: '/api/user/info',
@@ -8,7 +8,7 @@ export function getInfo() {
   })
 }
 
-// 获取用户列表 （已完成）
+// Fetch the user list (completed)
 export function getUsers(params) {
   return request({
     url: '/api/user/list',
@@ -17,7 +17,7 @@ export function getUsers(params) {
   })
 }
 
-// 更新用户登录密码（已完成）
+// Update the user login password (completed)
 export function changePwd(data) {
   return request({
     url: '/api/user/changePwd',
@@ -25,7 +25,7 @@ export function changePwd(data) {
     data
   })
 }
-// 输入邮箱获取验证码
+// Enter an email address to get a verification code
 export function sendCode(data) {
   return request({
     url: '/api/base/sendcode',
@@ -33,7 +33,7 @@ export function sendCode(data) {
     data
   })
 }
-// 邮箱更新用户密码（已完成）
+// Update a user password by email (completed)
 export function emailPass(data) {
   return request({
     url: '/api/base/changePwd',
@@ -41,7 +41,7 @@ export function emailPass(data) {
     data
   })
 }
-// 创建用户（已完成）
+// Create a user (completed)
 export function createUser(data) {
   return request({
     url: '/api/user/add',
@@ -50,7 +50,7 @@ export function createUser(data) {
   })
 }
 
-// 更新用户（已完成）
+// Update a user (completed)
 export function updateUserById(data) {
   return request({
     url: '/api/user/update',
@@ -58,7 +58,7 @@ export function updateUserById(data) {
     data
   })
 }
-// 批量删除记录*（已完成）
+// Delete records in batches* (completed)
 export function batchDeleteUserByIds(data) {
   return request({
     url: '/api/user/delete',
@@ -67,7 +67,7 @@ export function batchDeleteUserByIds(data) {
   })
 }
 
-// 重置用户密码（已完成）
+// Reset a user password (completed)
 export function resetPassword(data) {
   return request({
     url: '/api/user/resetPassword',

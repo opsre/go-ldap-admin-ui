@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-// 获取当前登录用户信息 (已完成)
+// Fetch the current logged-in user information (completed)
 export function getInfo() {
   return request({
     url: '/api/user/info',
@@ -8,7 +8,7 @@ export function getInfo() {
   })
 }
 
-// 获取用户列表 （已完成）
+// Fetch the user list (completed)
 export function getUsers(params) {
   return request({
     url: '/api/user/list',
@@ -17,7 +17,7 @@ export function getUsers(params) {
   })
 }
 
-// 更新用户登录密码（已完成）
+// Update the user login password (completed)
 export function changePwd(data) {
   return request({
     url: '/api/user/changePwd',
@@ -26,7 +26,7 @@ export function changePwd(data) {
   })
 }
 
-// 创建用户（已完成）
+// Create a user (completed)
 export function createUser(data) {
   return request({
     url: '/api/user/add',
@@ -35,7 +35,7 @@ export function createUser(data) {
   })
 }
 
-// 更新用户（已完成）
+// Update a user (completed)
 export function updateUserById(data) {
   return request({
     url: '/api/user/update',
@@ -43,7 +43,7 @@ export function updateUserById(data) {
     data
   })
 }
-// 批量删除记录*（已完成）
+// Delete records in batches* (completed)
 export function batchDeleteUserByIds(data) {
   return request({
     url: '/api/user/delete',
@@ -52,7 +52,7 @@ export function batchDeleteUserByIds(data) {
   })
 }
 
-// 更改用户状态（已完成）
+// Change user status (completed)
 export function changeUserStatus(data) {
   return request({
     url: '/api/user/changeUserStatus',
@@ -61,7 +61,7 @@ export function changeUserStatus(data) {
   })
 }
 
-// 同步钉钉用户信息
+// Sync DingTalk user information
 export function syncDingTalkUsersApi(data) {
   return request({
     url: '/api/user/syncDingTalkUsers',
@@ -70,7 +70,7 @@ export function syncDingTalkUsersApi(data) {
   })
 }
 
-// 同步企业微信用户信息
+// Sync WeCom user information
 export function syncWeComUsersApi(data) {
   return request({
     url: '/api/user/syncWeComUsers',
@@ -79,7 +79,7 @@ export function syncWeComUsersApi(data) {
   })
 }
 
-// 同步飞书用户信息
+// Sync Lark user information
 export function syncFeiShuUsersApi(data) {
   return request({
     url: '/api/user/syncFeiShuUsers',
@@ -88,7 +88,7 @@ export function syncFeiShuUsersApi(data) {
   })
 }
 
-// 同步openldap用户信息
+// Sync OpenLDAP user information
 export function syncOpenLdapUsersApi(data) {
   return request({
     url: '/api/user/syncOpenLdapUsers',
@@ -97,7 +97,7 @@ export function syncOpenLdapUsersApi(data) {
   })
 }
 
-// 同步Sql中的用户到ldap
+// Sync users from SQL to LDAP
 export function syncSqlUsers(data) {
   return request({
     url: '/api/user/syncSqlUsers',

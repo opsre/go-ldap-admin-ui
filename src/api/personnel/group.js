@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-// 获取分组树(已完成)
+// Fetch the group tree (completed)
 export function getGroupTree(params) {
   return request({
     url: '/api/group/tree',
@@ -8,7 +8,7 @@ export function getGroupTree(params) {
     params
   })
 }
-// 分组列表(已完成)
+// List groups (completed)
 export function groupList(params) {
   return request({
     url: '/api/group/list',
@@ -16,7 +16,7 @@ export function groupList(params) {
     params
   })
 }
-// 添加分组(已完成)
+// Add a group (completed)
 export function groupAdd(data) {
   return request({
     url: '/api/group/add',
@@ -24,7 +24,7 @@ export function groupAdd(data) {
     data
   })
 }
-// 更新分组(已完成)
+// Update a group (completed)
 export function groupUpdate(data) {
   return request({
     url: '/api/group/update',
@@ -32,7 +32,7 @@ export function groupUpdate(data) {
     data
   })
 }
-// 删除分组（已完成）
+// Delete a group (completed)
 export function groupDel(data) {
   return request({
     url: '/api/group/delete',
@@ -40,7 +40,7 @@ export function groupDel(data) {
     data
   })
 }
-// 在分组内的用户（已完成）
+// List users in the group (completed)
 export function useGroupList(params) {
   return request({
     url: '/api/group/useringroup',
@@ -48,7 +48,7 @@ export function useGroupList(params) {
     params
   })
 }
-// 不再分组内的用户（已完成）
+// List users no longer in the group (completed)
 export function useGroupRole(params) {
   return request({
     url: '/api/group/usernoingroup',
@@ -56,7 +56,7 @@ export function useGroupRole(params) {
     params
   })
 }
-// 添加用户到分组（已完成）
+// Add a user to a group (completed)
 export function groupInfo(data) {
   return request({
     url: '/api/group/adduser',
@@ -64,7 +64,7 @@ export function groupInfo(data) {
     data
   })
 }
-// 将用户从分组移出（已完成）
+// Remove a user from a group (completed)
 export function delGroup(data) {
   return request({
     url: '/api/group/removeuser',
@@ -72,7 +72,7 @@ export function delGroup(data) {
     data
   })
 }
-// 同步钉钉部门信息
+// Sync DingTalk department information
 export function syncDingTalkDeptsApi(data) {
   return request({
     url: '/api/group/syncDingTalkDepts',
@@ -81,7 +81,7 @@ export function syncDingTalkDeptsApi(data) {
   })
 }
 
-// 同步企业微信部门信息
+// Sync WeCom department information
 export function syncWeComDeptsApi(data) {
   return request({
     url: '/api/group/syncWeComDepts',
@@ -90,7 +90,7 @@ export function syncWeComDeptsApi(data) {
   })
 }
 
-// 同步飞书部门信息
+// Sync Lark department information
 export function syncFeiShuDeptsApi(data) {
   return request({
     url: '/api/group/syncFeiShuDepts',
@@ -99,7 +99,7 @@ export function syncFeiShuDeptsApi(data) {
   })
 }
 
-// 同步openldap部门信息
+// Sync OpenLDAP department information
 export function syncOpenLdapDeptsApi(data) {
   return request({
     url: '/api/group/syncOpenLdapDepts',
@@ -107,7 +107,7 @@ export function syncOpenLdapDeptsApi(data) {
     data
   })
 }
-// 同步数据库的分组到ldap
+// Sync database groups to LDAP
 export function syncSqlGroups(data) {
   return request({
     url: '/api/group/syncSqlGroups',

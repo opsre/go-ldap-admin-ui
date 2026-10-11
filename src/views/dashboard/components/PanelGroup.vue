@@ -27,7 +27,7 @@ export default {
   },
   data() {
     return {
-      dataInfo: null // 首页数据
+      dataInfo: null // Dashboard data
     }
   },
   computed: {

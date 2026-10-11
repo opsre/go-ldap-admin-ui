@@ -22,10 +22,10 @@ describe('Utils:parseTime', () => {
     expect(parseTime(d, '{y}/{m}/{d} {h}-{i}')).toBe('2018/07/13 17-54')
   })
   it('get the day of the week', () => {
-    expect(parseTime(d, '{a}')).toBe('五') // 星期五
+    expect(parseTime(d, '{a}')).toBe('Fri') // Friday
   })
   it('get the day of the week', () => {
-    expect(parseTime(+d + 1000 * 60 * 60 * 24 * 2, '{a}')).toBe('日') // 星期日
+    expect(parseTime(+d + 1000 * 60 * 60 * 24 * 2, '{a}')).toBe('Sun') // Sunday
   })
   it('empty argument', () => {
     expect(parseTime()).toBeNull()
